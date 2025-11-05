@@ -4,6 +4,7 @@ type Product struct {
   ID string;
   Weight float32;
   X, Y, Z float32;
+  Barcode Barcode;
 }
 
 func (product *Product) SetWeight(weight float32) {
