@@ -24,13 +24,11 @@ func main() {
   });
 
   app.OnServe().BindFunc(func(e *core.ServeEvent) error {
+
     e.Router.GET("/welcome", func(e *core.RequestEvent) error {
       return e.String(http.StatusOK, welcome.Greeting());
     });
-    return e.Next();
-  });
 
-  app.OnServe().BindFunc(func(e *core.ServeEvent) error {
     e.Router.GET("/fact", func(e *core.RequestEvent) error {
       fact, err := facts.Random();
       if (err != nil) {
@@ -38,6 +36,7 @@ func main() {
       }
       return e.String(http.StatusOK, fact.Text);
     });
+
     return e.Next();
   });
 
