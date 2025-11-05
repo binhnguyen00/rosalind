@@ -2,13 +2,11 @@ package main;
 
 import (
 "log";
-"net/http"
 
 "github.com/pocketbase/pocketbase"
 "github.com/pocketbase/pocketbase/core"
 
-"rosalind/services/facts"
-"rosalind/services/welcome"
+"rosalind/routes"
 );
 
 func main() {
@@ -24,19 +22,8 @@ func main() {
   });
 
   app.OnServe().BindFunc(func(e *core.ServeEvent) error {
-
-    e.Router.GET("/welcome", func(e *core.RequestEvent) error {
-      return e.String(http.StatusOK, welcome.Greeting());
-    });
-
-    e.Router.GET("/fact", func(e *core.RequestEvent) error {
-      fact, err := facts.Random();
-      if (err != nil) {
-        return e.NoContent(http.StatusNoContent);
-      }
-      return e.String(http.StatusOK, fact.Text);
-    });
-
+    routes.RegisterWelcomeRoutes(e);
+    routes.RegisterFactRoutes(e);
     return e.Next();
   });
 
