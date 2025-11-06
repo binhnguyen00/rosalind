@@ -10,7 +10,7 @@ import (
 func CreateResumeCollection(app *pocketbase.PocketBase) error {
   collection, err := app.FindCollectionByNameOrId("resume");
   if (err != nil) {
-    log.Fatal(err)
+    log.Fatal(err);
     return err;
   }
 
@@ -22,23 +22,29 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
     Name      : "title",
     Required  : true,
     Max       : 100,
-  })
+  });
 
   collection.Fields.Add(&core.TextField{
     Name      : "description",
     Required  : false,
     Max       : 1000,
-  })
+  });
 
-  collection.Fields.Add(&core.TextField{
-    Name      : "user",
-    Required  : false,
-    Max       : 100,
-  })
+  usersCollection, err := app.FindCollectionByNameOrId("users");
+  if (err != nil) {
+    log.Fatal(err);
+    return err;
+  }
+  collection.Fields.Add(&core.RelationField{
+    Name          : "owner",
+    Required      : true,
+    CascadeDelete : false,
+    CollectionId  : usersCollection.Id,
+  });
 
   err = app.Save(collection);
   if (err != nil) {
-    log.Fatal(err)
+    log.Fatal(err);
     return err;
   }
 

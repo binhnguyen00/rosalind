@@ -5,9 +5,12 @@ import (
 
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
+"github.com/pocketbase/pocketbase/plugins/migratecmd";
 
 "rosalind/routes";
 "rosalind/collections/resume";
+
+_ "rosalind/migrations";
 );
 
 func main() {
@@ -24,6 +27,10 @@ func main() {
     routes.RegisterWelcomeRoutes(e);
 
     return e.Next();
+  });
+
+  migratecmd.MustRegister(app, app.RootCmd, migratecmd.Config{
+    Automigrate: true,
   });
 
   err := app.Start();
