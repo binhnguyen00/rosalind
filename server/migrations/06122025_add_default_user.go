@@ -18,7 +18,7 @@ func init() {
 
     record := core.NewRecord(coll);
     record.Set("name", "binh.nguyen");
-    record.SetEmail("jackjack2000.kahp@gmail.com");
+    record.SetEmail("binh.nguyen@gmail.com");
     record.SetPassword("123456789");
     record.SetVerified(true);
 
@@ -27,7 +27,7 @@ func init() {
 
   down := func(app core.App) error {
     log.Println("Removing default user");
-    record, err := app.FindFirstRecordByFilter("users", "email = 'jackjack2000.kahp@gmail.com'");
+    record, err := app.FindFirstRecordByFilter("users", "email = 'binh.nguyen@gmail.com'");
     if (err != nil) {
       log.Fatal(err);
       return err;

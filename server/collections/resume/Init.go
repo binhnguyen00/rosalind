@@ -19,19 +19,27 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
     collection = core.NewBaseCollection("resume");
   }
 
-  usersCollection, err := app.FindCollectionByNameOrId("users");
+  userColl, _ := app.FindCollectionByNameOrId("users");
 
   collection.Fields.Add(
     &core.TextField{
-      Name      : "title",
-      Required  : true,
+      Name      : "label",
+      Required  : false,
       Max       : 100,
+    },
+    &core.EditorField{
+      Name      : "description",
+      Required  : false,
+    },
+    &core.JSONField{
+      Name      : "content",
+      Required  : false,
     },
     &core.RelationField{
       Name          : "owner",
+      CollectionId  : userColl.Id,
+      MaxSelect     : 1,
       Required      : true,
-      CascadeDelete : false,
-      CollectionId  : usersCollection.Id,
     },
     &core.AutodateField{
       Name      : "created",
