@@ -9,6 +9,7 @@ import (
 
 func CreateResumeCollection(app *pocketbase.PocketBase) error {
   collection, err := app.FindCollectionByNameOrId("resume");
+
   if (err != nil) {
     log.Fatal(err);
     return err;
@@ -18,35 +19,30 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
     collection = core.NewBaseCollection("resume");
   }
 
-  collection.Fields.Add(&core.TextField{
-    Name      : "title",
-    Required  : true,
-    Max       : 100,
-  });
-
-  collection.Fields.Add(&core.TextField{
-    Name      : "description",
-    Required  : false,
-    Max       : 1000,
-  });
-
   usersCollection, err := app.FindCollectionByNameOrId("users");
-  if (err != nil) {
-    log.Fatal(err);
-    return err;
-  }
-  collection.Fields.Add(&core.RelationField{
-    Name          : "owner",
-    Required      : true,
-    CascadeDelete : false,
-    CollectionId  : usersCollection.Id,
-  });
 
-  err = app.Save(collection);
-  if (err != nil) {
-    log.Fatal(err);
-    return err;
-  }
+  collection.Fields.Add(
+    &core.TextField{
+      Name      : "title",
+      Required  : true,
+      Max       : 100,
+    },
+    &core.RelationField{
+      Name          : "owner",
+      Required      : true,
+      CascadeDelete : false,
+      CollectionId  : usersCollection.Id,
+    },
+    &core.AutodateField{
+      Name      : "created",
+      OnCreate  : true,
+    },
+    &core.AutodateField{
+      Name      : "updated",
+      OnCreate  : true,
+      OnUpdate  : true,
+    },
+  );
 
-  return nil;
+  return app.Save(collection);
 }
