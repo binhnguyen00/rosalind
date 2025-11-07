@@ -1,17 +1,16 @@
-package resume;
+package template;
 
 import (
 "os";
 "log";
-"encoding/json";
 
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
 )
 
-var COLL_NAME string = "resume";
+var COLL_NAME string = "template"
 
-func CreateResumeCollection(app *pocketbase.PocketBase) error {
+func CreateTemplateCollection(app *pocketbase.PocketBase) error {
   collection, err := app.FindCollectionByNameOrId(COLL_NAME);
 
   if (err != nil) {
@@ -20,10 +19,8 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
   }
 
   if (collection == nil) {
-    collection = core.NewBaseCollection(COLL_NAME);
+    collection = core.NewBaseCollection(COLL_NAME)
   }
-
-  userColl, _ := app.FindCollectionByNameOrId("users");
 
   collection.Fields.Add(
     &core.TextField{
@@ -32,18 +29,16 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
       Max       : 100,
     },
     &core.EditorField{
-      Name      : "description",
+      Name      : "html_structure",
       Required  : false,
     },
-    &core.JSONField{
-      Name      : "content",
+    &core.EditorField{
+      Name      : "css_style",
       Required  : false,
     },
-    &core.RelationField{
-      Name          : "owner",
-      CollectionId  : userColl.Id,
-      MaxSelect     : 1,
-      Required      : true,
+    &core.BoolField{
+      Name      : "active",
+      Required  : false,
     },
     &core.AutodateField{
       Name      : "created",
@@ -54,27 +49,22 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
       OnCreate  : true,
       OnUpdate  : true,
     },
-  );
+  )
 
   err = app.Save(collection);
   if (err != nil) {
     return err;
   }
 
-  user, err := app.FindFirstRecordByFilter("users", "email = 'binh.nguyen@gmail.com'");
-  if (err != nil) {
-    log.Fatal(err);
-    return err;
-  }
-
   sample := core.NewRecord(collection);
-  sample.Set("label", "binh.nguyen Resume");
-  sample.Set("owner", user.Id);
+  sample.Set("label", "Template 01");
+  sample.Set("active", true);
 
-  var resume map[string]interface{};
-  jsonFile, _ := os.ReadFile("./migrations/data/resume.json");
-  json.Unmarshal(jsonFile, &resume);
-  sample.Set("content", resume);
+  htmlFile, _ := os.ReadFile("./migrations/data/html_structure.hbs");
+  sample.Set("html_structure", string(htmlFile));
+
+  cssFile, _ := os.ReadFile("./migrations/data/css_style.css");
+  sample.Set("css_style", string(cssFile));
 
   err = app.Save(sample);
   if (err != nil) {

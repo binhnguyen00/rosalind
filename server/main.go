@@ -1,7 +1,9 @@
 package main;
 
 import (
+"os";
 "log";
+"strings";
 
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
@@ -9,6 +11,7 @@ import (
 
 "rosalind/routes";
 "rosalind/collections/resume";
+"rosalind/collections/template";
 
 _ "rosalind/migrations";
 );
@@ -22,10 +25,12 @@ func main() {
   });
 
   app.OnServe().BindFunc(func(e *core.ServeEvent) error {
-    resume.CreateResumeCollection(app);
-
+    isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
+    if (isGoRun) { // only init data on development
+      resume.CreateResumeCollection(app);
+      template.CreateTemplateCollection(app);
+    }
     routes.RegisterWelcomeRoutes(e);
-
     return e.Next();
   });
 

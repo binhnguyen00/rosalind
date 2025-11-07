@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>{{full_name}} - Resume</title>
+  <style>{{css_styles}}</style>
+</head>
+<body>
+  <header class="resume-header">
+    <h1>{{full_name}}</h1>
+    <div class="contact">
+      <span>{{email}}</span>
+      <span>{{phone}}</span>
+      <span>{{address}}</span>
+    </div>
+  </header>
+
+  <section class="work-experience">
+    <h2>Work Experience</h2>
+    {{#each work_experience}}
+    <div class="job">
+      <h3>{{position}} - {{company}}</h3>
+      <span class="dates">{{start_date}} - {{end_date}}</span>
+      <p>{{description}}</p>
+    </div>
+    {{/each}}
+  </section>
+
+  <section class="education">
+    <h2>Education</h2>
+    {{#each education}}
+    <div class="degree">
+      <h3>{{degree}} in {{field}}</h3>
+      <span>{{institution}}</span>
+      <span class="dates">{{start_date}} - {{end_date}}</span>
+    </div>
+    {{/each}}
+  </section>
+
+  <section class="skills">
+    <h2>Skills</h2>
+    <ul>
+    {{#each skills}}
+      <li>{{skill_name}}</li>
+    {{/each}}
+    </ul>
+  </section>
+</body>
+</html>
