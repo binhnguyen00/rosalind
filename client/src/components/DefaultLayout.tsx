@@ -3,9 +3,10 @@ import { cn } from "@heroui/react";
 
 interface DefaultLayoutProps {
   children: React.ReactNode;
+  className?: string;
 }
 export default function DefaultLayout(props: DefaultLayoutProps) {
-  const { children } = props;
+  const { children, className } = props;
 
   return (
     <div className="flex flex-col h-screen">
@@ -18,6 +19,7 @@ export default function DefaultLayout(props: DefaultLayoutProps) {
           "p-6", "outline-none",
           "flex", "flex-col", "flex-1",
           "overflow-y-auto",
+          className
         )}
       >
         {children}
