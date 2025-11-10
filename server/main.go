@@ -26,11 +26,12 @@ func main() {
   app.OnServe().BindFunc(func(e *core.ServeEvent) error {
     isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
     if (isGoRun) { // only init data on development
-      resume.CreateResumeCollection(app);
-      template.CreateTemplateCollection(app);
-
       users.CreateDefaultUser(app);
+
+      resume.CreateResumeCollection(app);
       resume.CreateDefaultResume(app);
+
+      template.CreateTemplateCollection(app);
       template.CreateDefaultTemplate(app);
     }
 

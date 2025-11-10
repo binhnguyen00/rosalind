@@ -2,10 +2,8 @@ package resume;
 
 import (
 "os";
-"fmt";
 "log";
 "encoding/json";
-
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
 )
@@ -15,10 +13,11 @@ var COLL_NAME string = "resume";
 func CreateResumeCollection(app *pocketbase.PocketBase) error {
   coll, _ := app.FindCollectionByNameOrId(COLL_NAME);
 
-  if (coll == nil) {
-    coll = core.NewBaseCollection(COLL_NAME);
+  if (coll != nil) {
+    app.Delete(coll);
   }
 
+  coll = core.NewBaseCollection(COLL_NAME);
   userColl, _ := app.FindCollectionByNameOrId("users");
 
   coll.Fields.Add(
@@ -67,19 +66,14 @@ func CreateDefaultResume(app *pocketbase.PocketBase) error {
     return err;
   }
 
-  filter := fmt.Sprintf("owner = '%s'", user.Id);
-  exist, _ := app.FindFirstRecordByFilter(coll.Name, filter);
-  if (exist != nil) {
-    app.Delete(exist);
-  }
-  exist = core.NewRecord(coll);
-  exist.Set("label", "binh.nguyen Resume");
-  exist.Set("owner", user.Id);
+  record := core.NewRecord(coll);
+  record.Set("label", "binh.nguyen Resume");
+  record.Set("owner", user.Id);
 
   var resume map[string]interface{};
   jsonFile, _ := os.ReadFile("./data/resume.json");
   json.Unmarshal(jsonFile, &resume);
-  exist.Set("content", resume);
+  record.Set("content", resume);
 
-  return app.Save(exist);
+  return app.Save(record);
 }
