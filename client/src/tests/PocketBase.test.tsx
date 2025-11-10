@@ -9,7 +9,12 @@ import { PBProvider } from "@components";
 const pbClient = new PocketBase("http://127.0.0.1:8090");
 
 describe("PocketBase Provider", () => {
-  it("auto login on mount", async () => {
+  it("check for server health", async () => {
+    const response = await pbClient.health.check();
+    await waitFor(() => expect(response.code === 200));
+  });
+
+  it("login using default account", async () => {
     const queryClient = new QueryClient();
 
     const Auth = (): React.ReactNode => {
@@ -19,9 +24,7 @@ describe("PocketBase Provider", () => {
       })
 
       return (
-        <div>
-          {pbClient.authStore.isValid}
-        </div>
+        <div> {pbClient.authStore.isValid} </div>
       )
     }
 
@@ -42,8 +45,6 @@ describe("PocketBase Provider", () => {
     const response = await axios.get(`${pbClient.baseURL}/test-auth`, {
       headers: { "Authorization": pbClient.authStore.token }
     })
-    await waitFor(() => {
-      expect(response.data === "Welcome!")
-    })
+    await waitFor(() => expect(response.data === "Welcome!"))
   });
 });
