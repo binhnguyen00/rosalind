@@ -38,7 +38,7 @@ export function Navbar() {
       <NavbarBrand>
         <Link href="/" className="flex gap-2">
           <BotMessageSquare className="h-8 w-8"/>
-          <p className="font-bold text-inherit"> Scaffold </p>
+          <p className="font-bold text-inherit"> VRT </p>
         </Link>
       </NavbarBrand>
 
