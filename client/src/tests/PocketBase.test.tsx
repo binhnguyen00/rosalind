@@ -1,3 +1,4 @@
+import axios from "axios";
 import PocketBase from "pocketbase";
 import { render, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
@@ -5,10 +6,11 @@ import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-quer
 
 import { PBProvider } from "@components";
 
+const pbClient = new PocketBase("http://127.0.0.1:8090");
+
 describe("PocketBase Provider", () => {
   it("auto login on mount", async () => {
     const queryClient = new QueryClient();
-    const pbClient = new PocketBase("http://127.0.0.1:8090");
 
     const Auth = (): React.ReactNode => {
       useQuery({
@@ -33,6 +35,15 @@ describe("PocketBase Provider", () => {
 
     await waitFor(() => {
       expect(pbClient.authStore.isValid).toBe(true);
+    })
+  });
+
+  it("test authorized request", async () => {
+    const response = await axios.get(`${pbClient.baseURL}/test-auth`, {
+      headers: { "Authorization": pbClient.authStore.token }
+    })
+    await waitFor(() => {
+      expect(response.data === "Welcome!")
     })
   });
 });
