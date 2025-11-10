@@ -17,7 +17,7 @@ export default function DefaultLayout(props: DefaultLayoutProps) {
         tabIndex={-1}
         className={cn(
           "mx-auto", "max-w-7xl", "p-6", "outline-none",
-          "flex-grow", "flex", "flex-col", "flex-1",
+          "flex", "flex-col", "flex-1",
           "overflow-y-auto",
         )}
       >
