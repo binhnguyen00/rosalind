@@ -11,40 +11,44 @@
   "scripts": {
     "dev": "vite",
     "server": "vite",
+    "test": "vitest",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "ts-check": "tsc -b"
   },
   "dependencies": {
+    "@emotion/is-prop-valid": "latest",
+    "@heroui/react": "latest",
+    "@heroui/use-infinite-scroll": "latest",
+    "@react-stately/data": "latest",
+    "@react-types/shared": "latest",
+    "@tailwindcss/vite": "latest",
+    "@tanstack/react-query": "latest",
     "axios": "latest",
+    "framer-motion": "latest",
+    "lucide-react": "latest",
+    "pocketbase": "latest",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "latest",
-    "lucide-react": "latest",
-    "framer-motion": "latest",
-    "pocketbase": "latest",
-    "react-stately": "latest",
-    "@heroui/react": "latest",
-    "@heroui/use-infinite-scroll": "latest",
-    "@tailwindcss/vite": "latest",
-    "@react-stately/data": "latest",
-    "@react-types/shared": "latest",
-    "@tanstack/react-query": "latest",
-    "@emotion/is-prop-valid": "latest"
+    "react-stately": "latest"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "latest",
+    "@testing-library/react": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/react-router-dom": "latest",
-    "@tailwindcss/postcss": "latest",
     "@vitejs/plugin-react": "latest",
     "autoprefixer": "latest",
     "globals": "latest",
     "postcss": "latest",
     "tailwindcss": "latest",
+    "typescript": "latest",
     "vite": "latest",
     "vite-tsconfig-paths": "latest",
-    "typescript": "latest"
+    "vitest": "latest",
+    "jsdom": "latest"
   }
 }
