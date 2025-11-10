@@ -10,10 +10,9 @@ import (
 "github.com/pocketbase/pocketbase/plugins/migratecmd";
 
 "rosalind/routes";
+"rosalind/collections/users";
 "rosalind/collections/resume";
 "rosalind/collections/template";
-
-_ "rosalind/migrations";
 );
 
 func main() {
@@ -29,7 +28,12 @@ func main() {
     if (isGoRun) { // only init data on development
       resume.CreateResumeCollection(app);
       template.CreateTemplateCollection(app);
+
+      users.CreateDefaultUser(app);
+      resume.CreateDefaultResume(app);
+      template.CreateDefaultTemplate(app);
     }
+
     routes.RegisterWelcomeRoutes(e);
     return e.Next();
   });

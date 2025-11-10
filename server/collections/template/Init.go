@@ -1,11 +1,11 @@
-package template;
+package template
 
 import (
-"os";
-"log";
-
-"github.com/pocketbase/pocketbase";
-"github.com/pocketbase/pocketbase/core";
+"os"
+"log"
+"github.com/pocketbase/dbx"
+"github.com/pocketbase/pocketbase"
+"github.com/pocketbase/pocketbase/core"
 )
 
 var COLL_NAME string = "template"
@@ -23,6 +23,11 @@ func CreateTemplateCollection(app *pocketbase.PocketBase) error {
   }
 
   collection.Fields.Add(
+    &core.TextField{
+      Name      : "code",
+      Required  : true,
+      Max       : 20,
+    },
     &core.TextField{
       Name      : "label",
       Required  : false,
@@ -51,25 +56,28 @@ func CreateTemplateCollection(app *pocketbase.PocketBase) error {
     },
   )
 
-  err = app.Save(collection);
-  if (err != nil) {
-    return err;
+  return app.Save(collection);
+}
+
+func CreateDefaultTemplate(app *pocketbase.PocketBase) error {
+  coll, _ := app.FindCollectionByNameOrId(COLL_NAME);
+
+  exist, _ := app.FindFirstRecordByFilter(coll.Name, "code = '{:code}'", dbx.Params{
+    "code": "default",
+  })
+
+  if (exist != nil) {
+    app.Delete(exist);
   }
+  exist = core.NewRecord(coll);
+  exist.Set("label", "Default Template");
+  exist.Set("active", true);
 
-  sample := core.NewRecord(collection);
-  sample.Set("label", "Template 01");
-  sample.Set("active", true);
+  htmlFile, _ := os.ReadFile("./data/html_structure.hbs");
+  exist.Set("html_structure", string(htmlFile));
 
-  htmlFile, _ := os.ReadFile("./migrations/data/html_structure.hbs");
-  sample.Set("html_structure", string(htmlFile));
+  cssFile, _ := os.ReadFile("./data/css_style.css");
+  exist.Set("css_style", string(cssFile));
 
-  cssFile, _ := os.ReadFile("./migrations/data/css_style.css");
-  sample.Set("css_style", string(cssFile));
-
-  err = app.Save(sample);
-  if (err != nil) {
-    return err;
-  }
-
-  return nil;
+  return app.Save(exist);
 }

@@ -2,6 +2,7 @@ package resume;
 
 import (
 "os";
+"fmt";
 "log";
 "encoding/json";
 
@@ -12,20 +13,15 @@ import (
 var COLL_NAME string = "resume";
 
 func CreateResumeCollection(app *pocketbase.PocketBase) error {
-  collection, err := app.FindCollectionByNameOrId(COLL_NAME);
+  coll, _ := app.FindCollectionByNameOrId(COLL_NAME);
 
-  if (err != nil) {
-    log.Fatal(err);
-    return err;
-  }
-
-  if (collection == nil) {
-    collection = core.NewBaseCollection(COLL_NAME);
+  if (coll == nil) {
+    coll = core.NewBaseCollection(COLL_NAME);
   }
 
   userColl, _ := app.FindCollectionByNameOrId("users");
 
-  collection.Fields.Add(
+  coll.Fields.Add(
     &core.TextField{
       Name      : "label",
       Required  : false,
@@ -56,7 +52,11 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
     },
   );
 
-  err = app.Save(collection);
+  return app.Save(coll);
+}
+
+func CreateDefaultResume(app *pocketbase.PocketBase) error {
+  coll, err := app.FindCollectionByNameOrId("resume");
   if (err != nil) {
     return err;
   }
@@ -67,19 +67,19 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
     return err;
   }
 
-  sample := core.NewRecord(collection);
-  sample.Set("label", "binh.nguyen Resume");
-  sample.Set("owner", user.Id);
+  filter := fmt.Sprintf("owner = '%s'", user.Id);
+  exist, _ := app.FindFirstRecordByFilter(coll.Name, filter);
+  if (exist != nil) {
+    app.Delete(exist);
+  }
+  exist = core.NewRecord(coll);
+  exist.Set("label", "binh.nguyen Resume");
+  exist.Set("owner", user.Id);
 
   var resume map[string]interface{};
-  jsonFile, _ := os.ReadFile("./migrations/data/resume.json");
+  jsonFile, _ := os.ReadFile("./data/resume.json");
   json.Unmarshal(jsonFile, &resume);
-  sample.Set("content", resume);
+  exist.Set("content", resume);
 
-  err = app.Save(sample);
-  if (err != nil) {
-    return err;
-  }
-
-  return nil;
+  return app.Save(exist);
 }
