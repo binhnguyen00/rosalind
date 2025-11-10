@@ -1,4 +1,4 @@
-export function Footer() {
+export default function Footer() {
   return (
     <footer className="w-full flex items-center justify-center py-3">
       <div className="flex items-center gap-2">

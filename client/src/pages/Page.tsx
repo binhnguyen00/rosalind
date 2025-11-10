@@ -1,6 +1,6 @@
 import { DefaultLayout } from "@components";
 
-export function Page() {
+export default function Page() {
   return (
     <DefaultLayout>
       <div className="w-full h-full flex items-center justify-center">

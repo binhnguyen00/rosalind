@@ -1,6 +1,6 @@
 import { DefaultLayout } from "@components";
 
-export function NotFound() {
+export default function NotFound() {
   return (
     <DefaultLayout>
       <div className="w-full h-full flex items-center justify-center">

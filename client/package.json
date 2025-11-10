@@ -1,10 +1,10 @@
 {
-  "name": "your-project-name",
-  "description": "Your project description",
+  "name": "rosalind",
+  "description": "Project Rosalind Client",
   "author": {
-    "name": "Your name",
-    "email": "youremail@example.com",
-    "url": "https://github.com/yourusername"
+    "name": "Binh Nguyen",
+    "email": "jackjack2000.kahp@gmail.com",
+    "url": "https://github.com/binhnguyen00"
   },
   "version": "0.0.1",
   "type": "module",
@@ -22,7 +22,8 @@
     "react-router-dom": "latest",
     "lucide-react": "latest",
     "framer-motion": "latest",
-    "@heroui/react": "latest",
+    "pocketbase": "latest",
+    "react-stately": "latest",
     "@heroui/use-infinite-scroll": "latest",
     "@tailwindcss/vite": "latest",
     "@react-stately/data": "latest",
