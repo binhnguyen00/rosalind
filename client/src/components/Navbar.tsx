@@ -39,22 +39,9 @@ export default function Navbar() {
       <NavbarBrand>
         <Link href="/" className="flex gap-2">
           <BotMessageSquare className="h-8 w-8" />
-          <p className="font-bold text-inherit"> VRT </p>
+          <p className="font-bold text-inherit text-2xl"> Resume </p>
         </Link>
       </NavbarBrand>
-
-      <NavbarContent justify="center" className="hidden sm:flex">
-        <NavbarItem isActive={location.pathname === "/features"}>
-          <Link href="/features" color="foreground">
-            Features
-          </Link>
-        </NavbarItem>
-        <NavbarItem isActive={location.pathname === "/page"}>
-          <Link href="/page" color="foreground">
-            Page
-          </Link>
-        </NavbarItem>
-      </NavbarContent>
 
       <NavbarContent justify="end">
         <NavbarItem isActive={location.pathname === "/profile"}>

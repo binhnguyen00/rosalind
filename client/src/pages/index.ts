@@ -1,5 +1,5 @@
 import Home from "./Home";
-import Page from "./Page";
+import Resume from "./Resume";
 import NotFound from "./NotFound";
 
-export { Home, Page, NotFound };
+export { Home, NotFound, Resume };
