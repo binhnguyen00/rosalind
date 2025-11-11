@@ -2,24 +2,24 @@ import React from "react";
 
 import { Plus, Trash } from "lucide-react";
 import { useResumeStore } from "@stores";
-import { Button, Input, ScrollShadow } from "@heroui/react";
+import { Button, Input } from "@heroui/react";
 
 export default function ResumeInfo() {
   const resumeStore = useResumeStore();
   const resume = useResumeStore(state => state.resume);
 
   const onAddField = () => {
-    resumeStore.addPersonalInfoCustomField({ key: "", value: "" });
+    resumeStore.addBasicsCustomField({ key: "", value: "" });
   };
 
   const renderCustomFields = React.useMemo(() => {
-    if (!resume.personalInfo.customFields) return;
-    return resume.personalInfo.customFields.map((field, idx) => {
+    if (!resume.basics.customFields) return;
+    return resume.basics.customFields.map((field, idx) => {
       return (
         <div className="flex justify-between gap-2 items-center" key={idx}>
           <Input
             value={field.key} size="sm"
-            onChange={(e) => resumeStore.updatePersonalInfoCustomField({
+            onChange={(e) => resumeStore.updateBasicsCustomField({
               idx: idx,
               key: e.target.value,
               value: field.value
@@ -27,42 +27,57 @@ export default function ResumeInfo() {
           />
           <Input
             value={field.value} size="sm"
-            onChange={(e) => resumeStore.updatePersonalInfoCustomField({
+            onChange={(e) => resumeStore.updateBasicsCustomField({
               idx: idx,
               key: field.key,
               value: e.target.value
             })}
           />
-          <Button isIconOnly variant="light" size="sm" onPress={() => resumeStore.removePersonalInfoCustomField(idx)}>
+          <Button isIconOnly variant="light" size="sm" onPress={() => resumeStore.removeBasicsCustomField(idx)}>
             <Trash size={18} />
           </Button>
         </div>
       )
     })
-  }, [resume.personalInfo.customFields]);
+  }, [resume.basics.customFields]);
 
   return (
     <div className="flex flex-col gap-4">
 
       <div className="space-y-4">
         <p className="text-xl"> Personal Info </p>
+
         <Input
-          label="Name" value={resume.personalInfo.name} size="sm"
-          onChange={(e) => resumeStore.updatePersonalInfo({ ...resume.personalInfo, name: e.target.value })}
+          label="Name" value={resume.basics.name} size="sm"
+          onChange={(e) => resumeStore.updateBasics({
+            ...resume.basics,
+            name: e.target.value
+          })}
         />
         <Input
-          label="Email" value={resume.personalInfo.email} size="sm"
-          onChange={(e) => resumeStore.updatePersonalInfo({ ...resume.personalInfo, email: e.target.value })}
+          label="Email" value={resume.basics.email} size="sm"
+          onChange={(e) => resumeStore.updateBasics({
+            ...resume.basics,
+            email: e.target.value
+          })}
         />
         <Input
-          label="Phone" value={resume.personalInfo.phone} size="sm"
-          onChange={(e) => resumeStore.updatePersonalInfo({ ...resume.personalInfo, phone: e.target.value })}
+          label="Phone" value={resume.basics.phone} size="sm"
+          onChange={(e) => resumeStore.updateBasics({
+            ...resume.basics,
+            phone: e.target.value
+          })}
         />
         <Input
-          label="Location" value={resume.personalInfo.location} size="sm"
-          onChange={(e) => resumeStore.updatePersonalInfo({ ...resume.personalInfo, location: e.target.value })}
+          label="Location" value={resume.basics.location} size="sm"
+          onChange={(e) => resumeStore.updateBasics({
+            ...resume.basics,
+            location: e.target.value
+          })}
         />
+
         {renderCustomFields}
+
         <Button
           onPress={onAddField}
           variant="ghost" size="sm"
