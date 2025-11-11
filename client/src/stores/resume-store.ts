@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { resume, Resume, Basics, basics } from "@schema";
+import { resume, Resume, Basics, basics, metadata } from "@schemas";
 
 interface ResumeStore {
   resume: Resume;
@@ -15,7 +15,8 @@ interface ResumeStore {
 
 export const useResumeStore = create<ResumeStore>((set) => ({
   resume: resume.parse({
-    basics: basics.parse({})
+    basics: basics.parse({}),
+    metadata: metadata.parse({}),
   }),
 
   updateBasics: (data: Basics) => set(state => {

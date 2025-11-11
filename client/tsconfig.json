@@ -35,10 +35,10 @@
       "@stores": [
         "./src/stores"
       ],
-      "@schema": [
-        "./src/schema"
+      "@schemas": [
+        "./src/schemas"
       ],
-      "@template": [
+      "@templates": [
         "./src/templates"
       ]
     },

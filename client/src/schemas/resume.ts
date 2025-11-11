@@ -1,7 +1,13 @@
 import z from "zod";
-import { Basics, basics } from "@schema";
+import { basics } from "@schemas";
+
+export const metadata = z.object({
+  template: z.string().default("default"),
+})
 
 export const resume = z.object({
+  metadata: metadata,
+
   basics: basics,
   work: z.array(z.object({} as any)).default([]),
   volunteer: z.array(z.object({} as any)).default([]),
@@ -17,3 +23,4 @@ export const resume = z.object({
 });
 
 export type Resume = z.infer<typeof resume>;
+export type Metadata = z.infer<typeof metadata>;

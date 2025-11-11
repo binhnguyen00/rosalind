@@ -1,9 +1,11 @@
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { useResumeStore } from "@stores";
+import { getTemplate } from "@templates";
 
 export default function ArtBoard() {
   const resume = useResumeStore(state => state.resume);
+  const Template = getTemplate(resume.metadata.template);
 
   return (
     <div className="w-full h-screen overflow-hidden">
@@ -20,12 +22,7 @@ export default function ArtBoard() {
           wrapperStyle={{ height: "100%", width: "100%" }}
         >
           <div className="min-h-[1122.66px] min-w-[793.8px] border">
-            <div>
-              <p> {resume.basics.name} </p>
-              <p> {resume.basics.email} </p>
-              <p> {resume.basics.phone} </p>
-              <p> {resume.basics.location} </p>
-            </div>
+            <Template />
           </div>
         </TransformComponent>
       </TransformWrapper>
