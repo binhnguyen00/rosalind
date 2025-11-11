@@ -1,5 +1,3 @@
-import React from "react";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 import { DefaultLayout } from "@components";
 
 export default function Resume() {
@@ -9,35 +7,17 @@ export default function Resume() {
         <div className="border border-divider rounded">
           left
         </div>
-        <div className="border border-divider rounded overflow-hidden">
-          <ArtBoard />
+        <div className="border border-divider rounded overflow-hidden h-full min-h-0">
+          <iframe
+            src="/artboard"
+            title="artboard"
+            className="w-full h-full"
+          />
         </div>
         <div className="border border-divider rounded">
           right
         </div>
       </div>
     </DefaultLayout>
-  )
-}
-
-function ArtBoard() {
-  return (
-    <TransformWrapper
-      centerOnInit
-      maxScale={2}
-      minScale={0.4}
-      initialScale={0.8}
-      limitToBounds={false}
-    >
-      <TransformComponent
-        wrapperStyle={{ width: "100% !important", height: "100% !important" }}
-        wrapperClass="w-full h-full"
-        contentClass="grid items-start justify-center pointer-events-none"
-      >
-        <img
-          src="https://images.pexels.com/photos/34106378/pexels-photo-34106378.jpeg" alt="test"
-        />
-      </TransformComponent>
-    </TransformWrapper>
   )
 }
