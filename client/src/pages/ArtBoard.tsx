@@ -1,6 +1,10 @@
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
+import { useResumeStore } from "@stores";
+
 export default function ArtBoard() {
+  const resume = useResumeStore(state => state.resume);
+
   return (
     <div className="w-full h-screen overflow-hidden">
       <TransformWrapper
@@ -12,11 +16,12 @@ export default function ArtBoard() {
       >
         <TransformComponent
           contentClass="grid items-start justify-center pointer-events-none"
-          contentStyle={{ width: "100%", height: "100%", overflow: "hidden" }}
-          wrapperStyle={{ width: "100%", height: "100%" }}
+          contentStyle={{ height: "100%", overflow: "hidden" }}
+          wrapperStyle={{ height: "100%", width: "100%" }}
         >
-          <div className="h-full w-full text-center border">
+          <div className="h-full w-[1080px] text-center border">
             <p>Artboard</p>
+            {JSON.stringify(resume, null, 2)}
           </div>
         </TransformComponent>
       </TransformWrapper>

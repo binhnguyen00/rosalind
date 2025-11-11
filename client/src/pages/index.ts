@@ -1,6 +1,6 @@
 import Home from "./Home";
-import Resume from "./Resume";
+import ResumeBuilder from "./ResumeBuilder";
 import NotFound from "./NotFound";
 import ArtBoard from "./ArtBoard";
 
-export { Home, NotFound, Resume, ArtBoard };
+export { Home, NotFound, ResumeBuilder, ArtBoard };
