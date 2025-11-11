@@ -21,7 +21,9 @@ export default function ArtBoard() {
         >
           <div className="h-full w-[1080px] text-center border">
             <p>Artboard</p>
-            {JSON.stringify(resume, null, 2)}
+            <pre className="flex flex-col justify-center items-center text-left font-mono whitespace-pre-wrap">
+              {JSON.stringify(resume, null, 2)}
+            </pre>
           </div>
         </TransformComponent>
       </TransformWrapper>

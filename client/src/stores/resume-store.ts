@@ -1,7 +1,16 @@
 import { create } from "zustand";
 
 interface Resume {
-  personalInfo: any;
+  personalInfo: {
+    name: string;
+    email: string;
+    phone: string;
+    location: string;
+    customFields: {
+      key: string;
+      value: string;
+    }[];
+  };
   experience: any[];
   education: any[];
   skills: any[];
@@ -9,19 +18,32 @@ interface Resume {
 
 interface ResumeStore {
   resume: Resume;
-  updatePersonalInfo: (data: any) => void;
-  addExperience: (item: any) => void;
-  addEducation: (item: any) => void;
-  addSkill: (item: any) => void;
   reset: () => void;
+
+  updatePersonalInfo: (data: Resume["personalInfo"]) => void;
+  addPersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => void;
+  updatePersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => void;
+  removePersonalInfoCustomField: (idx: number) => void;
+
+  addExperience: (item: any) => void;
+
+  addEducation: (item: any) => void;
+
+  addSkill: (item: any) => void;
 }
 
 export const useResumeStore = create<ResumeStore>((set) => ({
   resume: {
-    personalInfo: {},
-    experience: [],
-    education: [],
-    skills: []
+    personalInfo: {
+      name: "",
+      email: "",
+      phone: "",
+      location: "",
+      customFields: []
+    } as Resume["personalInfo"],
+    experience: [] as Resume["experience"],
+    education: [] as Resume["education"],
+    skills: [] as Resume["skills"]
   },
 
   updatePersonalInfo: (data: any) => set(state => {
@@ -29,6 +51,42 @@ export const useResumeStore = create<ResumeStore>((set) => ({
       resume: {
         ...state.resume,
         personalInfo: data
+      }
+    }
+  }),
+
+  addPersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => set(state => {
+    return {
+      resume: {
+        ...state.resume,
+        personalInfo: {
+          ...state.resume.personalInfo,
+          customFields: [...state.resume.personalInfo.customFields, field]
+        }
+      }
+    }
+  }),
+
+  updatePersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => set(state => {
+    return {
+      resume: {
+        ...state.resume,
+        personalInfo: {
+          ...state.resume.personalInfo,
+          customFields: state.resume.personalInfo.customFields.map((item, i) => i === field.idx ? field : item)
+        }
+      }
+    }
+  }),
+
+  removePersonalInfoCustomField: (idx: number) => set(state => {
+    return {
+      resume: {
+        ...state.resume,
+        personalInfo: {
+          ...state.resume.personalInfo,
+          customFields: state.resume.personalInfo.customFields.filter((_, i) => i !== idx)
+        }
       }
     }
   }),
@@ -54,5 +112,12 @@ export const useResumeStore = create<ResumeStore>((set) => ({
     }
   })),
 
-  reset: () => set({ resume: {} as Resume })
+  reset: () => set({
+    resume: {
+      personalInfo: {} as Resume["personalInfo"],
+      experience: [] as Resume["experience"],
+      education: [] as Resume["education"],
+      skills: [] as Resume["skills"]
+    }
+  })
 }));
