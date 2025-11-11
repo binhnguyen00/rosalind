@@ -21,7 +21,7 @@ interface ResumeStore {
   reset: () => void;
 
   updatePersonalInfo: (data: Resume["personalInfo"]) => void;
-  addPersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => void;
+  addPersonalInfoCustomField: (field: { key: string, value: string }) => void;
   updatePersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => void;
   removePersonalInfoCustomField: (idx: number) => void;
 
@@ -55,7 +55,7 @@ export const useResumeStore = create<ResumeStore>((set) => ({
     }
   }),
 
-  addPersonalInfoCustomField: (field: { idx: number, key: string, value: string }) => set(state => {
+  addPersonalInfoCustomField: (field: { key: string, value: string }) => set(state => {
     return {
       resume: {
         ...state.resume,

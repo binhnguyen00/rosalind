@@ -9,10 +9,7 @@ export default function ResumeInfo() {
   const resume = useResumeStore(state => state.resume);
 
   const onAddField = () => {
-    resumeStore.addPersonalInfoCustomField({
-      idx: resume.personalInfo.customFields.length,
-      key: "", value: ""
-    });
+    resumeStore.addPersonalInfoCustomField({ key: "", value: "" });
   };
 
   const renderCustomFields = React.useMemo(() => {
@@ -22,15 +19,19 @@ export default function ResumeInfo() {
         <div className="flex justify-between gap-2 items-center" key={idx}>
           <Input
             value={field.key} size="sm"
-            onChange={(e) => {
-              resumeStore.updatePersonalInfoCustomField({ idx, key: e.target.value, value: field.value });
-            }}
+            onChange={(e) => resumeStore.updatePersonalInfoCustomField({
+              idx: idx,
+              key: e.target.value,
+              value: field.value
+            })}
           />
           <Input
             value={field.value} size="sm"
-            onChange={(e) => {
-              resumeStore.updatePersonalInfoCustomField({ idx, key: field.key, value: e.target.value });
-            }}
+            onChange={(e) => resumeStore.updatePersonalInfoCustomField({
+              idx: idx,
+              key: field.key,
+              value: e.target.value
+            })}
           />
           <Button isIconOnly variant="light" size="sm" onPress={() => resumeStore.removePersonalInfoCustomField(idx)}>
             <Trash size={18} />
