@@ -19,7 +19,7 @@ export default function ResumeInfo() {
     if (!resume.personalInfo.customFields) return;
     return resume.personalInfo.customFields.map((field, idx) => {
       return (
-        <div className="flex justify-between gap-2 items-center">
+        <div className="flex justify-between gap-2 items-center" key={idx}>
           <Input
             value={field.key} size="sm"
             onChange={(e) => {
@@ -41,7 +41,7 @@ export default function ResumeInfo() {
   }, [resume.personalInfo.customFields]);
 
   return (
-    <ScrollShadow orientation="vertical" className="p-2 space-y-4 h-full">
+    <div className="flex flex-col gap-4">
 
       <div className="space-y-4">
         <p className="text-xl"> Personal Info </p>
@@ -56,6 +56,10 @@ export default function ResumeInfo() {
         <Input
           label="Phone" value={resume.personalInfo.phone} size="sm"
           onChange={(e) => resumeStore.updatePersonalInfo({ ...resume.personalInfo, phone: e.target.value })}
+        />
+        <Input
+          label="Location" value={resume.personalInfo.location} size="sm"
+          onChange={(e) => resumeStore.updatePersonalInfo({ ...resume.personalInfo, location: e.target.value })}
         />
         {renderCustomFields}
         <Button
@@ -96,6 +100,6 @@ export default function ResumeInfo() {
         </Button>
       </div>
 
-    </ScrollShadow>
+    </div>
   )
 }

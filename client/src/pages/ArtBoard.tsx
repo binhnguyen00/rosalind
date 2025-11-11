@@ -16,10 +16,10 @@ export default function ArtBoard() {
       >
         <TransformComponent
           contentClass="grid items-start justify-center pointer-events-none"
-          contentStyle={{ height: "100%", overflow: "hidden" }}
+          contentStyle={{ height: "100%" }}
           wrapperStyle={{ height: "100%", width: "100%" }}
         >
-          <div className="h-full w-[1080px] text-center border">
+          <div className="min-h-full w-[1080px] text-center border">
             <p>Artboard</p>
             <pre className="flex flex-col justify-center items-center text-left font-mono whitespace-pre-wrap">
               {JSON.stringify(resume, null, 2)}
