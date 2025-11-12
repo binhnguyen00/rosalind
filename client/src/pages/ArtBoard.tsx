@@ -35,6 +35,7 @@ export default function ArtBoard() {
 function Template() {
   const resume = useResumeStore(state => state.resume);
   const pocketBase = React.useContext(PocketBaseContext);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["template", resume.metadata.template],
@@ -44,6 +45,16 @@ function Template() {
       );
     }
   });
+
+  React.useEffect(() => {
+    if (!data) return;
+    const template = HandleBars.compile(data["html_structure"]);
+    const html = template(resume);
+    const host = containerRef.current;
+    if (!host) return;
+    const shadow = host.shadowRoot || host.attachShadow({ mode: "open" });
+    shadow.innerHTML = html;
+  }, [data, resume]);
 
   if (isLoading) {
     return <Spinner />
@@ -65,13 +76,12 @@ function Template() {
     );
   }
 
-  const hbsTemplate = HandleBars.compile(data["html_structure"]);
-
   return (
-    <pre>
-      {hbsTemplate(resume.basics)}
-    </pre>
-  )
+    <div
+      ref={containerRef}
+      className="w-full h-full p-6"
+    />
+  );
 }
 
 const Json = (resume: any) => {

@@ -60,15 +60,17 @@ func CreateTemplateCollection(app *pocketbase.PocketBase) error {
 func CreateDefaultTemplate(app *pocketbase.PocketBase) error {
   coll, _ := app.FindCollectionByNameOrId(COLL_NAME);
 
+  app.TruncateCollection(coll);
+
   record := core.NewRecord(coll);
   record.Set("label", "Default Template");
   record.Set("code", "default");
   record.Set("active", true);
 
-  htmlFile, _ := os.ReadFile("./data/html_structure.hbs");
+  htmlFile, _ := os.ReadFile("./data/default_template.hbs");
   record.Set("html_structure", string(htmlFile));
 
-  cssFile, _ := os.ReadFile("./data/css_style.css");
+  cssFile, _ := os.ReadFile("./data/stylesheet.css");
   record.Set("css_style", string(cssFile));
 
   return app.Save(record);
