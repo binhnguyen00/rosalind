@@ -38,9 +38,6 @@
       "@schemas": [
         "./src/schemas"
       ],
-      "@templates": [
-        "./src/templates"
-      ]
     },
   },
   "exclude": [

@@ -1,11 +1,11 @@
 import React from "react";
 import HandleBars from "handlebars";
 import { useQuery } from "@tanstack/react-query";
-import { Spinner } from "@heroui/react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components/PBProvider";
+import { Spinner } from "@heroui/react";
 
 export default function ArtBoard() {
 
@@ -36,7 +36,6 @@ function Template() {
   const resume = useResumeStore(state => state.resume);
   const pocketBase = React.useContext(PocketBaseContext);
 
-  let Template: React.ReactNode = <p> Template is not found </p>;
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["template", resume.metadata.template],
     queryFn: async () => {
@@ -53,7 +52,6 @@ function Template() {
   if (isError) {
     return (
       <div>
-        {Template}
         <p> {error.message} </p>
       </div>
     )
