@@ -10,13 +10,20 @@
 <body>
   <header>
     <h1>{{basics.name}}</h1>
-    {{#if basics.label}}<p>{{basics.label}}</p>{{/if}}
     <div>
       {{#if basics.email}}<span>{{basics.email}}</span>{{/if}}
       {{#if basics.phone}}<span> | {{basics.phone}}</span>{{/if}}
-      {{#if basics.url}}<span> | <a href="{{basics.url}}">{{basics.url}}</a></span>{{/if}}
+      {{#if basics.url}}<span> | <a href="{{basics.url}}">{{basics.url}}</a> </span>{{/if}}
     </div>
     {{#if basics.location}}<p>{{basics.location}}</p>{{/if}}
+    {{#if basics.customFields.length}}
+      {{#each basics.customFields}}
+        <div class="field">
+          <span class="label">{{key}}:</span>
+          <span>{{value}}</span>
+        </div>
+      {{/each}}
+    {{/if}}
   </header>
 
   {{#if basics.summary}}
@@ -26,17 +33,6 @@
     </section>
   {{/if}}
 
-  {{#if basics.customFields.length}}
-    <section class="section">
-      <h2>Additional Information</h2>
-      {{#each basics.customFields}}
-        <div class="field">
-          <span class="label">{{key}}:</span>
-          <span>{{value}}</span>
-        </div>
-      {{/each}}
-    </section>
-  {{/if}}
 
   {{#if work.length}}
     <section class="section">

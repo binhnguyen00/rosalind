@@ -2,7 +2,6 @@ import z from "zod";
 
 export const basics = z.object({
   name: z.string().default(""),
-  label: z.string().default(""),
   email: z.string().default(""),
   phone: z.string().default(""),
   url: z.string().default(""),

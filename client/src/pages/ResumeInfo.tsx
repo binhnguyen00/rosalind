@@ -2,7 +2,7 @@ import React from "react";
 
 import { Plus, Trash } from "lucide-react";
 import { useResumeStore } from "@stores";
-import { Button, Input } from "@heroui/react";
+import { Button, Input, Textarea } from "@heroui/react";
 
 export default function ResumeInfo() {
   const resumeStore = useResumeStore();
@@ -45,34 +45,41 @@ export default function ResumeInfo() {
     <div className="flex flex-col gap-4">
 
       <div className="space-y-4">
-        <p className="text-xl"> Personal Info </p>
+        <p className="text-xl"> Basics </p>
 
         <Input
-          label="Name" value={resume.basics.name} size="sm"
+          label="Name" value={resume.basics.name} size="sm" variant="bordered" labelPlacement="outside-top"
           onChange={(e) => resumeStore.updateBasics({
             ...resume.basics,
             name: e.target.value
           })}
         />
         <Input
-          label="Email" value={resume.basics.email} size="sm"
+          label="Email" value={resume.basics.email} size="sm" variant="bordered" labelPlacement="outside-top"
           onChange={(e) => resumeStore.updateBasics({
             ...resume.basics,
             email: e.target.value
           })}
         />
         <Input
-          label="Phone" value={resume.basics.phone} size="sm"
+          label="Phone" value={resume.basics.phone} size="sm" variant="bordered" labelPlacement="outside-top"
           onChange={(e) => resumeStore.updateBasics({
             ...resume.basics,
             phone: e.target.value
           })}
         />
         <Input
-          label="Location" value={resume.basics.location} size="sm"
+          label="Location" value={resume.basics.location} size="sm" variant="bordered" labelPlacement="outside-top"
           onChange={(e) => resumeStore.updateBasics({
             ...resume.basics,
             location: e.target.value
+          })}
+        />
+        <Textarea
+          label="Summary" value={resume.basics.summary} size="sm" variant="bordered" labelPlacement="outside-top"
+          onChange={(e) => resumeStore.updateBasics({
+            ...resume.basics,
+            summary: e.target.value
           })}
         />
 
