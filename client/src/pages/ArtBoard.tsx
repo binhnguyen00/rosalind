@@ -37,7 +37,7 @@ function Template() {
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const { data: template, isLoading, isError, error } = useQuery({
     queryKey: ["template", resume.metadata.template],
     queryFn: async () => {
       return await pocketBase.collection("template").getFirstListItem(
@@ -47,14 +47,16 @@ function Template() {
   });
 
   React.useEffect(() => {
-    if (!data) return;
-    const template = HandleBars.compile(data["html_structure"]);
-    const html = template(resume);
-    const host = containerRef.current;
-    if (!host) return;
-    const shadow = host.shadowRoot || host.attachShadow({ mode: "open" });
+    if (!template) return;
+    if (!containerRef.current) return;
+    const hbs = HandleBars.compile(template["structure"]);
+    const html = hbs({
+      ...resume,
+      stylesheet: template["stylesheet"]
+    });
+    const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
     shadow.innerHTML = html;
-  }, [data, resume]);
+  }, [template, resume]);
 
   if (isLoading) {
     return <Spinner />
@@ -66,14 +68,6 @@ function Template() {
         <p> {error.message} </p>
       </div>
     )
-  }
-
-  if (!data) {
-    return (
-      <>
-        {Template}
-      </>
-    );
   }
 
   return (

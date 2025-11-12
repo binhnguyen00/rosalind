@@ -1,81 +1,31 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: 'Arial', sans-serif;
-  font-size: 11pt;
+  font-family: Arial, sans-serif;
+  margin: 40px;
   line-height: 1.5;
-  color: #333;
-  max-width: 8.5in;
-  margin: 0 auto;
-  padding: 0.5in;
+  color: #222;
 }
 
-.resume-header {
-  border-bottom: 2px solid #2c3e50;
-  padding-bottom: 15px;
+h1,
+h2,
+h3 {
+  margin: 0 0 8px 0;
+}
+
+h2 {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+  margin-top: 24px;
+}
+
+.section {
   margin-bottom: 20px;
 }
 
-.resume-header h1 {
-  font-size: 24pt;
-  font-weight: bold;
-  color: #2c3e50;
-  margin-bottom: 8px;
-}
-
-.contact {
+.field {
   display: flex;
-  gap: 15px;
-  font-size: 10pt;
-  color: #555;
+  gap: 6px;
 }
 
-section {
-  margin-bottom: 25px;
-}
-
-section h2 {
-  font-size: 14pt;
+.label {
   font-weight: bold;
-  color: #2c3e50;
-  border-bottom: 1px solid #bdc3c7;
-  padding-bottom: 5px;
-  margin-bottom: 12px;
-}
-
-.job,
-.degree,
-.custom-item {
-  margin-bottom: 15px;
-}
-
-.job h3,
-.degree h3 {
-  font-size: 12pt;
-  font-weight: bold;
-  color: #34495e;
-}
-
-.dates {
-  font-size: 10pt;
-  color: #7f8c8d;
-  font-style: italic;
-}
-
-ul {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-ul li {
-  background: #ecf0f1;
-  padding: 5px 12px;
-  border-radius: 3px;
-  font-size: 10pt;
 }

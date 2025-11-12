@@ -32,11 +32,11 @@ func CreateTemplateCollection(app *pocketbase.PocketBase) error {
       Max       : 20,
     },
     &core.EditorField{
-      Name      : "html_structure",
+      Name      : "structure",
       Required  : false,
     },
     &core.EditorField{
-      Name      : "css_style",
+      Name      : "stylesheet",
       Required  : false,
     },
     &core.BoolField{
@@ -68,10 +68,10 @@ func CreateDefaultTemplate(app *pocketbase.PocketBase) error {
   record.Set("active", true);
 
   htmlFile, _ := os.ReadFile("./data/default_template.hbs");
-  record.Set("html_structure", string(htmlFile));
+  record.Set("structure", string(htmlFile));
 
   cssFile, _ := os.ReadFile("./data/default_stylesheet.css");
-  record.Set("css_style", string(cssFile));
+  record.Set("stylesheet", string(cssFile));
 
   return app.Save(record);
 }
