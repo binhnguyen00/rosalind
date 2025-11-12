@@ -3,7 +3,7 @@ import HandleBars from "handlebars";
 import { useQuery } from "@tanstack/react-query";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-import { useResumeStore } from "@stores";
+import { useBasicsStore, useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
 import { Spinner } from "@heroui/react";
 
@@ -33,15 +33,16 @@ export default function ArtBoard() {
 }
 
 function Template() {
-  const resume = useResumeStore(state => state.resume);
+  const metadata = useResumeStore(state => state.metadata);
+  const basics = useBasicsStore(state => state.store);
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const { data: template, isLoading, isError, error } = useQuery({
-    queryKey: ["template", resume.metadata.template],
+    queryKey: ["template", metadata.template],
     queryFn: async () => {
       return await pocketBase.collection("template").getFirstListItem(
-        `code="${resume.metadata.template}"`
+        `code="${metadata.template}"`
       );
     }
   });
@@ -51,12 +52,12 @@ function Template() {
     if (!containerRef.current) return;
     const hbs = HandleBars.compile(template["structure"]);
     const html = hbs({
-      ...resume,
+      basics: basics,
       stylesheet: template["stylesheet"]
     });
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
     shadow.innerHTML = html;
-  }, [template, resume]);
+  }, [template, basics]);
 
   if (isLoading) {
     return <Spinner />

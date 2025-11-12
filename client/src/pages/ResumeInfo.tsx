@@ -1,25 +1,25 @@
 import React from "react";
 
 import { Plus, Trash } from "lucide-react";
-import { useResumeStore } from "@stores";
+import { useBasicsStore } from "@stores";
 import { Button, Input, Textarea } from "@heroui/react";
 
 export default function ResumeInfo() {
-  const resumeStore = useResumeStore();
-  const resume = useResumeStore(state => state.resume);
+  const basicsStore = useBasicsStore();
+  const basics = useBasicsStore(state => state.store);
 
   const onAddField = () => {
-    resumeStore.addBasicsCustomField({ key: "", value: "" });
+    basicsStore.addBasicsCustomField({ key: "", value: "" });
   };
 
   const renderCustomFields = React.useMemo(() => {
-    if (!resume.basics.customFields) return;
-    return resume.basics.customFields.map((field, idx) => {
+    if (!basics.customFields) return;
+    return basics.customFields.map((field, idx) => {
       return (
         <div className="flex justify-between gap-2 items-center" key={idx}>
           <Input
             value={field.key} size="sm"
-            onChange={(e) => resumeStore.updateBasicsCustomField({
+            onChange={(e) => basicsStore.updateBasicsCustomField({
               idx: idx,
               key: e.target.value,
               value: field.value
@@ -27,58 +27,57 @@ export default function ResumeInfo() {
           />
           <Input
             value={field.value} size="sm"
-            onChange={(e) => resumeStore.updateBasicsCustomField({
+            onChange={(e) => basicsStore.updateBasicsCustomField({
               idx: idx,
               key: field.key,
               value: e.target.value
             })}
           />
-          <Button isIconOnly variant="light" size="sm" onPress={() => resumeStore.removeBasicsCustomField(idx)}>
+          <Button isIconOnly variant="light" size="sm" onPress={() => basicsStore.removeBasicsCustomField(idx)}>
             <Trash size={18} />
           </Button>
         </div>
       )
     })
-  }, [resume.basics.customFields]);
+  }, [basics.customFields]);
 
   return (
     <div className="flex flex-col gap-4">
 
       <div className="space-y-4">
         <p className="text-xl"> Basics </p>
-
         <Input
-          label="Name" value={resume.basics.name} size="sm" variant="bordered" labelPlacement="outside-top"
-          onChange={(e) => resumeStore.updateBasics({
-            ...resume.basics,
+          label="Name" value={basics.name} size="sm" variant="bordered" labelPlacement="outside-top"
+          onChange={(e) => basicsStore.updateBasics({
+            ...basics,
             name: e.target.value
           })}
         />
         <Input
-          label="Email" value={resume.basics.email} size="sm" variant="bordered" labelPlacement="outside-top"
-          onChange={(e) => resumeStore.updateBasics({
-            ...resume.basics,
+          label="Email" value={basics.email} size="sm" variant="bordered" labelPlacement="outside-top"
+          onChange={(e) => basicsStore.updateBasics({
+            ...basics,
             email: e.target.value
           })}
         />
         <Input
-          label="Phone" value={resume.basics.phone} size="sm" variant="bordered" labelPlacement="outside-top"
-          onChange={(e) => resumeStore.updateBasics({
-            ...resume.basics,
+          label="Phone" value={basics.phone} size="sm" variant="bordered" labelPlacement="outside-top"
+          onChange={(e) => basicsStore.updateBasics({
+            ...basics,
             phone: e.target.value
           })}
         />
         <Input
-          label="Location" value={resume.basics.location} size="sm" variant="bordered" labelPlacement="outside-top"
-          onChange={(e) => resumeStore.updateBasics({
-            ...resume.basics,
+          label="Location" value={basics.location} size="sm" variant="bordered" labelPlacement="outside-top"
+          onChange={(e) => basicsStore.updateBasics({
+            ...basics,
             location: e.target.value
           })}
         />
         <Textarea
-          label="Summary" value={resume.basics.summary} size="sm" variant="bordered" labelPlacement="outside-top"
-          onChange={(e) => resumeStore.updateBasics({
-            ...resume.basics,
+          label="Summary" value={basics.summary} size="sm" variant="bordered" labelPlacement="outside-top"
+          onChange={(e) => basicsStore.updateBasics({
+            ...basics,
             summary: e.target.value
           })}
         />
@@ -93,15 +92,7 @@ export default function ResumeInfo() {
         </Button>
       </div>
 
-      <div className="space-y-4">
-        <p className="text-xl"> Education </p>
-        <Button
-          onPress={() => { }}
-          variant="ghost" size="sm"
-        >
-          <Plus size={18} /> Add Education
-        </Button>
-      </div>
+      <Education />
 
       <div className="space-y-4">
         <p className="text-xl"> Experience </p>
@@ -123,6 +114,20 @@ export default function ResumeInfo() {
         </Button>
       </div>
 
+    </div>
+  )
+}
+
+function Education() {
+  return (
+    <div className="space-y-4">
+      <p className="text-xl"> Education </p>
+      <Button
+        onPress={() => { }}
+        variant="ghost" size="sm"
+      >
+        <Plus size={18} /> Add Education
+      </Button>
     </div>
   )
 }

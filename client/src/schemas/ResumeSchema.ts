@@ -1,5 +1,8 @@
 import z from "zod";
-import { basics } from "@schemas";
+import {
+  basics,
+  Education,
+} from "@schemas";
 
 export const metadata = z.object({
   template: z.string().default("default"),
@@ -10,8 +13,8 @@ export const resume = z.object({
 
   basics: basics,
   work: z.array(z.object({} as any)).default([]),
+  education: z.array(z.object({} as Education)).default([]),
   volunteer: z.array(z.object({} as any)).default([]),
-  education: z.array(z.object({} as any)).default([]),
   awards: z.array(z.object({} as any)).default([]),
   certificates: z.array(z.object({} as any)).default([]),
   publications: z.array(z.object({} as any)).default([]),
