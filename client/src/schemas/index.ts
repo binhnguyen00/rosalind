@@ -1,5 +1,5 @@
-export { basics } from "./basics";
-export type { Basics } from "./basics";
+export { basics } from "./BasicsSchema";
+export type { Basics } from "./BasicsSchema";
 
-export { resume, metadata } from "./resume";
-export type { Resume, Metadata } from "./resume";
+export { resume, metadata } from "./ResumeSchema";
+export type { Resume, Metadata } from "./ResumeSchema";

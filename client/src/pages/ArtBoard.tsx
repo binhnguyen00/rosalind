@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { useResumeStore } from "@stores";
-import { PocketBaseContext } from "@components/PBProvider";
+import { PocketBaseContext } from "@components";
 import { Spinner } from "@heroui/react";
 
 export default function ArtBoard() {
