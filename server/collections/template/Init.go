@@ -4,6 +4,7 @@ import (
 "os";
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
+"github.com/pocketbase/pocketbase/tools/types";
 )
 
 var COLL_NAME string = "template";
@@ -16,11 +17,19 @@ func CreateTemplateCollection(app *pocketbase.PocketBase) error {
   }
 
   coll = core.NewBaseCollection(COLL_NAME)
+  coll.ViewRule = types.Pointer("@request.auth.id != ''");
+  coll.ListRule = types.Pointer("@request.auth.id != ''");
+
   coll.Fields.Add(
     &core.TextField{
       Name      : "label",
       Required  : false,
       Max       : 100,
+    },
+    &core.TextField{
+      Name      : "code",
+      Required  : false,
+      Max       : 20,
     },
     &core.EditorField{
       Name      : "html_structure",
@@ -53,6 +62,7 @@ func CreateDefaultTemplate(app *pocketbase.PocketBase) error {
 
   record := core.NewRecord(coll);
   record.Set("label", "Default Template");
+  record.Set("code", "default");
   record.Set("active", true);
 
   htmlFile, _ := os.ReadFile("./data/html_structure.hbs");

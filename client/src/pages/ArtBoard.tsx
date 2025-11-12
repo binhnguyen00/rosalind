@@ -1,11 +1,13 @@
+import React from "react";
+import HandleBars from "handlebars";
+import { useQuery } from "@tanstack/react-query";
+import { Spinner } from "@heroui/react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { useResumeStore } from "@stores";
-import { getTemplate } from "@templates";
+import { PocketBaseContext } from "@components/PBProvider";
 
 export default function ArtBoard() {
-  const resume = useResumeStore(state => state.resume);
-  const Template = getTemplate(resume.metadata.template);
 
   return (
     <div className="w-full h-screen overflow-hidden">
@@ -27,6 +29,50 @@ export default function ArtBoard() {
         </TransformComponent>
       </TransformWrapper>
     </div>
+  )
+}
+
+function Template() {
+  const resume = useResumeStore(state => state.resume);
+  const pocketBase = React.useContext(PocketBaseContext);
+
+  let Template: React.ReactNode = <p> Template is not found </p>;
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["template", resume.metadata.template],
+    queryFn: async () => {
+      return await pocketBase.collection("template").getFirstListItem(
+        `code="${resume.metadata.template}"`
+      );
+    }
+  });
+
+  if (isLoading) {
+    return <Spinner />
+  }
+
+  if (isError) {
+    return (
+      <div>
+        {Template}
+        <p> {error.message} </p>
+      </div>
+    )
+  }
+
+  if (!data) {
+    return (
+      <>
+        {Template}
+      </>
+    );
+  }
+
+  const hbsTemplate = HandleBars.compile(data["html_structure"]);
+
+  return (
+    <pre>
+      {hbsTemplate(resume.basics)}
+    </pre>
   )
 }
 
