@@ -23,7 +23,7 @@ export default function ArtBoard() {
           contentStyle={{ height: "100%" }}
           wrapperStyle={{ height: "100%", width: "100%" }}
         >
-          <div className="min-h-[1122.66px] min-w-[793.8px] border">
+          <div className="min-h-[1122.66px] w-[793.8px] border">
             <Template />
           </div>
         </TransformComponent>
