@@ -71,7 +71,7 @@ func CreateDefaultResume(app *pocketbase.PocketBase) error {
   record.Set("owner", user.Id);
 
   var resume map[string]interface{};
-  jsonFile, _ := os.ReadFile("./data/resume.json");
+  jsonFile, _ := os.ReadFile("./data/default_resume.json");
   json.Unmarshal(jsonFile, &resume);
   record.Set("content", resume);
 

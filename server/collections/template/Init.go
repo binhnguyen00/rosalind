@@ -70,7 +70,7 @@ func CreateDefaultTemplate(app *pocketbase.PocketBase) error {
   htmlFile, _ := os.ReadFile("./data/default_template.hbs");
   record.Set("html_structure", string(htmlFile));
 
-  cssFile, _ := os.ReadFile("./data/stylesheet.css");
+  cssFile, _ := os.ReadFile("./data/default_stylesheet.css");
   record.Set("css_style", string(cssFile));
 
   return app.Save(record);
