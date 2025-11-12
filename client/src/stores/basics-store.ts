@@ -4,18 +4,17 @@ import { Basics, basics } from "@schemas";
 interface BasicsStore {
   store: Basics;
   reset: () => void;
-  updateBasics: (data: Basics) => void;
-  addBasicsCustomField: (field: { key: string, value: string }) => void;
-  updateBasicsCustomField: (field: { idx: number, key: string, value: string }) => void;
-  removeBasicsCustomField: (idx: number) => void;
+  update: (data: Basics) => void;
+  addCustomField: (field: { key: string, value: string }) => void;
+  updateCustomField: (field: { idx: number, key: string, value: string }) => void;
+  removeCustomField: (idx: number) => void;
 }
 
 export const useBasicsStore = create<BasicsStore>((set) => ({
   store: basics.parse({}),
   reset: () => set({ store: basics.parse({}) }),
 
-  // basics
-  updateBasics: (data: Basics) => set(state => {
+  update: (data: Basics) => set(state => {
     return {
       store: {
         ...state.store,
@@ -24,7 +23,7 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
     }
   }),
 
-  addBasicsCustomField: (field: { key: string, value: string }) => set(state => {
+  addCustomField: (field: { key: string, value: string }) => set(state => {
     return {
       store: {
         ...state.store,
@@ -33,7 +32,7 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
     }
   }),
 
-  updateBasicsCustomField: (field: { idx: number, key: string, value: string }) => set(state => {
+  updateCustomField: (field: { idx: number, key: string, value: string }) => set(state => {
     return {
       store: {
         ...state.store,
@@ -42,7 +41,7 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
     }
   }),
 
-  removeBasicsCustomField: (idx: number) => set(state => {
+  removeCustomField: (idx: number) => set(state => {
     return {
       store: {
         ...state.store,

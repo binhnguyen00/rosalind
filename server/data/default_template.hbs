@@ -53,10 +53,22 @@
   {{/if}}
 
   {{#if education.length}}
-    <section class="section">
-      <h2>Education</h2>
+    <section style="margin-bottom: 1.5rem; border-top: 1px solid #333">
+      <h2 style="font-size: 1.25rem; font-weight: bold; margin-bottom: 0.75rem; padding-bottom: 0.25rem;">Education</h2>
       {{#each education}}
-        <div class="item">{{json this}}</div>
+        <div style="margin-bottom: 1rem;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 0.125rem; text-align: center;">
+            <h3 style="font-size: 1rem; font-weight: 600;">{{ institution }}</h3>
+            <span style="font-size: 0.875rem; color: #666;">{{ startDate }} - {{ endDate }}</span>
+          </div>
+          <p style="font-size: 0.875rem; margin: 0; text-align: center;">{{ studyType }} in {{ area }}</p>
+          {{#if score}}
+            <p style="font-size: 0.875rem; margin: 0; color: #666;">GPA: {{ score }}</p>
+          {{/if}}
+          {{#if url}}
+            <a href="{{ url }}" style="font-size: 0.875rem; color: #2563eb; text-decoration: none;">{{ url }}</a>
+          {{/if}}
+        </div>
       {{/each}}
     </section>
   {{/if}}

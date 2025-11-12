@@ -1,6 +1,6 @@
 import z from "zod";
 
-export const education = z.array(z.object({
+const educationObj = z.object({
   institution: z.string().default(""),
   url: z.url().default(""),
   area: z.string().default(""),
@@ -8,6 +8,8 @@ export const education = z.array(z.object({
   startDate: z.string().default(""),
   endDate: z.string().default(""),
   score: z.float32().default(4.0),
-}));
+})
 
-export type Education = z.infer<typeof education>
+export const education = z.array(educationObj);
+
+export type Education = z.infer<typeof educationObj>

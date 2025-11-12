@@ -1,11 +1,11 @@
 import React from "react";
 import HandleBars from "handlebars";
+import { Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
-import { useBasicsStore, useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
-import { Spinner } from "@heroui/react";
+import { useBasicsStore, useEducationStore, useResumeStore } from "@stores";
 
 export default function ArtBoard() {
 
@@ -35,6 +35,7 @@ export default function ArtBoard() {
 function Template() {
   const metadata = useResumeStore(state => state.metadata);
   const basics = useBasicsStore(state => state.store);
+  const educations = useEducationStore(state => state.store);
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -50,14 +51,27 @@ function Template() {
   React.useEffect(() => {
     if (!template) return;
     if (!containerRef.current) return;
+
     const hbs = HandleBars.compile(template["structure"]);
     const html = hbs({
       basics: basics,
-      stylesheet: template["stylesheet"]
+      education: educations,
     });
+
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
-    shadow.innerHTML = html;
-  }, [template, basics]);
+
+    // inject stylesheet to template
+    const style = document.createElement("style");
+    style.textContent = template["stylesheet"];
+
+    // wrap <style/> and <body/> content
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
+
+    shadow.innerHTML = '';
+    shadow.appendChild(style);
+    shadow.appendChild(wrapper);
+  }, [template, basics, educations]);
 
   if (isLoading) {
     return <Spinner />
@@ -77,12 +91,4 @@ function Template() {
       className="w-full h-full p-6"
     />
   );
-}
-
-const Json = (resume: any) => {
-  return (
-    <pre className="flex flex-col justify-center items-center text-left font-mono whitespace-pre-wrap">
-      {JSON.stringify(resume, null, 2)}
-    </pre>
-  )
 }
