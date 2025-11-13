@@ -1,8 +1,10 @@
 import React from "react";
 import HandleBars from "handlebars";
-import { Spinner } from "@heroui/react";
+
+import { Button, Spinner } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { FileDown, ZoomIn, ZoomOut, FlipHorizontal } from "lucide-react";
+import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 
 import { PocketBaseContext } from "@components";
 import {
@@ -11,26 +13,73 @@ import {
 } from "@stores";
 
 export default function ArtBoard() {
+  const onExport = () => {
+
+  };
+
+  const Controls = () => {
+    const { zoomIn, zoomOut, centerView } = useControls();
+
+    return (
+      <div className="absolute top-2 right-2 z-50 flex flex-col gap-2">
+        <Button
+          variant="solid" size="sm" color="primary" isIconOnly
+          onPress={onExport}
+        >
+          <FileDown size={18} />
+        </Button>
+        <Button
+          variant="solid" size="sm" color="primary" isIconOnly
+          onPress={() => zoomIn(0.2)}
+        >
+          <ZoomIn size={18} />
+        </Button>
+        <Button
+          variant="solid" size="sm" color="primary" isIconOnly
+          onPress={() => zoomOut(0.2)}
+        >
+          <ZoomOut size={18} />
+        </Button>
+        <Button
+          variant="solid" size="sm" color="primary" isIconOnly
+          onPress={() => {
+            centerView(0.8);
+          }}
+        >
+          <FlipHorizontal size={18} />
+        </Button>
+      </div>
+    )
+  };
 
   return (
-    <div className="w-full h-screen overflow-hidden">
-      <TransformWrapper
-        centerOnInit
-        maxScale={2}
-        minScale={0.4}
-        initialScale={0.8}
-        limitToBounds={false}
-      >
-        <TransformComponent
-          contentClass="grid items-start justify-center pointer-events-none"
-          contentStyle={{ height: "100%" }}
-          wrapperStyle={{ height: "100%", width: "100%" }}
+    <div className="relative">
+
+      <div className="w-full h-screen overflow-hidden">
+        <TransformWrapper
+          centerOnInit
+          maxScale={2}
+          minScale={0.4}
+          initialScale={0.8}
+          limitToBounds={false}
         >
-          <div className="min-h-[1122.66px] w-[793.8px] border">
-            <Template />
-          </div>
-        </TransformComponent>
-      </TransformWrapper>
+          {() => (
+            <>
+              <Controls />
+              <TransformComponent
+                contentClass="grid items-start justify-center pointer-events-none"
+                contentStyle={{ height: "100%" }}
+                wrapperStyle={{ height: "100%", width: "100%" }}
+              >
+                <div className="min-h-[1122.66px] w-[793.8px] border">
+                  <Template />
+                </div>
+              </TransformComponent>
+            </>
+          )}
+        </TransformWrapper>
+      </div>
+
     </div>
   )
 }
