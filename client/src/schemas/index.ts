@@ -6,3 +6,6 @@ export type { Resume, Metadata } from "./ResumeSchema";
 
 export { education } from "./EducationSchema";
 export type { Education } from "./EducationSchema";
+
+export { work } from "./WorkSchema";
+export type { Work } from "./WorkSchema";

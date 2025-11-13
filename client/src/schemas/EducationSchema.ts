@@ -10,6 +10,6 @@ const educationObj = z.object({
   score: z.float32().default(4.0),
 })
 
-export const education = z.array(educationObj);
+export const education = z.array(educationObj).default([]);
 
 export type Education = z.infer<typeof educationObj>

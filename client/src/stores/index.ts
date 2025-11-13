@@ -19,3 +19,4 @@ const useResumeStore = create<ResumeStore>((set) => ({
 export { useResumeStore };
 export { useBasicsStore } from "./basics-store";
 export { useEducationStore } from "./education-store";
+export { useWorkStore } from "./work-store";
