@@ -15,6 +15,7 @@ import {
 
 export default function ArtBoard() {
   const pocketBase = React.useContext(PocketBaseContext);
+  const templateRef = React.useRef<HTMLDivElement>(null);
 
   const { mutate } = useMutation({
     mutationKey: ["export"],
@@ -47,8 +48,6 @@ export default function ArtBoard() {
       console.log(error);
     }
   })
-
-  const templateRef = React.useRef<HTMLDivElement>(null);
 
   const onExport = () => {
     if (!templateRef.current) return;
@@ -142,7 +141,7 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
   });
 
   // expose containerRef to parent component
-  React.useImperativeHandle(ref, () => containerRef.current!, []);
+  React.useImperativeHandle(ref, () => containerRef.current!, [containerRef.current]);
 
   React.useEffect(() => {
     if (!template) return;
@@ -157,36 +156,19 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <style>${template["stylesheet"]}</style>
-      </head>
-      <body>
-        ${html}
-      </body>
-    </html>
-    `;
 
-    // // inject stylesheet to template
-    // const style = document.createElement("style");
-    // style.textContent = template["stylesheet"];
+    // inject stylesheet to template
+    const style = document.createElement("style");
+    style.textContent = template["stylesheet"];
 
-    // // wrap <style/> and <body/> content
-    // const wrapper = document.createElement("div");
-    // wrapper.innerHTML = html;
+    // wrap <style/> and <body/> content
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
 
-    // shadow.innerHTML = "";
-    // shadow.appendChild(style);
-    // shadow.appendChild(wrapper);
-  }, [
-    template,
-    basics,
-    educations,
-    works,
-    projects
-  ]);
+    shadow.innerHTML = '';
+    shadow.appendChild(style);
+    shadow.appendChild(wrapper);
+  }, [template, basics, educations, works, projects]);
 
   if (isLoading) {
     return <Spinner />
