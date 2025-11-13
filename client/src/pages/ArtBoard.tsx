@@ -13,8 +13,13 @@ import {
 } from "@stores";
 
 export default function ArtBoard() {
-  const onExport = () => {
+  const templateRef = React.useRef<HTMLDivElement>(null);
 
+  const onExport = () => {
+    if (!templateRef.current) return;
+    if (templateRef.current.shadowRoot) {
+      console.log(templateRef.current.shadowRoot.innerHTML);
+    }
   };
 
   const Controls = () => {
@@ -72,7 +77,7 @@ export default function ArtBoard() {
                 wrapperStyle={{ height: "100%", width: "100%" }}
               >
                 <div className="min-h-[1122.66px] w-[793.8px] border">
-                  <Template />
+                  <Template ref={templateRef} />
                 </div>
               </TransformComponent>
             </>
@@ -84,7 +89,7 @@ export default function ArtBoard() {
   )
 }
 
-function Template() {
+const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
   const metadata = useResumeStore(state => state.metadata);
   const basics = useBasicsStore(state => state.store);
   const educations = useEducationStore(state => state.store);
@@ -102,6 +107,9 @@ function Template() {
       );
     }
   });
+
+  // export containerRef to parent component
+  React.useImperativeHandle(ref, () => containerRef.current!, []);
 
   React.useEffect(() => {
     if (!template) return;
@@ -154,4 +162,4 @@ function Template() {
       className="w-full h-full"
     />
   );
-}
+});
