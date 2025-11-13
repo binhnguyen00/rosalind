@@ -2,7 +2,7 @@ import { ScrollShadow } from "@heroui/react";
 
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
-import { Basics, Education, Work } from "@pages/resume";
+import { Basics, Education, Work, Project } from "@pages/resume";
 
 export default function ResumeBuilder() {
   return (
@@ -37,6 +37,7 @@ function ResumeInfoPane() {
       <Basics />
       <Work />
       <Education />
+      <Project />
 
     </div>
   )

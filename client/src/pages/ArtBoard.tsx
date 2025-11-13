@@ -5,7 +5,10 @@ import { useQuery } from "@tanstack/react-query";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { PocketBaseContext } from "@components";
-import { useBasicsStore, useEducationStore, useResumeStore, useWorkStore } from "@stores";
+import {
+  useBasicsStore, useEducationStore, useResumeStore, useWorkStore,
+  useProjectStore
+} from "@stores";
 
 export default function ArtBoard() {
 
@@ -37,6 +40,7 @@ function Template() {
   const basics = useBasicsStore(state => state.store);
   const educations = useEducationStore(state => state.store);
   const works = useWorkStore(state => state.store);
+  const projects = useProjectStore(state => state.store);
 
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -57,8 +61,9 @@ function Template() {
     const hbs = HandleBars.compile(template["structure"]);
     const html = hbs({
       basics: basics,
-      education: educations,
       work: works,
+      education: educations,
+      projects: projects,
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
@@ -74,7 +79,13 @@ function Template() {
     shadow.innerHTML = '';
     shadow.appendChild(style);
     shadow.appendChild(wrapper);
-  }, [template, basics, educations, works]);
+  }, [
+    template,
+    basics,
+    educations,
+    works,
+    projects
+  ]);
 
   if (isLoading) {
     return <Spinner />

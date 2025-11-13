@@ -9,3 +9,6 @@ export type { Education } from "./EducationSchema";
 
 export { work } from "./WorkSchema";
 export type { Work } from "./WorkSchema";
+
+export { project } from "./ProjectSchema";
+export type { Project } from "./ProjectSchema";
