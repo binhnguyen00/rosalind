@@ -1,8 +1,9 @@
 import React from "react";
+import axios from "axios";
 import HandleBars from "handlebars";
 
 import { Button, Spinner } from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { FileDown, ZoomIn, ZoomOut, FlipHorizontal } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 
@@ -13,13 +14,49 @@ import {
 } from "@stores";
 
 export default function ArtBoard() {
+  const pocketBase = React.useContext(PocketBaseContext);
+
+  const { mutate } = useMutation({
+    mutationKey: ["export"],
+    mutationFn: async (html: string) => {
+      const response = await axios.post(`${pocketBase.baseURL}/resume/export`, {
+        html: html,
+      }, {
+        headers: {
+          "Authorization": pocketBase.authStore.token,
+        },
+        responseType: "blob"
+      });
+      return response.data;
+    },
+    retryDelay: 3000,
+    retry: (failureCount, error) => {
+      return failureCount < 2;
+    },
+    onSuccess: (bytes) => {
+      const blob = new Blob([bytes], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "resume.pdf";
+      link.click();
+      window.URL.revokeObjectURL(url);
+      link.remove();
+    },
+    onError: (error) => {
+      console.log(error);
+    }
+  })
+
   const templateRef = React.useRef<HTMLDivElement>(null);
 
   const onExport = () => {
     if (!templateRef.current) return;
+    let html = "";
     if (templateRef.current.shadowRoot) {
-      console.log(templateRef.current.shadowRoot.innerHTML);
+      html = templateRef.current.shadowRoot.innerHTML;
     }
+    mutate(html);
   };
 
   const Controls = () => {
@@ -68,20 +105,16 @@ export default function ArtBoard() {
           initialScale={0.8}
           limitToBounds={false}
         >
-          {() => (
-            <>
-              <Controls />
-              <TransformComponent
-                contentClass="grid items-start justify-center pointer-events-none"
-                contentStyle={{ height: "100%" }}
-                wrapperStyle={{ height: "100%", width: "100%" }}
-              >
-                <div className="min-h-[1122.66px] w-[793.8px] border">
-                  <Template ref={templateRef} />
-                </div>
-              </TransformComponent>
-            </>
-          )}
+          <Controls />
+          <TransformComponent
+            contentClass="grid items-start justify-center pointer-events-none"
+            contentStyle={{ height: "100%" }}
+            wrapperStyle={{ height: "100%", width: "100%" }}
+          >
+            <div className="min-h-[1122.66px] w-[793.8px] border">
+              <Template ref={templateRef} />
+            </div>
+          </TransformComponent>
         </TransformWrapper>
       </div>
 
@@ -108,7 +141,7 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
     }
   });
 
-  // export containerRef to parent component
+  // expose containerRef to parent component
   React.useImperativeHandle(ref, () => containerRef.current!, []);
 
   React.useEffect(() => {
@@ -124,18 +157,29 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
+    shadow.innerHTML = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>${template["stylesheet"]}</style>
+      </head>
+      <body>
+        ${html}
+      </body>
+    </html>
+    `;
 
-    // inject stylesheet to template
-    const style = document.createElement("style");
-    style.textContent = template["stylesheet"];
+    // // inject stylesheet to template
+    // const style = document.createElement("style");
+    // style.textContent = template["stylesheet"];
 
-    // wrap <style/> and <body/> content
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = html;
+    // // wrap <style/> and <body/> content
+    // const wrapper = document.createElement("div");
+    // wrapper.innerHTML = html;
 
-    shadow.innerHTML = '';
-    shadow.appendChild(style);
-    shadow.appendChild(wrapper);
+    // shadow.innerHTML = "";
+    // shadow.appendChild(style);
+    // shadow.appendChild(wrapper);
   }, [
     template,
     basics,

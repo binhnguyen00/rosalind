@@ -36,6 +36,7 @@ func main() {
     }
 
     routes.RegisterWelcomeRoutes(e);
+    routes.RegisterResumeRoutes(e);
     return e.Next();
   });
 
