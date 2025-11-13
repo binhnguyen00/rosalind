@@ -156,18 +156,19 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
-
-    // inject stylesheet to template
-    const style = document.createElement("style");
-    style.textContent = template["stylesheet"];
-
-    // wrap <style/> and <body/> content
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = html;
-
-    shadow.innerHTML = '';
-    shadow.appendChild(style);
-    shadow.appendChild(wrapper);
+    shadow.innerHTML = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        <style>
+          ${template["stylesheet"]}
+        </style>
+      </head>
+      <body>
+        ${html}
+      </body>
+    </html>
+    `;
   }, [template, basics, educations, works, projects]);
 
   if (isLoading) {
