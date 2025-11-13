@@ -91,7 +91,7 @@ function Template() {
   return (
     <div
       ref={containerRef}
-      className="w-full h-full p-6"
+      className="w-full h-full"
     />
   );
 }
