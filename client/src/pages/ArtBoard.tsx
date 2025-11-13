@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 import { PocketBaseContext } from "@components";
-import { useBasicsStore, useEducationStore, useResumeStore } from "@stores";
+import { useBasicsStore, useEducationStore, useResumeStore, useWorkStore } from "@stores";
 
 export default function ArtBoard() {
 
@@ -36,6 +36,8 @@ function Template() {
   const metadata = useResumeStore(state => state.metadata);
   const basics = useBasicsStore(state => state.store);
   const educations = useEducationStore(state => state.store);
+  const works = useWorkStore(state => state.store);
+
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -56,6 +58,7 @@ function Template() {
     const html = hbs({
       basics: basics,
       education: educations,
+      work: works,
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
@@ -71,7 +74,7 @@ function Template() {
     shadow.innerHTML = '';
     shadow.appendChild(style);
     shadow.appendChild(wrapper);
-  }, [template, basics, educations]);
+  }, [template, basics, educations, works]);
 
   if (isLoading) {
     return <Spinner />

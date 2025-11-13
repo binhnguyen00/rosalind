@@ -1,9 +1,10 @@
 import React from "react";
 
 import { Plus, Trash } from "lucide-react";
-import { useBasicsStore } from "@stores";
 import { Button, Input, Textarea } from "@heroui/react";
-import { Education } from "@pages/resume";
+
+import { useBasicsStore } from "@stores";
+import { Education, Work } from "@pages/resume";
 
 export default function ResumeInfo() {
   const basicsStore = useBasicsStore();
@@ -46,7 +47,7 @@ export default function ResumeInfo() {
     <div className="flex flex-col gap-4">
 
       <div className="space-y-4">
-        <p className="text-xl"> Basics </p>
+        <p className="text-2xl font-bold"> Basics </p>
         <Input
           label="Name" value={basics.name} size="sm" variant="bordered" labelPlacement="outside-top"
           onChange={(e) => basicsStore.update({
@@ -93,27 +94,8 @@ export default function ResumeInfo() {
         </Button>
       </div>
 
+      <Work />
       <Education />
-
-      <div className="space-y-4">
-        <p className="text-xl"> Experience </p>
-        <Button
-          onPress={() => { }}
-          variant="ghost" size="sm"
-        >
-          <Plus size={18} /> Add Experience
-        </Button>
-      </div>
-
-      <div className="space-y-4">
-        <p className="text-xl"> Skills </p>
-        <Button
-          onPress={() => { }}
-          variant="ghost" size="sm"
-        >
-          <Plus size={18} /> Add Skill
-        </Button>
-      </div>
 
     </div>
   )

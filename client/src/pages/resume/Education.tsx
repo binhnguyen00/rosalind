@@ -22,27 +22,27 @@ export default function Education() {
   }
 
   const [mode, setMode] = React.useState<"add" | "edit">("add");
-  const [education, setEducation] = React.useState<Education & { idx?: number }>(defaultData);
+  const [data, setData] = React.useState<Education & { idx?: number }>(defaultData);
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const onAdd = () => {
     setMode("add");
-    setEducation(defaultData);
+    setData(defaultData);
     onOpen();
   }
 
   const onSave = () => {
     if (mode === "add") {
-      store.add(education);
+      store.add(data);
     } else {
-      store.update(education.idx!, education);
+      store.update(data.idx!, data);
     }
     onClose();
   }
 
   const onEdit = (idx: number) => {
     setMode("edit");
-    setEducation({
+    setData({
       idx: idx,
       ...list[idx],
     });
@@ -51,7 +51,7 @@ export default function Education() {
 
   return (
     <div className="space-y-4">
-      <p className="text-xl"> Education </p>
+      <p className="text-2xl font-bold"> Education </p>
 
       <div className="divide-y divide-divider border border-divider rounded-xl overflow-hidden">
         {list.map((item, idx) => {
@@ -95,51 +95,51 @@ export default function Education() {
               <ModalHeader className="flex flex-col gap-1"> {mode === "add" ? "Add Education" : "Edit Education"} </ModalHeader>
               <ModalBody>
                 <Input
-                  label="Institution" value={education.institution} variant="bordered"
-                  onChange={(e) => setEducation({
-                    ...education,
+                  label="Institution" value={data.institution} variant="bordered"
+                  onChange={(e) => setData({
+                    ...data,
                     institution: e.target.value
                   })}
                 />
                 <Input
-                  label="URL" value={education.url} variant="bordered"
-                  onChange={(e) => setEducation({
-                    ...education,
+                  label="URL" value={data.url} variant="bordered"
+                  onChange={(e) => setData({
+                    ...data,
                     url: e.target.value
                   })}
                 />
                 <Input
-                  label="Area" value={education.area} variant="bordered"
-                  onChange={(e) => setEducation({
-                    ...education,
+                  label="Area" value={data.area} variant="bordered"
+                  onChange={(e) => setData({
+                    ...data,
                     area: e.target.value
                   })}
                 />
                 <Input
-                  label="Study Type" value={education.studyType} variant="bordered"
-                  onChange={(e) => setEducation({
-                    ...education,
+                  label="Study Type" value={data.studyType} variant="bordered"
+                  onChange={(e) => setData({
+                    ...data,
                     studyType: e.target.value
                   })}
                 />
                 <Input
-                  label="Start Date" value={education.startDate} variant="bordered"
-                  onChange={(e) => setEducation({
-                    ...education,
+                  label="Start Date" value={data.startDate} variant="bordered"
+                  onChange={(e) => setData({
+                    ...data,
                     startDate: e.target.value
                   })}
                 />
                 <Input
-                  label="End Date" value={education.endDate} variant="bordered"
-                  onChange={(e) => setEducation({
-                    ...education,
+                  label="End Date" value={data.endDate} variant="bordered"
+                  onChange={(e) => setData({
+                    ...data,
                     endDate: e.target.value
                   })}
                 />
                 <NumberInput
-                  label="Score" value={education.score} variant="bordered"
-                  onValueChange={score => setEducation({
-                    ...education,
+                  label="Score" value={data.score} variant="bordered"
+                  onValueChange={score => setData({
+                    ...data,
                     score: score
                   })}
                 />
