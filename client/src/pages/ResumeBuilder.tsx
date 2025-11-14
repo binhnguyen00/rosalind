@@ -1,7 +1,7 @@
 import { ScrollShadow } from "@heroui/react";
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
-import { Basics, Education, Work, Project } from "@pages/resume";
+import { Basics, Education, Work, Project } from "@components/resume";
 
 export default function ResumeBuilder() {
   return (

@@ -157,8 +157,6 @@ export default function ArtBoard() {
     };
     const styleNode = shadow.querySelector("style");
     const wrapperNode = shadow.querySelector("div.container");
-    console.log(styleNode ? "template has <style/>" : "template has no <style/>");
-    console.log(wrapperNode ? "template has <div.container/>" : "template has no <div.container/>");
   }, [templateRef.current?.shadowRoot?.innerHTML]);
 
   return (
