@@ -4,8 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import type { Root } from "react-dom/client"
 
 import "@/css/index.css";
-import { App } from "@/Application";
-import { Providers } from "@/src/Providers";
+import { App } from "@Application";
+import { Providers } from "@Providers";
 
 const container: HTMLElement | null = document.getElementById("root");
 if (container) {
