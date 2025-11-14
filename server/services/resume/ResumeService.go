@@ -19,7 +19,7 @@ func ExportPdf(html string) ([]byte, error) {
   return tool.Bytes(), nil;
 }
 
-func SaveContent(app *pocketbase.PocketBase, id string, content string) error {
+func SaveContent(app *pocketbase.PocketBase, id string, content map[string]interface{}) error {
   record, err := app.FindRecordById("resume", id);
   if (err != nil) {
     return err;

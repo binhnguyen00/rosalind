@@ -41,6 +41,7 @@ export default function ArtBoard() {
       projectsStore.replace(content.projects);
       workStore.replace(content.work);
 
+      console.log(response);
       return response;
     },
     retryDelay: 3000,
@@ -50,15 +51,21 @@ export default function ArtBoard() {
     refetchOnMount: mode === "update",
   });
 
-  const { mutate } = useMutation({
+  const { mutate: exportPdf } = useMutation({
     mutationKey: ["export"],
     mutationFn: async (html: string) => {
       const response = await axios.post(`${pocketBase.baseURL}/resume/export`, {
+        id: id,
+        content: {
+          basics: basicsStore.store,
+          education: educationsStore.store,
+          work: workStore.store,
+          projects: projectsStore.store,
+          // more...
+        },
         html: html,
       }, {
-        headers: {
-          "Authorization": pocketBase.authStore.token,
-        },
+        headers: { "Authorization": pocketBase.authStore.token },
         responseType: "blob"
       });
       return response.data;
@@ -76,6 +83,33 @@ export default function ArtBoard() {
       link.click();
       window.URL.revokeObjectURL(url);
       link.remove();
+    },
+    onError: (error) => {
+      console.log(error);
+    }
+  })
+
+  const { mutate: saveResume } = useMutation({
+    mutationKey: ["save", id],
+    mutationFn: async () => {
+      const response = await axios.post(`${pocketBase.baseURL}/resume/save`, {
+        id: id,
+        content: {
+          basics: basicsStore.store,
+          education: educationsStore.store,
+          work: workStore.store,
+          projects: projectsStore.store,
+          // more...
+        },
+      }, {
+        headers: { "Authorization": pocketBase.authStore.token },
+        responseType: "blob"
+      });
+      return response.data;
+    },
+    retryDelay: 3000,
+    retry: (failureCount, error) => {
+      return failureCount < 2;
     },
     onError: (error) => {
       console.log(error);
@@ -108,11 +142,11 @@ export default function ArtBoard() {
     </html>
     `
 
-    mutate(html);
+    exportPdf(html);
   };
 
   const onSave = () => {
-
+    saveResume();
   }
 
   const Controls = () => {

@@ -1,13 +1,11 @@
 package routes;
 
 import (
-"net/http";
-
-"github.com/pocketbase/pocketbase";
-"github.com/pocketbase/pocketbase/apis";
-"github.com/pocketbase/pocketbase/core";
-
-"rosalind/services/resume";
+"net/http"
+"github.com/pocketbase/pocketbase"
+"github.com/pocketbase/pocketbase/apis"
+"github.com/pocketbase/pocketbase/core"
+"rosalind/services/resume"
 )
 
 func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEvent) {
@@ -33,28 +31,34 @@ func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEven
 
   group.POST("/export", func(e *core.RequestEvent) error {
     info, _ := e.RequestInfo();
-    isGuest := info.Auth == nil
-    if (isGuest) {
-      return e.BadRequestError("Invalid authentication", nil);
-    }
-
-    userId := info.Auth.Id;
     resumeId := info.Body["id"].(string);
-    record, _ := e.App.FindFirstRecordByFilter("resume", 
-      "owner = '" + userId + "' && id = '" + resumeId + "'",
-    );
-    if (record == nil) {
-      return e.NotFoundError("Resume not found", nil);
-    }
+    content := info.Body["content"].(map[string]interface{});
+    html := info.Body["html"].(string);
 
     // export then save
-    html := record.Get("content").(string);
     bytes, err := resume.ExportPdf(html);
     if (err != nil) {
       return e.InternalServerError("Failed to export pdf", err);
     }
-    resume.SaveContent(app, resumeId, html);
+    resume.SaveContent(app, resumeId, content);
 
     return e.Blob(http.StatusOK, "application/pdf", bytes);
-  });
+  }).Bind(apis.RequireAuth());
+
+  group.POST("/save", func(e *core.RequestEvent) error {
+    info, _ := e.RequestInfo();
+    resumeId := info.Body["id"].(string);
+    content := info.Body["content"].(map[string]interface{});
+
+    if (resumeId == "" || content == nil) {
+      return e.BadRequestError("Invalid request body", nil);
+    }
+
+    err := resume.SaveContent(app, resumeId, content);
+    if (err != nil) {
+      return e.InternalServerError("Failed to save resume", err);
+    }
+
+    return e.String(http.StatusOK, "save successfully");
+  }).Bind(apis.RequireAuth());
 }
