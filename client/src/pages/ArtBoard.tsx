@@ -4,9 +4,9 @@ import HandleBars from "handlebars";
 
 import { RecordModel } from "pocketbase";
 import { useParams } from "react-router-dom";
-import { Button, Spinner } from "@heroui/react";
+import { Button, Spinner, Tooltip } from "@heroui/react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { FileDown, ZoomIn, ZoomOut, FlipHorizontal } from "lucide-react";
+import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 
 import { PocketBaseContext } from "@components";
@@ -111,35 +111,55 @@ export default function ArtBoard() {
     mutate(html);
   };
 
+  const onSave = () => {
+
+  }
+
   const Controls = () => {
     const { zoomIn, zoomOut, centerView } = useControls();
 
     return (
       <div className="absolute top-2 right-2 z-50 flex flex-col gap-2">
-        <Button
-          variant="solid" size="sm" color="primary" isIconOnly
-          onPress={onExport}
-        >
-          <FileDown size={18} />
-        </Button>
-        <Button
-          variant="solid" size="sm" color="primary" isIconOnly
-          onPress={() => zoomIn(0.2)}
-        >
-          <ZoomIn size={18} />
-        </Button>
-        <Button
-          variant="solid" size="sm" color="primary" isIconOnly
-          onPress={() => zoomOut(0.2)}
-        >
-          <ZoomOut size={18} />
-        </Button>
-        <Button
-          variant="solid" size="sm" color="primary" isIconOnly
-          onPress={() => centerView(0.8)}
-        >
-          <FlipHorizontal size={18} />
-        </Button>
+        <Tooltip content="Zoom In" placement="left">
+          <Button
+            variant="solid" size="sm" color="primary" isIconOnly
+            onPress={() => zoomIn(0.2)}
+          >
+            <ZoomIn size={20} />
+          </Button>
+        </Tooltip>
+        <Tooltip content="Zoom Out" placement="left">
+          <Button
+            variant="solid" size="sm" color="primary" isIconOnly
+            onPress={() => zoomOut(0.2)}
+          >
+            <ZoomOut size={20} />
+          </Button>
+        </Tooltip>
+        <Tooltip content="Center View" placement="left">
+          <Button
+            variant="solid" size="sm" color="primary" isIconOnly
+            onPress={() => centerView(0.8)}
+          >
+            <FlipHorizontal size={20} />
+          </Button>
+        </Tooltip>
+        <Tooltip content="Export PDF" placement="left">
+          <Button
+            variant="solid" size="sm" color="primary" isIconOnly
+            onPress={onExport}
+          >
+            <FileDown size={20} />
+          </Button>
+        </Tooltip>
+        <Tooltip content="Save" placement="left">
+          <Button
+            variant="solid" size="sm" color="primary" isIconOnly
+            onPress={onSave}
+          >
+            <Save size={20} />
+          </Button>
+        </Tooltip>
       </div>
     )
   };
