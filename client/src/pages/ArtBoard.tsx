@@ -237,6 +237,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const works = useWorkStore(state => state.store);
   const projects = useProjectsStore(state => state.store);
 
+  const [height, setHeight] = React.useState(0);
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -292,6 +293,14 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
     shadow.appendChild(style);
     shadow.appendChild(wrapper);
 
+    // Observe the wrapper for height changes
+    const observer = new ResizeObserver(() => {
+      setHeight(wrapper.offsetHeight);
+    });
+    observer.observe(wrapper);
+
+    return () => observer.disconnect();
+
   }, [template, basics, educations, works, projects]);
 
   if (isLoading) {
@@ -306,10 +315,27 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
     )
   }
 
+  const pageHeight = 1122.66;
+  const pageCount = Math.ceil(height / pageHeight);
+
   return (
-    <div
-      ref={containerRef}
-      className="w-full h-full"
-    />
+    <>
+      <div
+        ref={containerRef}
+        className="w-full h-full"
+      />
+      {Array.from({ length: pageCount }).map((_, i) => (
+        <div
+          key={i}
+          className="absolute left-0 right-0 w-full"
+          style={{ top: `${(i + 1) * pageHeight}px` }}
+        >
+          <div className="flex flex-col items-end">
+            <span className="text-sm text-gray-500 mr-2">Page {i + 1}</span>
+            <div className="w-full border-t-2 border-dashed border-gray-600" />
+          </div>
+        </div>
+      ))}
+    </>
   );
 });
