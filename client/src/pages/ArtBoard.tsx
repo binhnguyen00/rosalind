@@ -40,6 +40,8 @@ export default function ArtBoard() {
       educationsStore.replace(content.education);
       projectsStore.replace(content.projects);
       workStore.replace(content.work);
+
+      return response;
     },
     retryDelay: 3000,
     retry: (failureCount, error) => {
@@ -82,10 +84,30 @@ export default function ArtBoard() {
 
   const onExport = () => {
     if (!templateRef.current) return;
-    let html = "";
-    if (templateRef.current.shadowRoot) {
-      html = templateRef.current.shadowRoot.innerHTML;
-    }
+    const shadow = templateRef.current.shadowRoot;
+    if (!shadow) {
+      console.log("shadowRoot is null");
+      return
+    };
+
+    const styleNode = shadow.querySelector("style");
+    const wrapperNode = shadow.querySelector("div.container");
+
+    const styleHtml = styleNode ? styleNode.outerHTML : "";
+    const bodyHtml = wrapperNode ? wrapperNode.outerHTML : "";
+
+    const html = `
+    <!DOCTYPE html>
+    <html>
+      <head>
+        ${styleHtml}
+      </head>
+      <body>
+        ${bodyHtml}
+      </body>
+    </html>
+    `
+
     mutate(html);
   };
 
@@ -124,8 +146,20 @@ export default function ArtBoard() {
 
   // ensure templateRef is not null
   React.useEffect(() => {
-    console.log(templateRef.current);
-  }, [templateRef.current]);
+    if (!templateRef.current) {
+      console.log("templateRef is null");
+      return;
+    }
+    const shadow = templateRef.current.shadowRoot;
+    if (!shadow) {
+      console.log("shadowRoot is null");
+      return
+    };
+    const styleNode = shadow.querySelector("style");
+    const wrapperNode = shadow.querySelector("div.container");
+    console.log(styleNode ? "template has <style/>" : "template has no <style/>");
+    console.log(wrapperNode ? "template has <div.container/>" : "template has no <div.container/>");
+  }, [templateRef.current?.shadowRoot?.innerHTML]);
 
   return (
     <div className="relative">
@@ -190,19 +224,19 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
-    shadow.innerHTML = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        <style>
-          ${template["stylesheet"]}
-        </style>
-      </head>
-      <body>
-        ${html}
-      </body>
-    </html>
-    `;
+
+    // inject stylesheet to template
+    const style = document.createElement("style");
+    style.textContent = template["stylesheet"];
+
+    // wrap <style/> and <body/> content
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = html;
+
+    shadow.innerHTML = "";
+    shadow.appendChild(style);
+    shadow.appendChild(wrapper);
+
   }, [template, basics, educations, works, projects]);
 
   if (isLoading) {

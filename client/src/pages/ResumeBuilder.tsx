@@ -8,8 +8,8 @@ export default function ResumeBuilder() {
     <DefaultLayout className="p-4 h-screen">
       <div className="grid grid-cols-[1.5fr_3fr_1fr] gap-4 h-full">
 
-        <div className="border border-divider rounded overflow-hidden">
-          <ScrollShadow orientation="vertical" className="p-2 space-y-4 h-full">
+        <div className="border border-divider rounded overflow-hidden min-w-[400px]">
+          <ScrollShadow orientation="vertical" className="p-2 space-y-4 h-full" hideScrollBar>
             <ResumeInfoPane />
           </ScrollShadow>
         </div>
@@ -19,7 +19,7 @@ export default function ResumeBuilder() {
         </div>
 
         <div className="border border-divider rounded overflow-hidden">
-          <ScrollShadow orientation="vertical" className="p-2 space-y-4 h-full">
+          <ScrollShadow orientation="vertical" className="p-2 space-y-4 h-full" hideScrollBar>
             <ResumePropertiesPane />
           </ScrollShadow>
         </div>
@@ -31,7 +31,7 @@ export default function ResumeBuilder() {
 
 function ResumeInfoPane() {
   return (
-    <div className="flex flex-col gap-4">
+    <div className="space-y-4 pb-4">
 
       <Basics />
       <Work />
