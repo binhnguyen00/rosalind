@@ -13,6 +13,7 @@ export function App() {
         <Route path="/" element={<Home />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/resume/new" element={<ResumeBuilder />} />
+        <Route path="/resume/:id" element={<ResumeBuilder />} />
       </Routes>
     </Suspense>
   );

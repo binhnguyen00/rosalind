@@ -2,6 +2,8 @@ import React from "react";
 import axios from "axios";
 import HandleBars from "handlebars";
 
+import { RecordModel } from "pocketbase";
+import { useParams } from "react-router-dom";
 import { Button, Spinner } from "@heroui/react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { FileDown, ZoomIn, ZoomOut, FlipHorizontal } from "lucide-react";
@@ -10,12 +12,41 @@ import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pa
 import { PocketBaseContext } from "@components";
 import {
   useBasicsStore, useEducationStore, useResumeStore, useWorkStore,
-  useProjectStore
+  useProjectsStore
 } from "@stores";
 
 export default function ArtBoard() {
   const pocketBase = React.useContext(PocketBaseContext);
-  const templateRef = React.useRef<HTMLDivElement>(null);
+  const templateRef = React.useRef<HTMLDivElement>(null); // [BUG] templateRef is not always != null;
+
+  const resumeStore = useResumeStore();
+  const basicsStore = useBasicsStore();
+  const educationsStore = useEducationStore();
+  const workStore = useWorkStore();
+  const projectsStore = useProjectsStore();
+
+  const { id } = useParams();
+  const mode = id ? "update" : "create";
+
+  const { isLoading, isError } = useQuery({
+    queryKey: ["resume"],
+    queryFn: async () => {
+      if (!id) return;
+      const response = await pocketBase.collection<RecordModel>("resume").getOne(id);
+      const content = response.content;
+
+      resumeStore.updateId(response.id);
+      basicsStore.update(content.basics);
+      educationsStore.replace(content.education);
+      projectsStore.replace(content.projects);
+      workStore.replace(content.work);
+    },
+    retryDelay: 3000,
+    retry: (failureCount, error) => {
+      return failureCount < 2;
+    },
+    refetchOnMount: mode === "update",
+  });
 
   const { mutate } = useMutation({
     mutationKey: ["export"],
@@ -83,15 +114,18 @@ export default function ArtBoard() {
         </Button>
         <Button
           variant="solid" size="sm" color="primary" isIconOnly
-          onPress={() => {
-            centerView(0.8);
-          }}
+          onPress={() => centerView(0.8)}
         >
           <FlipHorizontal size={18} />
         </Button>
       </div>
     )
   };
+
+  // ensure templateRef is not null
+  React.useEffect(() => {
+    console.log(templateRef.current);
+  }, [templateRef.current]);
 
   return (
     <div className="relative">
@@ -126,7 +160,7 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
   const basics = useBasicsStore(state => state.store);
   const educations = useEducationStore(state => state.store);
   const works = useWorkStore(state => state.store);
-  const projects = useProjectStore(state => state.store);
+  const projects = useProjectsStore(state => state.store);
 
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -137,7 +171,7 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
       return await pocketBase.collection("template").getFirstListItem(
         `code="${metadata.template}"`
       );
-    }
+    },
   });
 
   // expose containerRef to parent component

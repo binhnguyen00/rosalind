@@ -9,6 +9,7 @@ export const metadata = z.object({
 })
 
 export const resume = z.object({
+  id: z.string().optional().default(""),
   metadata: metadata,
 
   basics: basics,

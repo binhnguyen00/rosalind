@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import * as stores from "@stores";
+import * as stores from "@stores"
 import {
   Metadata, resume, metadata,
   Basics, Education, Work, Project
@@ -13,13 +13,28 @@ interface Resume {
 }
 
 interface ResumeStore {
+  id?: string;
   metadata: Metadata;
+  reset: () => void;
   updateTemplate: (t: string) => void;
+  updateId: (id: string) => void;
   getInstance: () => Resume;
 }
 
 export const useResumeStore = create<ResumeStore>((set) => ({
+  id: "",
   metadata: metadata.parse({}),
+
+  reset: () => {
+    set({
+      id: "",
+      metadata: metadata.parse({})
+    });
+    stores.useBasicsStore.getState().reset();
+    stores.useEducationStore.getState().reset();
+    stores.useWorkStore.getState().reset();
+    stores.useProjectsStore.getState().reset();
+  },
 
   updateTemplate: (t: string) => set({
     metadata: {
@@ -28,17 +43,14 @@ export const useResumeStore = create<ResumeStore>((set) => ({
     }
   }),
 
-  getInstance: () => {
-    const basics = stores.useBasicsStore(state => state.store);
-    const educations = stores.useEducationStore(state => state.store);
-    const works = stores.useWorkStore(state => state.store);
-    const projects = stores.useProjectStore(state => state.store);
+  updateId: (id: string) => set({ id: id }),
 
+  getInstance: () => {
     return {
-      basics: basics,
-      educations: educations,
-      works: works,
-      projects: projects
+      basics: stores.useBasicsStore(state => state.store),
+      educations: stores.useEducationStore(state => state.store),
+      works: stores.useWorkStore(state => state.store),
+      projects: stores.useProjectsStore(state => state.store)
     } as Resume;
-  }
+  },
 }));

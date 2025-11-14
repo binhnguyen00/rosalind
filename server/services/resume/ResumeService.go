@@ -2,6 +2,7 @@ package resume;
 
 import (
 "strings";
+"github.com/pocketbase/pocketbase";
 "github.com/SebastiaanKlippert/go-wkhtmltopdf";
 )
 
@@ -16,4 +17,14 @@ func ExportPdf(html string) ([]byte, error) {
   tool.Create();
 
   return tool.Bytes(), nil;
+}
+
+func SaveContent(app *pocketbase.PocketBase, id string, content string) error {
+  record, err := app.FindRecordById("resume", id);
+  if (err != nil) {
+    return err;
+  }
+
+  record.Set("content", content);
+  return app.Save(record);
 }

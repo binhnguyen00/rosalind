@@ -35,8 +35,8 @@ func main() {
       template.CreateDefaultTemplate(app);
     }
 
-    routes.RegisterWelcomeRoutes(e);
-    routes.RegisterResumeRoutes(e);
+    routes.RegisterWelcomeRoutes(app, e);
+    routes.RegisterResumeRoutes(app, e);
     return e.Next();
   });
 

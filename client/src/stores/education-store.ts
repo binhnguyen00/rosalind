@@ -3,6 +3,8 @@ import { Education } from "@schemas";
 
 interface EducationStore {
   store: Education[];
+  reset: () => void;
+  replace: (educations: Education[]) => void;
   add: (e: Education) => void;
   remove: (idx: number) => void;
   update: (idx: number, e: Education) => void;
@@ -10,6 +12,7 @@ interface EducationStore {
 
 export const useEducationStore = create<EducationStore>((set) => ({
   store: [],
+  reset: () => set({ store: [] }),
 
   add: (e: Education) => set(state => {
     return {
@@ -31,6 +34,12 @@ export const useEducationStore = create<EducationStore>((set) => ({
   remove: (idx: number) => set(state => {
     return {
       store: state.store.filter((_, i) => i !== idx)
+    }
+  }),
+
+  replace: (educations: Education[]) => set(state => {
+    return {
+      store: educations
     }
   })
 }));

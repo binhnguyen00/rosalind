@@ -3,6 +3,8 @@ import { Work } from "@schemas";
 
 interface WorkStore {
   store: Work[];
+  reset: () => void;
+  replace: (works: Work[]) => void;
   add: (w: Work) => void;
   remove: (idx: number) => void;
   update: (idx: number, w: Work) => void;
@@ -10,6 +12,7 @@ interface WorkStore {
 
 export const useWorkStore = create<WorkStore>((set) => ({
   store: [],
+  reset: () => set({ store: [] }),
 
   add: (w: Work) => set(state => {
     return {
@@ -32,5 +35,11 @@ export const useWorkStore = create<WorkStore>((set) => ({
     return {
       store: state.store.filter((_, i) => i !== idx)
     }
-  })
+  }),
+
+  replace: (works: Work[]) => set(state => {
+    return {
+      store: works
+    }
+  }),
 }))

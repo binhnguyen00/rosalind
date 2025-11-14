@@ -5,12 +5,12 @@ import { Plus, Trash } from "lucide-react";
 import { Button, Input, Textarea } from "@heroui/react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 
-import { useProjectStore } from "@stores";
+import { useProjectsStore } from "@stores";
 import type { Project } from "@schemas";
 
 export default function Project() {
-  const store = useProjectStore();
-  const list = useProjectStore(state => state.store);
+  const store = useProjectsStore();
+  const list = useProjectsStore(state => state.store);
   const defaultData: Project = {
     name: "",
     startDate: "",

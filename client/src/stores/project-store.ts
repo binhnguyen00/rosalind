@@ -1,15 +1,18 @@
 import { create } from "zustand";
 import { Project } from "@schemas";
 
-interface ProjectStore {
+interface ProjectsStore {
   store: Project[];
+  reset: () => void;
+  replace: (projects: Project[]) => void;
   add: (p: Project) => void;
   remove: (idx: number) => void;
   update: (idx: number, p: Project) => void;
 }
 
-export const useProjectStore = create<ProjectStore>((set) => ({
+export const useProjectsStore = create<ProjectsStore>((set) => ({
   store: [],
+  reset: () => set({ store: [] }),
 
   add: (p: Project) => set(state => {
     return {
@@ -31,6 +34,12 @@ export const useProjectStore = create<ProjectStore>((set) => ({
   remove: (idx: number) => set(state => {
     return {
       store: state.store.filter((_, i) => i !== idx)
+    }
+  }),
+
+  replace: (projects: Project[]) => set(state => {
+    return {
+      store: projects
     }
   })
 }))

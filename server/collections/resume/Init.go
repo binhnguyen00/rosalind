@@ -6,6 +6,7 @@ import (
 "encoding/json";
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
+"github.com/pocketbase/pocketbase/tools/types";
 )
 
 var COLL_NAME string = "resume";
@@ -18,6 +19,9 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
   }
 
   coll = core.NewBaseCollection(COLL_NAME);
+  coll.ViewRule = types.Pointer("@request.auth.id != ''");
+  coll.ListRule = types.Pointer("@request.auth.id != ''");
+
   userColl, _ := app.FindCollectionByNameOrId("users");
 
   coll.Fields.Add(
