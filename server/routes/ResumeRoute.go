@@ -59,6 +59,11 @@ func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEven
       return e.InternalServerError("Failed to save resume", err);
     }
 
-    return e.String(http.StatusOK, "save successfully");
+    response := map[string]any{
+      "isSuccess": true,
+      "message": "save successfully",
+      "data": content,
+    };
+    return e.JSON(http.StatusOK, response);
   }).Bind(apis.RequireAuth());
 }

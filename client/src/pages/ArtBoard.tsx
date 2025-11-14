@@ -4,7 +4,7 @@ import HandleBars from "handlebars";
 
 import { RecordModel } from "pocketbase";
 import { useParams } from "react-router-dom";
-import { Button, Spinner, Tooltip } from "@heroui/react";
+import { Button, Spinner, Tooltip, addToast } from "@heroui/react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
@@ -17,7 +17,7 @@ import {
 
 export default function ArtBoard() {
   const pocketBase = React.useContext(PocketBaseContext);
-  const templateRef = React.useRef<HTMLDivElement>(null); // [BUG] templateRef is not always != null;
+  const templateRef = React.useRef<TemplateRefProps>(null);
 
   const resumeStore = useResumeStore();
   const basicsStore = useBasicsStore();
@@ -29,7 +29,7 @@ export default function ArtBoard() {
   const mode = id ? "update" : "create";
 
   const { isLoading, isError } = useQuery({
-    queryKey: ["resume"],
+    queryKey: ["get-resume", id],
     queryFn: async () => {
       if (!id) return;
       const response = await pocketBase.collection<RecordModel>("resume").getOne(id);
@@ -51,10 +51,10 @@ export default function ArtBoard() {
     refetchOnMount: mode === "update",
   });
 
-  const { mutate: exportPdf } = useMutation({
-    mutationKey: ["export"],
+  const { mutate: exportPdf, isPending: isExporting } = useMutation({
+    mutationKey: ["export-pdf", id],
     mutationFn: async (html: string) => {
-      const response = await axios.post(`${pocketBase.baseURL}/resume/export`, {
+      const post = axios.post(`${pocketBase.baseURL}/resume/export`, {
         id: id,
         content: {
           basics: basicsStore.store,
@@ -68,11 +68,14 @@ export default function ArtBoard() {
         headers: { "Authorization": pocketBase.authStore.token },
         responseType: "blob"
       });
+
+      addToast({ title: "Exporting...", color: "primary", promise: post });
+
+      const response = await post;
       return response.data;
     },
-    retryDelay: 3000,
-    retry: (failureCount, error) => {
-      return failureCount < 2;
+    retry(failureCount, error) {
+      return failureCount < 1;
     },
     onSuccess: (bytes) => {
       const blob = new Blob([bytes], { type: "application/pdf" });
@@ -83,16 +86,17 @@ export default function ArtBoard() {
       link.click();
       window.URL.revokeObjectURL(url);
       link.remove();
+      addToast({ title: "Export Success", color: "success" })
     },
     onError: (error) => {
-      console.log(error);
+      addToast({ title: "Export Failed", description: error.message, color: "danger" })
     }
   })
 
-  const { mutate: saveResume } = useMutation({
-    mutationKey: ["save", id],
+  const { mutate: saveResume, isPending: isSaving } = useMutation({
+    mutationKey: ["save-resume", id],
     mutationFn: async () => {
-      const response = await axios.post(`${pocketBase.baseURL}/resume/save`, {
+      const post = axios.post(`${pocketBase.baseURL}/resume/save`, {
         id: id,
         content: {
           basics: basicsStore.store,
@@ -103,44 +107,33 @@ export default function ArtBoard() {
         },
       }, {
         headers: { "Authorization": pocketBase.authStore.token },
-        responseType: "blob"
+        responseType: "json"
       });
+
+      const response = await post;
       return response.data;
     },
-    retryDelay: 3000,
-    retry: (failureCount, error) => {
-      return failureCount < 2;
+    retry: (failureCount, error) => failureCount < 1,
+    onSuccess: (response) => {
+      if (response.isSuccess) {
+        addToast({ title: "Save Success", color: "success" });
+      }
     },
     onError: (error) => {
-      console.log(error);
+      addToast({ title: "Save Failed", description: error.message, color: "danger" });
     }
   })
 
   const onExport = () => {
     if (!templateRef.current) return;
-    const shadow = templateRef.current.shadowRoot;
-    if (!shadow) {
-      console.log("shadowRoot is null");
-      return
-    };
-
-    const styleNode = shadow.querySelector("style");
-    const wrapperNode = shadow.querySelector("div.container");
-
-    const styleHtml = styleNode ? styleNode.outerHTML : "";
-    const bodyHtml = wrapperNode ? wrapperNode.outerHTML : "";
+    const htmlStr: string = templateRef.current.getArtboardHTML();
 
     const html = `
-    <!DOCTYPE html>
-    <html>
-      <head>
-        ${styleHtml}
-      </head>
-      <body>
-        ${bodyHtml}
-      </body>
-    </html>
-    `
+      <!DOCTYPE html>
+      <html>
+        ${htmlStr}
+      </html>
+    `;
 
     exportPdf(html);
   };
@@ -156,7 +149,7 @@ export default function ArtBoard() {
       <div className="absolute top-2 right-2 z-50 flex flex-col gap-2">
         <Tooltip content="Zoom In" placement="left">
           <Button
-            variant="solid" size="sm" color="primary" isIconOnly
+            variant="solid" size="md" color="primary" isIconOnly
             onPress={() => zoomIn(0.2)}
           >
             <ZoomIn size={20} />
@@ -164,7 +157,7 @@ export default function ArtBoard() {
         </Tooltip>
         <Tooltip content="Zoom Out" placement="left">
           <Button
-            variant="solid" size="sm" color="primary" isIconOnly
+            variant="solid" size="md" color="primary" isIconOnly
             onPress={() => zoomOut(0.2)}
           >
             <ZoomOut size={20} />
@@ -172,7 +165,7 @@ export default function ArtBoard() {
         </Tooltip>
         <Tooltip content="Center View" placement="left">
           <Button
-            variant="solid" size="sm" color="primary" isIconOnly
+            variant="solid" size="md" color="primary" isIconOnly
             onPress={() => centerView(0.8)}
           >
             <FlipHorizontal size={20} />
@@ -180,7 +173,7 @@ export default function ArtBoard() {
         </Tooltip>
         <Tooltip content="Export PDF" placement="left">
           <Button
-            variant="solid" size="sm" color="primary" isIconOnly
+            variant="solid" size="md" color="primary" isIconOnly isLoading={isExporting}
             onPress={onExport}
           >
             <FileDown size={20} />
@@ -188,7 +181,7 @@ export default function ArtBoard() {
         </Tooltip>
         <Tooltip content="Save" placement="left">
           <Button
-            variant="solid" size="sm" color="primary" isIconOnly
+            variant="solid" size="md" color="primary" isIconOnly isLoading={isSaving}
             onPress={onSave}
           >
             <Save size={20} />
@@ -197,21 +190,6 @@ export default function ArtBoard() {
       </div>
     )
   };
-
-  // ensure templateRef is not null
-  React.useEffect(() => {
-    if (!templateRef.current) {
-      console.log("templateRef is null");
-      return;
-    }
-    const shadow = templateRef.current.shadowRoot;
-    if (!shadow) {
-      console.log("shadowRoot is null");
-      return
-    };
-    const styleNode = shadow.querySelector("style");
-    const wrapperNode = shadow.querySelector("div.container");
-  }, [templateRef.current?.shadowRoot?.innerHTML]);
 
   return (
     <div className="relative">
@@ -231,7 +209,13 @@ export default function ArtBoard() {
             wrapperStyle={{ height: "100%", width: "100%" }}
           >
             <div className="min-h-[1122.66px] w-[793.8px] border">
-              <Template ref={templateRef} />
+              {isLoading ? (
+                <div className="flex flex-col items-center justify-center h-full w-full">
+                  <Spinner />
+                </div>
+              ) : (
+                <Template ref={templateRef} />
+              )}
             </div>
           </TransformComponent>
         </TransformWrapper>
@@ -241,7 +225,12 @@ export default function ArtBoard() {
   )
 }
 
-const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
+interface TemplateRefProps {
+  isRefReady: boolean;
+  getArtboardHTML: () => string;
+}
+
+const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const metadata = useResumeStore(state => state.metadata);
   const basics = useBasicsStore(state => state.store);
   const educations = useEducationStore(state => state.store);
@@ -261,7 +250,21 @@ const Template = React.forwardRef<HTMLDivElement>((props, ref) => {
   });
 
   // expose containerRef to parent component
-  React.useImperativeHandle(ref, () => containerRef.current!, [containerRef.current]);
+  React.useImperativeHandle(ref, () => ({
+    isRefReady: !!containerRef.current,
+    getArtboardHTML: () => {
+      if (!containerRef.current) {
+        console.warn("containerRef is empty");
+        return "";
+      };
+      const shadow = containerRef.current.shadowRoot;
+      if (!shadow) {
+        console.warn("shadowRoot is empty");
+        return "";
+      }
+      return shadow.innerHTML;
+    },
+  }));
 
   React.useEffect(() => {
     if (!template) return;
