@@ -2,7 +2,7 @@
   "basics": {
     "name": "John Doe",
     "label": "Programmer",
-    "image": "",
+    "image": "https://images.pexels.com/photos/14331946/pexels-photo-14331946.jpeg",
     "email": "john@gmail.com",
     "phone": "(912) 555-4321",
     "url": "https://johndoe.com",
@@ -18,12 +18,23 @@
   },
   "work": [
     {
-      "name": "Company",
+      "name": "Company 1",
       "position": "President",
       "url": "https://company.com",
       "startDate": "2013-01-01",
       "endDate": "2014-01-01",
-      "summary": "Description…",
+      "summary": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      "highlights": [
+        "Started the company"
+      ]
+    },
+    {
+      "name": "Company 2",
+      "position": "Manager",
+      "url": "https://company.com",
+      "startDate": "2013-01-01",
+      "endDate": "2014-01-01",
+      "summary": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
       "highlights": [
         "Started the company"
       ]
@@ -118,7 +129,17 @@
       "name": "Project",
       "startDate": "2019-01-01",
       "endDate": "2021-01-01",
-      "description": "Description...",
+      "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+      "highlights": [
+        "Won award at AIHacks 2016"
+      ],
+      "url": "https://project.com/"
+    },
+    {
+      "name": "Project",
+      "startDate": "2019-01-01",
+      "endDate": "2021-01-01",
+      "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
       "highlights": [
         "Won award at AIHacks 2016"
       ],
