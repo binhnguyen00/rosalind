@@ -210,7 +210,7 @@ export default function ArtBoard() {
           >
             <div className="min-h-[1122.66px] w-[793.8px] border">
               {isLoading ? (
-                <div className="flex flex-col items-center justify-center h-full w-full">
+                <div className="flex flex-col items-center justify-center min-h-[1122.66px] w-[793.8px]">
                   <Spinner />
                 </div>
               ) : (

@@ -1,7 +1,7 @@
 import z from "zod";
 import {
   basics,
-  Education,
+  Education, Project, Work
 } from "@schemas";
 
 export const metadata = z.object({
@@ -13,7 +13,7 @@ export const resume = z.object({
   metadata: metadata,
 
   basics: basics,
-  work: z.array(z.object({} as any)).default([]),
+  work: z.array(z.object({} as Work)).default([]),
   education: z.array(z.object({} as Education)).default([]),
   volunteer: z.array(z.object({} as any)).default([]),
   awards: z.array(z.object({} as any)).default([]),
@@ -23,7 +23,7 @@ export const resume = z.object({
   languages: z.array(z.object({} as any)).default([]),
   interests: z.array(z.object({} as any)).default([]),
   references: z.array(z.object({} as any)).default([]),
-  projects: z.array(z.object({} as any)).default([]),
+  projects: z.array(z.object({} as Project)).default([]),
 });
 
 export type Resume = z.infer<typeof resume>;
