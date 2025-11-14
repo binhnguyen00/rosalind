@@ -32,7 +32,7 @@ func main() {
       resume.CreateDefaultResume(app);
 
       template.CreateTemplateCollection(app);
-      template.CreateDefaultTemplate(app);
+      template.CreateTemplateRecords(app);
     }
 
     routes.RegisterWelcomeRoutes(app, e);

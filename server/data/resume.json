@@ -23,10 +23,7 @@
       "url": "https://company.com",
       "startDate": "2013-01-01",
       "endDate": "2014-01-01",
-      "summary": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-      "highlights": [
-        "Started the company"
-      ]
+      "summary": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
     },
     {
       "name": "Company 2",
@@ -34,10 +31,7 @@
       "url": "https://company.com",
       "startDate": "2013-01-01",
       "endDate": "2014-01-01",
-      "summary": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-      "highlights": [
-        "Started the company"
-      ]
+      "summary": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
     }
   ],
   "volunteer": [
@@ -61,10 +55,7 @@
       "studyType": "Bachelor",
       "startDate": "2011-01-01",
       "endDate": "2013-01-01",
-      "score": "4.0",
-      "courses": [
-        "DB1101 - Basic SQL"
-      ]
+      "score": "4.0"
     }
   ],
   "awards": [
@@ -96,17 +87,7 @@
     {
       "name": "Web Development",
       "level": "Master",
-      "keywords": [
-        "HTML",
-        "CSS",
-        "JavaScript"
-      ]
-    }
-  ],
-  "languages": [
-    {
-      "language": "English",
-      "fluency": "Native speaker"
+      "description": "Some description..."
     }
   ],
   "interests": [
@@ -130,9 +111,6 @@
       "startDate": "2019-01-01",
       "endDate": "2021-01-01",
       "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-      "highlights": [
-        "Won award at AIHacks 2016"
-      ],
       "url": "https://project.com/"
     },
     {
@@ -140,9 +118,6 @@
       "startDate": "2019-01-01",
       "endDate": "2021-01-01",
       "description": "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
-      "highlights": [
-        "Won award at AIHacks 2016"
-      ],
       "url": "https://project.com/"
     }
   ]

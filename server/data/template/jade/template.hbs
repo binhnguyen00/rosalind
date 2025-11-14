@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <div style="display: flex; gap: 2rem;">
+
+    <aside style="flex: 0 0 280px; background-color: #f8f8f8; padding: 1.5rem; border-radius: 8px;">
+
+      <section class="sidebar-section">
+        <h2 class="sidebar-title">Contact</h2>
+        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+          {{#if basics.email}}
+            <div>
+              <span style="font-weight: 600; color: #333;">Email</span>
+              <div style="word-wrap: break-word;">{{basics.email}}</div>
+            </div>
+          {{/if}}
+          {{#if basics.phone}}
+            <div>
+              <span style="font-weight: 600; color: #333;">Phone</span>
+              <div>{{basics.phone}}</div>
+            </div>
+          {{/if}}
+          {{#if basics.url}}
+            <div>
+              <span style="font-weight: 600; color: #333;">Website</span>
+              <div style="word-wrap: break-word;"><a href="{{basics.url}}">{{basics.url}}</a></div>
+            </div>
+          {{/if}}
+          {{#if basics.location}}
+            <div>
+              <span style="font-weight: 600; color: #333;">Location</span>
+              <div>{{basics.location}}</div>
+            </div>
+          {{/if}}
+        </div>
+      </section>
+
+      {{#if education.length}}
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Education</h2>
+          {{#each education}}
+            <div class="item">
+              <h3 class="item-title" style="font-size: 0.95rem;">{{institution}}</h3>
+              <div class="item-subtitle" style="margin-bottom: 0;">{{studyType}}{{#if area}} in {{area}}{{/if}}</div>
+              <div class="item-date" style="font-size: 0.875rem;">{{startDate}} - {{endDate}}</div>
+              {{#if score}}<div style="font-size: 0.875rem; color: #666;">GPA: {{score}}</div>{{/if}}
+              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if skills.length}}
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Skills</h2>
+          {{#each skills}}
+            <div style="margin-bottom: 0.5rem;">
+              <span style="font-weight: 600; color: #333;">{{name}}</span>
+              {{#if level}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{level}})</span>{{/if}}
+              {{#if description}}<div style="font-size: 0.813rem; color: #444;">{{description}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if languages.length}}
+        <section class="sidebar-section">
+          <h2 class="sidebar-title">Languages</h2>
+          {{#each languages}}
+            <div style="margin-bottom: 0.25rem;">
+              <span style="font-weight: 600; color: #333;">{{language}}</span>
+              {{#if fluency}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{fluency}})</span>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+    </aside>
+
+    <main style="flex: 1;">
+
+      <header style="margin-bottom: 2rem;">
+        <h1 style="font-size: 2.5rem; font-weight: 700; color: #0066cc; margin-bottom: 0.25rem !important;">{{basics.name}}</h1>
+        {{#if basics.label}}<h3 style="font-size: 1.25rem; font-weight: 400; color: #333; margin-bottom: 0.5rem !important;">{{basics.label}}</h3>{{/if}}
+        {{#if basics.customFields.length}}
+          <div style="margin-top: 0.5rem;">
+          {{#each basics.customFields}}
+            <div class="field"><span class="label">{{key}}:</span><span>{{value}}</span></div>
+          {{/each}}
+          </div>
+        {{/if}}
+      </header>
+
+      {{#if basics.summary}}
+        <section class="section">
+          <h2 class="section-title">Summary</h2>
+          <p style="font-size: 0.875rem; margin-top: 0.5rem;">{{basics.summary}}</p>
+        </section>
+      {{/if}}
+
+      {{#if work.length}}
+        <section class="section">
+          <h2 class="section-title">Experience</h2>
+          {{#each work}}
+            <div class="item">
+              <div class="item-header">
+                <h3 class="item-title">{{name}}</h3>
+                <span class="item-date">{{startDate}} - {{endDate}}</span>
+              </div>
+              {{#if position}}<div class="item-subtitle">{{position}}</div>{{/if}}
+              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+              {{#if summary}}<div class="item-summary">{{summary}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if projects.length}}
+        <section class="section">
+          <h2 class="section-title">Projects</h2>
+          {{#each projects}}
+            <div class="item">
+              <div class="item-header">
+                <h3 class="item-title">{{name}}</h3>
+                <span class="item-date">{{startDate}} - {{endDate}}</span>
+              </div>
+              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+              {{#if description}}<div class="item-summary">{{description}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if volunteer.length}}
+        <section class="section">
+          <h2 class="section-title">Volunteer</h2>
+          {{#each volunteer}}
+            <div class="item">
+              <div class="item-header">
+                <h3 class="item-title">{{organization}}</h3>
+                <span class="item-date">{{startDate}} - {{endDate}}</span>
+              </div>
+              {{#if position}}<div class="item-subtitle">{{position}}</div>{{/if}}
+              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+              {{#if summary}}<div class="item-summary">{{summary}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if awards.length}}
+        <section class="section">
+          <h2 class="section-title">Awards</h2>
+          {{#each awards}}
+            <div class="item">
+              <div class="item-header">
+                <h3 class="item-title">{{title}}</h3>
+                <span class="item-date">{{date}}</span>
+              </div>
+              {{#if awarder}}<div class="item-subtitle">{{awarder}}</div>{{/if}}
+              {{#if summary}}<div class="item-summary" style="margin-top: 0.25rem;">{{summary}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if certificates.length}}
+        <section class="section">
+          <h2 class="section-title">Certificates</h2>
+          {{#each certificates}}
+            <div class="item">
+              <div class="item-header">
+                <h3 class="item-title">{{name}}</h3>
+                <span class="item-date">{{date}}</span>
+              </div>
+              {{#if issuer}}<div class="item-subtitle">{{issuer}}</div>{{/if}}
+              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if publications.length}}
+        <section class="section">
+          <h2 class="section-title">Publications</h2>
+          {{#each publications}}
+            <div class="item">
+              <div class="item-header">
+                <h3 class="item-title">{{name}}</h3>
+                <span class="item-date">{{releaseDate}}</span>
+              </div>
+              {{#if publisher}}<div class="item-subtitle">{{publisher}}</div>{{/if}}
+              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+              {{#if summary}}<div class="item-summary" style="margin-top: 0.25rem;">{{summary}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if interests.length}}
+        <section class="section">
+          <h2 class="section-title">Interests</h2>
+          {{#each interests}}
+            <div class="item" style="margin-bottom: 0.5rem;">
+              <h3 class="item-title" style="font-size: 0.95rem;">{{name}}</h3>
+              {{#if keywords.length}}
+                <div style="font-size: 0.875rem; color: #555;">
+                  {{#each keywords}}
+                    <span>{{this}}{{#unless @last}}, {{/unless}}</span>
+                  {{/each}}
+                </div>
+              {{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+      {{#if references.length}}
+        <section class="section">
+          <h2 class="section-title">References</h2>
+          {{#each references}}
+            <div class="item" style="margin-bottom: 0.5rem;">
+              <h3 class="item-title" style="font-size: 0.95rem;">{{name}}</h3>
+              {{#if reference}}<div class="item-summary" style="margin-top: 0;">{{reference}}</div>{{/if}}
+            </div>
+          {{/each}}
+        </section>
+      {{/if}}
+
+    </main>
+
+  </div>
+</body>
+</html>

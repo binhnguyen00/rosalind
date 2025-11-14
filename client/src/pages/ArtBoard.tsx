@@ -238,6 +238,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const projects = useProjectsStore(state => state.store);
 
   const [height, setHeight] = React.useState(0);
+  const [pageCount, setPageCount] = React.useState(0);
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -291,11 +292,12 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     shadow.innerHTML = "";
     shadow.appendChild(style);
-    shadow.appendChild(wrapper);
+    const body = shadow.appendChild(wrapper);
 
     // Observe the wrapper for height changes
     const observer = new ResizeObserver(() => {
-      setHeight(wrapper.offsetHeight);
+      setHeight(body.offsetHeight);
+      setPageCount(Math.ceil(body.offsetHeight / 1122.66));
     });
     observer.observe(wrapper);
 
@@ -315,20 +317,17 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
     )
   }
 
-  const pageHeight = 1122.66;
-  const pageCount = Math.ceil(height / pageHeight);
-
   return (
     <>
       <div
         ref={containerRef}
         className="w-full h-full"
       />
-      {Array.from({ length: pageCount }).map((_, i) => (
+      {Array.from({ length: pageCount - 1 }).map((_, i) => (
         <div
           key={i}
           className="absolute left-0 right-0 w-full"
-          style={{ top: `${(i + 1) * pageHeight}px` }}
+          style={{ top: `${(i + 1) * 1122.66}px` }}
         >
           <div className="flex flex-col items-end">
             <span className="text-sm text-gray-500 mr-2">Page {i + 1}</span>
