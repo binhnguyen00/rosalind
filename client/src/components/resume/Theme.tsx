@@ -1,11 +1,8 @@
 import React from "react";
 import axios from "axios";
 
-import {
-  ScrollShadow, Spinner, Tabs, Tab,
-  Card, CardHeader, CardBody, Image, cn,
-} from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
+import { Spinner, Card, CardHeader, CardBody, Image, cn } from "@heroui/react";
 
 import { useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
@@ -39,8 +36,8 @@ export default function Themes() {
   );
 
   if (!data) return (
-    <div>
-      <p>No templates found</p>
+    <div className="flex flex-col">
+      <p className="self-center">No templates found</p>
     </div>
   );
 
@@ -70,7 +67,7 @@ export default function Themes() {
 }
 
 function ThemeThumbnail() {
-  const { data, isLoading, isError, error } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["template-thumbnails"],
     queryFn: async () => {
       const response = await axios.get("https://picsum.photos/v2/list");
@@ -85,23 +82,19 @@ function ThemeThumbnail() {
   );
 
   if (isError) return (
-    <div>
-      <Image
-        alt="Card background"
-        className="rounded-xl w-full h-[300px] object-cover"
-        src="https://http.cat/500"
-      />
-    </div>
+    <Image
+      alt="Card background"
+      className="rounded-xl w-full h-[300px] object-cover"
+      src="https://http.cat/500"
+    />
   );
 
   if (!data) return (
-    <div>
-      <Image
-        alt="Card background"
-        className="rounded-xl w-full h-[300px] object-cover"
-        src="https://http.cat/500"
-      />
-    </div>
+    <Image
+      alt="Card background"
+      className="rounded-xl w-full h-[300px] object-cover"
+      src="https://http.cat/500"
+    />
   )
 
   return (
