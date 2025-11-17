@@ -19,14 +19,25 @@ export default function Home() {
   }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout className="p-2 md:p-4 lg:p-6 xl:p-8">
       <ScrollShadow orientation="vertical" className="h-full overflow-visible">
-        <div className="flex flex-wrap gap-6 p-4">
+        <div
+          className={cn(
+            "grid gap-4 mt-4",
+            "grid-cols-2",
+            "sm:grid-cols-3",
+            "md:grid-cols-4",
+            "lg:grid-cols-5",
+            "xl:grid-cols-6"
+          )}
+        >
           <div
             className={cn(
-              "h-[300px]", "w-[200px]",
-              "flex items-center justify-center rounded-2xl border border-divider",
-              "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
+              "aspect-3/4",
+              "p-2 flex flex-col gap-5 justify-center items-center",
+              "rounded-2xl border border-divider",
+              "transition-all duration-300 ease-in-out",
+              "hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
             )}
             onClick={onCreateResume}
           >
@@ -72,9 +83,11 @@ function Resumes() {
         <div
           key={resume.id}
           className={cn(
-            "h-[300px]", "w-[200px]", "p-2",
-            "flex flex-col gap-5 justify-center items-center rounded-2xl border border-divider",
-            "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
+            "aspect-3/4",
+            "p-2 flex flex-col gap-5 justify-center items-center",
+            "rounded-2xl border border-divider",
+            "transition-all duration-300 ease-in-out",
+            "hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
           )}
           onClick={() => onOpenResume(resume.id)}
         >
