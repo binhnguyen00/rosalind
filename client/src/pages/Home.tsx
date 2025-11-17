@@ -1,6 +1,7 @@
 import React from "react";
 import { Plus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { format, parseISO } from "date-fns";
 
 import { useQuery } from "@tanstack/react-query";
 import { cn, ScrollShadow, Spinner } from "@heroui/react";
@@ -19,10 +20,11 @@ export default function Home() {
 
   return (
     <DefaultLayout>
-      <ScrollShadow orientation="vertical" className="h-full overflow-y-auto">
-        <div className="grid grid-cols-4 gap-6 auto-rows-[300px] p-4">
+      <ScrollShadow orientation="vertical" className="h-full overflow-visible">
+        <div className="flex flex-wrap gap-6 p-4">
           <div
             className={cn(
+              "h-[300px]", "w-[200px]",
               "flex items-center justify-center rounded-2xl border border-divider",
               "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
             )}
@@ -70,12 +72,20 @@ function Resumes() {
         <div
           key={resume.id}
           className={cn(
-            "flex items-center justify-center rounded-2xl border border-divider",
+            "h-[300px]", "w-[200px]", "p-2",
+            "flex flex-col gap-5 justify-center items-center rounded-2xl border border-divider",
             "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
           )}
           onClick={() => onOpenResume(resume.id)}
         >
-          <p> {resume.id} </p>
+          <p className="line-clamp-4 w-full px-2 text-center wrap-break-word text-lg font-semibold">
+            {resume.label}
+          </p>
+          {resume.created && (
+            <p className="text-center text-xs text-gray-500">
+              {format(parseISO(resume.created), "dd/MM/yyyy HH:mm:ss")}
+            </p>
+          )}
         </div>
       );
     });

@@ -4,7 +4,7 @@ import HandleBars from "handlebars";
 
 import { RecordModel } from "pocketbase";
 import { useParams } from "react-router-dom";
-import { Button, Spinner, Tooltip, addToast } from "@heroui/react";
+import { Button, Spinner, Tooltip, addToast, closeAll } from "@heroui/react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
@@ -70,8 +70,9 @@ export default function ArtBoard() {
       });
 
       addToast({ title: "Exporting...", color: "primary", promise: post });
-
       const response = await post;
+      closeAll();
+
       return response.data;
     },
     retry(failureCount, error) {
@@ -110,7 +111,10 @@ export default function ArtBoard() {
         responseType: "json"
       });
 
+      addToast({ title: "Saving...", color: "primary", promise: post });
       const response = await post;
+      closeAll();
+
       return response.data;
     },
     retry: (failureCount, error) => failureCount < 1,
