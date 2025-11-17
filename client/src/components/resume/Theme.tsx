@@ -84,7 +84,7 @@ const ThemeThumbnail = React.memo(({ id }: { id: string }) => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["template-thumbnails", id],
     queryFn: async () => {
-      const response = await axios.get("https://picsum.photos/v2/listt");
+      const response = await axios.get("https://picsum.photos/v2/list");
       return response.data;
     },
     retryDelay: 1000,
