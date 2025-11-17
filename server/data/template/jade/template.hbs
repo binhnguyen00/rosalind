@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 <body>
-  <div style="display: flex; gap: 2rem;">
+  <div style="display: flex;">
 
-    <aside style="flex: 0 0 280px; background-color: #f8f8f8; padding: 1.5rem; border-radius: 8px;">
+    <aside style="flex: 0 0 280px; background-color: #f8f8f8; padding: 1rem; border-radius: 8px;">
 
       <section class="sidebar-section">
         <h2 class="sidebar-title">Contact</h2>
@@ -34,6 +34,13 @@
           {{/if}}
         </div>
       </section>
+
+      {{#if basics.summary}}
+        <section class="section">
+          <h2 class="section-title">Summary</h2>
+          <p style="font-size: 0.875rem; margin-top: 0.5rem;">{{basics.summary}}</p>
+        </section>
+      {{/if}}
 
       {{#if education.length}}
         <section class="sidebar-section">
@@ -77,7 +84,7 @@
 
     </aside>
 
-    <main style="flex: 1;">
+    <main style="flex: 1; padding: 1rem;">
 
       <header style="margin-bottom: 2rem;">
         <h1 style="font-size: 2.5rem; font-weight: 700; color: #0066cc; margin-bottom: 0.25rem !important;">{{basics.name}}</h1>
@@ -90,13 +97,6 @@
           </div>
         {{/if}}
       </header>
-
-      {{#if basics.summary}}
-        <section class="section">
-          <h2 class="section-title">Summary</h2>
-          <p style="font-size: 0.875rem; margin-top: 0.5rem;">{{basics.summary}}</p>
-        </section>
-      {{/if}}
 
       {{#if work.length}}
         <section class="section">

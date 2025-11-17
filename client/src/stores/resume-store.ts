@@ -36,12 +36,14 @@ export const useResumeStore = create<ResumeStore>((set) => ({
     stores.useProjectsStore.getState().reset();
   },
 
-  updateTemplate: (t: string) => set({
-    metadata: {
-      ...resume.parse({}).metadata,
-      template: t
-    }
-  }),
+  updateTemplate: (t: string) => {
+    return set({
+      metadata: {
+        ...metadata,
+        template: t
+      }
+    })
+  },
 
   updateId: (id: string) => set({ id: id }),
 

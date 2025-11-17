@@ -242,8 +242,8 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const pocketBase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const { data: template, isLoading, isError, error } = useQuery({
-    queryKey: ["template", metadata.template],
+  const { data: template, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ["template"],
     queryFn: async () => {
       return await pocketBase.collection("template").getFirstListItem(
         `code="${metadata.template}"`
@@ -304,6 +304,11 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
     return () => observer.disconnect();
 
   }, [template, basics, educations, works, projects]);
+
+  React.useEffect(() => {
+    refetch();
+    console.log(metadata.template);
+  }, [metadata.template]);
 
   if (isLoading) {
     return <Spinner />

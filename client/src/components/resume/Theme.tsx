@@ -8,7 +8,8 @@ import { useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
 
 export default function Themes() {
-  const metadata = useResumeStore(state => state.metadata);
+  const resumeStore = useResumeStore();
+  const metadata = resumeStore.metadata;
   const pocketBase = React.useContext(PocketBaseContext);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -41,26 +42,36 @@ export default function Themes() {
     </div>
   );
 
+  const onSelect = (theme: string) => {
+    if (!theme) return;
+    const lower = String(theme).toLowerCase();
+    resumeStore.updateTemplate(lower);
+  }
+
   return (
     <>
       {data.map((template) => (
-        <Card
+        <div
           key={template.id}
-          className={cn(
-            "border border-divider",
-            "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer",
-            metadata.template === String(template.code).toLowerCase() ? "bg-blue-100" : ""
-          )}
-          shadow="none"
+          onClick={() => onSelect(template.code)}
         >
-          <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-            <p className="text-tiny uppercase font-light"> {template.created} </p>
-            <h4 className="font-bold text-large"> {template.label} </h4>
-          </CardHeader>
-          <CardBody className="overflow-visible py-2">
-            <ThemeThumbnail />
-          </CardBody>
-        </Card>
+          <Card
+            className={cn(
+              "border border-divider",
+              "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer",
+              metadata.template === String(template.code).toLowerCase() ? "bg-blue-100" : ""
+            )}
+            shadow="none"
+          >
+            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              <p className="text-tiny uppercase font-light"> {template.created} </p>
+              <h4 className="font-bold text-large"> {template.label} </h4>
+            </CardHeader>
+            <CardBody className="overflow-visible py-2">
+              <ThemeThumbnail />
+            </CardBody>
+          </Card>
+        </div>
       ))}
     </>
   )
