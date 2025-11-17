@@ -8,8 +8,8 @@ import { useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
 
 export default function Themes() {
-  const resumeStore = useResumeStore();
-  const metadata = resumeStore.metadata;
+  const metadata = useResumeStore((state) => state.metadata);
+  const updateTemplate = useResumeStore((state) => state.updateTemplate);
   const pocketBase = React.useContext(PocketBaseContext);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -22,6 +22,9 @@ export default function Themes() {
     retry: (failureCount, error) => {
       return failureCount < 2;
     },
+    staleTime: Infinity,
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
   })
 
   if (isLoading) return (
@@ -45,7 +48,7 @@ export default function Themes() {
   const onSelect = (theme: string) => {
     if (!theme) return;
     const lower = String(theme).toLowerCase();
-    resumeStore.updateTemplate(lower);
+    updateTemplate(lower);
   }
 
   return (
@@ -68,7 +71,7 @@ export default function Themes() {
               <h4 className="font-bold text-large"> {template.label} </h4>
             </CardHeader>
             <CardBody className="overflow-visible py-2">
-              <ThemeThumbnail />
+              <ThemeThumbnail id={template.id} />
             </CardBody>
           </Card>
         </div>
@@ -77,13 +80,13 @@ export default function Themes() {
   )
 }
 
-function ThemeThumbnail() {
+const ThemeThumbnail = React.memo(({ id }: { id: string }) => {
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["template-thumbnails"],
+    queryKey: ["template-thumbnails", id],
     queryFn: async () => {
       const response = await axios.get("https://picsum.photos/v2/list");
       return response.data;
-    }
+    },
   });
 
   if (isLoading) return (
@@ -115,4 +118,4 @@ function ThemeThumbnail() {
       src={data[Math.floor(Math.random() * data.length)].download_url}
     />
   )
-}
+});

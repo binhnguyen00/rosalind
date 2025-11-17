@@ -307,7 +307,6 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
   React.useEffect(() => {
     refetch();
-    console.log(metadata.template);
   }, [metadata.template]);
 
   if (isLoading) {
