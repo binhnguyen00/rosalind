@@ -150,7 +150,7 @@ export default function ArtBoard() {
     const { zoomIn, zoomOut, centerView } = useControls();
 
     return (
-      <div className="absolute top-2 right-2 z-50 flex flex-col gap-2">
+      <div className="absolute top-2 right-2 z-10 flex flex-col gap-2">
         <Tooltip content="Zoom In" placement="left">
           <Button
             variant="solid" size="md" color="primary" isIconOnly

@@ -13,14 +13,14 @@ export default function Navbar() {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
-  const menuItems = [
+  const menuItems: { label: string; href: string }[] = [
     {
-      label: "Features",
-      href: "/features",
+      label: "Home",
+      href: "/",
     },
     {
-      label: "Page",
-      href: "/page",
+      label: "Profile",
+      href: "/profile",
     },
   ];
 
