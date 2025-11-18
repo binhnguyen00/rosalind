@@ -104,6 +104,9 @@ func CreateTemplateRecords(app *pocketbase.PocketBase) error {
     }
 
     dirName := entry.Name()
+    if (strings.HasPrefix(dirName, "_")) {
+      continue;
+    }
     templateDir := filepath.Join(templateBasePath, dirName)
 
     templatePath := filepath.Join(templateDir, "template.hbs")
