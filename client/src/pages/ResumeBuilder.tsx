@@ -12,7 +12,7 @@ export default function ResumeBuilder() {
     <DefaultLayout className="p-2 h-screen">
       <PanelGroup direction="horizontal" className="h-full">
 
-        <Panel id="left" order={1} defaultSize={25} minSize={20} collapsible>
+        <Panel id="left" order={1} defaultSize={25} minSize={20} maxSize={35} collapsible>
           <div className="h-full bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-slate-300/50 dark:hover:shadow-slate-900/50">
             <ResumeInfoPane />
           </div>
