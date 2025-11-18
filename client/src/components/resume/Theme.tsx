@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
 
+import { format, parseISO } from "date-fns";
 import { useQuery } from "@tanstack/react-query";
 import { Spinner, Card, CardHeader, CardBody, cn } from "@heroui/react";
 
@@ -69,7 +70,11 @@ export default function Themes() {
             shadow="none"
           >
             <CardHeader className="flex-col items-start shrink-0">
-              <p className="text-tiny uppercase font-light"> {template.created} </p>
+              {template.created && (
+                <p className="text-tiny uppercase font-light">
+                  {format(parseISO(template.created), "dd/MM/yyyy HH:mm:ss")}
+                </p>
+              )}
               <h4 className="font-bold text-large"> {template.label} </h4>
             </CardHeader>
             <CardBody className="p-2">

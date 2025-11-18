@@ -17,7 +17,7 @@ export default function ResumeBuilder() {
           <ArtBoard />
         </div>
 
-        <div className="border border-divider rounded p-2 h-full">
+        <div className="border border-divider rounded overflow-hidden">
           <ResumePropertiesPane />
         </div>
 
@@ -43,22 +43,23 @@ function ResumePropertiesPane() {
       aria-label="Options" destroyInactiveTabPanel={false}
       classNames={{
         tabList: "flex-shrink-0",
-        panel: "h-[85vh] overflow-hidden",
+        base: "p-2",
+        panel: "p-2 pb-15 h-full",
       }}
     >
       <Tab key="templates" title="Templates">
         <ScrollShadow
-          orientation="vertical" hideScrollBar size={10}
+          orientation="vertical" hideScrollBar size={20}
           className="grid grid-cols-1 h-full"
         >
+          <Themes />
+          <Themes />
+          <Themes />
           <Themes />
         </ScrollShadow>
       </Tab>
       <Tab key="fonts" title="Fonts">
-        <ScrollShadow
-          orientation="vertical" hideScrollBar size={10}
-          className="grid grid-cols-2 h-full"
-        >
+        <ScrollShadow orientation="vertical" hideScrollBar className="grid grid-cols-2 h-full">
           <Fonts />
         </ScrollShadow>
       </Tab>
