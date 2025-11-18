@@ -1,5 +1,6 @@
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { ScrollShadow, Tabs, Tab } from "@heroui/react";
+import { ScrollShadow, Tabs, Tab, cn } from "@heroui/react";
+import { Tally2 } from "lucide-react";
 
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
@@ -8,7 +9,7 @@ import { Basics, Education, Work, Project, Themes, Fonts } from "@components/res
 export default function ResumeBuilder() {
 
   return (
-    <DefaultLayout className="p-4 h-screen">
+    <DefaultLayout className="p-2 h-screen">
       <PanelGroup direction="horizontal">
 
         <Panel>
@@ -17,7 +18,11 @@ export default function ResumeBuilder() {
           </div>
         </Panel>
 
-        <PanelResizeHandle />
+        <PanelResizeHandle className={cn(
+          "p-1",
+          "transition-colors", "duration-300",
+          "hover:bg-blue-200", "hover:cursor-col-resize"
+        )} />
 
         <Panel minSize={30}>
           <div className="border border-divider rounded overflow-hidden h-full flex flex-col">
@@ -25,7 +30,11 @@ export default function ResumeBuilder() {
           </div>
         </Panel>
 
-        <PanelResizeHandle />
+        <PanelResizeHandle className={cn(
+          "p-1",
+          "transition-colors", "duration-300",
+          "hover:bg-blue-200", "hover:cursor-col-resize"
+        )} />
 
         <Panel>
           <div className="border border-divider rounded overflow-hidden h-full flex flex-col">
@@ -40,7 +49,7 @@ export default function ResumeBuilder() {
 
 function ResumeInfoPane() {
   return (
-    <ScrollShadow orientation="vertical" className="p-2 space-y-4 flex-1 pb-4">
+    <ScrollShadow orientation="vertical" className="p-2 space-y-4 flex-1 pb-4" hideScrollBar>
       <Basics />
       <Work />
       <Education />
