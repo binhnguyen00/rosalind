@@ -205,6 +205,7 @@ export default function ArtBoard() {
           minScale={0.4}
           initialScale={0.8}
           limitToBounds={false}
+          disablePadding={true}
         >
           <Controls />
           <TransformComponent

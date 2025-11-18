@@ -1,6 +1,6 @@
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
-import { ScrollShadow, Tabs, Tab, cn } from "@heroui/react";
-import { Tally2 } from "lucide-react";
+import { ScrollShadow, Tabs, Tab } from "@heroui/react";
+import { GripVertical } from "lucide-react";
 
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
@@ -10,41 +10,37 @@ export default function ResumeBuilder() {
 
   return (
     <DefaultLayout className="p-2 h-screen">
-      <PanelGroup direction="horizontal">
+      <PanelGroup direction="horizontal" className="h-full">
 
-        <Panel>
-          <div className="border border-divider rounded overflow-hidden h-full flex flex-col">
+        <Panel id="left" order={1} defaultSize={25} minSize={20} collapsible>
+          <div className="h-full bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-slate-300/50 dark:hover:shadow-slate-900/50">
             <ResumeInfoPane />
           </div>
         </Panel>
 
-        <PanelResizeHandle className={cn(
-          "p-1",
-          "transition-colors", "duration-300",
-          "hover:bg-blue-200", "hover:cursor-col-resize"
-        )} />
+        <PanelResizeHandle className="w-4 flex items-center justify-center">
+          <GripVertical size={24} />
+        </PanelResizeHandle>
 
-        <Panel minSize={30}>
-          <div className="border border-divider rounded overflow-hidden h-full flex flex-col">
+        <Panel id="center" order={2} defaultSize={50} minSize={30}>
+          <div className="h-full bg-white dark:bg-slate-800/30 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-2xl shadow-slate-300/50 dark:shadow-slate-950/50 overflow-hidden transition-all duration-300 hover:shadow-3xl">
             <ArtBoard />
           </div>
         </Panel>
 
-        <PanelResizeHandle className={cn(
-          "p-1",
-          "transition-colors", "duration-300",
-          "hover:bg-blue-200", "hover:cursor-col-resize"
-        )} />
+        <PanelResizeHandle className="w-4 flex items-center justify-center">
+          <GripVertical size={24} />
+        </PanelResizeHandle>
 
-        <Panel>
-          <div className="border border-divider rounded overflow-hidden h-full flex flex-col">
+        <Panel id="right" order={3} defaultSize={25} minSize={20} collapsible>
+          <div className="h-full bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-slate-300/50 dark:hover:shadow-slate-900/50">
             <ResumePropertiesPane />
           </div>
         </Panel>
 
-      </PanelGroup>
-    </DefaultLayout>
-  )
+      </PanelGroup >
+    </DefaultLayout >
+  );
 }
 
 function ResumeInfoPane() {
