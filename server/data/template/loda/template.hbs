@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{basics.name}} - Resume</title>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="corp-header">
+    <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+      <h1 class="corp-name">{{basics.name}}</h1>
+      {{#if basics.label}}<p class="corp-label">{{basics.label}}</p>{{/if}}
+    </div>
+  </header>
+
+  <div class="contact-strip">
+    <div class="container" style="padding-top: 0.75rem; padding-bottom: 0.75rem; display: flex; flex-wrap: wrap; gap: 1rem;">
+      {{#if basics.email}}
+        <span class="contact-item">
+          <a href="mailto:{{basics.email}}">{{basics.email}}</a>
+        </span>
+      {{/if}}
+      {{#if basics.phone}}
+        <span class="contact-item">{{basics.phone}}</span>
+      {{/if}}
+      {{#if basics.url}}
+        <span class="contact-item">
+          <a href="{{basics.url}}" target="_blank">{{basics.url}}</a>
+        </span>
+      {{/if}}
+      {{#if basics.location}}
+        <span class="contact-item">{{basics.location}}</span>
+      {{/if}}
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="container" style="padding-top: 2rem;">
+    {{#if basics.summary}}
+      <section class="section">
+        <h2 class="section-title">Summary</h2>
+        <p class="section-summary">{{basics.summary}}</p>
+      </section>
+    {{/if}}
+
+    <div class="main-layout">
+      <!-- MAIN COLUMN (Left) -->
+      <main class="main-col">
+        {{#if work.length}}
+          <section class="section">
+            <h2 class="section-title">Experience</h2>
+            {{#each work}}
+              <div class="item">
+                <div class="item-header">
+                  <h3 class="item-title">{{name}}</h3>
+                  <span class="item-date">{{startDate}} - {{endDate}}</span>
+                </div>
+                {{#if position}}<h4 class="item-subtitle">{{position}}</h4>{{/if}}
+                {{#if summary}}<p class="item-summary">{{summary}}</p>{{/if}}
+                {{#if url}}<a href="{{url}}" class="item-url" target="_blank">{{url}}</a>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+
+        {{#if projects.length}}
+          <section class="section">
+            <h2 class="section-title">Projects</h2>
+            {{#each projects}}
+              <div class="item">
+                <div class="item-header">
+                  <h3 class="item-title">{{name}}</h3>
+                  <span class="item-date">{{startDate}} - {{endDate}}</span>
+                </div>
+                {{#if description}}<p class="item-summary">{{description}}</p>{{/if}}
+                {{#if url}}<a href="{{url}}" class="item-url" target="_blank">{{url}}</a>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+
+        {{#if publications.length}}
+          <section class="section">
+            <h2 class="section-title">Publications</h2>
+            {{#each publications}}
+              <div class="item">
+                <div class="item-header">
+                  <h3 class="item-title">{{name}}</h3>
+                  <span class="item-date">{{releaseDate}}</span>
+                </div>
+                {{#if publisher}}<h4 class="item-subtitle">{{publisher}}</h4>{{/if}}
+                {{#if summary}}<p class="item-summary">{{summary}}</p>{{/if}}
+                {{#if url}}<a href="{{url}}" class="item-url" target="_blank">{{url}}</a>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+
+        {{#if volunteer.length}}
+          <section class="section">
+            <h2 class="section-title">Volunteer</h2>
+            {{#each volunteer}}
+              <div class="item">
+                <div class="item-header">
+                  <h3 class="item-title">{{organization}}</h3>
+                  <span class="item-date">{{startDate}} - {{endDate}}</span>
+                </div>
+                {{#if position}}<h4 class="item-subtitle">{{position}}</h4>{{/if}}
+                {{#if summary}}<p class="item-summary">{{summary}}</p>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+      </main>
+
+      <!-- SIDEBAR (Right) -->
+      <aside class="side-col">
+        {{#if skills.length}}
+          <section class="section">
+            <h2 class="section-title">Skills</h2>
+            <ul class="sidebar-list">
+              {{#each skills}}
+                <li class="sidebar-item">
+                  <span class="sidebar-item-title">{{name}}</span>
+                  {{#if level}}<span class="sidebar-item-level"> ({{level}})</span>{{/if}}
+                  {{#if description}}<p class__("sidebar-item-desc")>{{description}}</p>{{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if education.length}}
+          <section class="section">
+            <h2 class="section-title">Education</h2>
+            {{#each education}}
+              <div class="item sidebar-item">
+                <h3 class="item-title" style="font-size: 1rem;">{{institution}}</h3>
+                <h4 class="item-subtitle" style="font-size: 0.9rem;">{{studyType}}{{#if area}} in {{area}}{{/if}}</h4>
+                <span class="item-date" style="font-size: 0.85rem;">{{startDate}} - {{endDate}}</span>
+                {{#if score}}<p class="item-summary" style="margin-top: 0.25rem;">GPA: {{score}}</p>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+
+        {{#if awards.length}}
+          <section class="section">
+            <h2 class="section-title">Awards</h2>
+            <ul class="sidebar-list">
+              {{#each awards}}
+                <li class="sidebar-item">
+                  <span class="sidebar-item-title">{{title}}</span>
+                  {{#if awarder}}<span class="sidebar-item-level"> - {{awarder}}</span>{{/if}}
+                  <span class="sidebar-item-date">{{date}}</span>
+                  {{#if summary}}<p class_("sidebar-item-desc")>{{summary}}</p>{{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if certificates.length}}
+          <section class="section">
+            <h2 class="section-title">Certificates</h2>
+            <ul class="sidebar-list">
+              {{#each certificates}}
+                <li class="sidebar-item">
+                  {{#if url}}
+                    <a href="{{url}}" class="sidebar-item-title" target="_blank">{{name}}</a>
+                  {{else}}
+                    <span class="sidebar-item-title">{{name}}</span>
+                  {{/if}}
+                  {{#if issuer}}<span class="sidebar-item-level"> - {{issuer}}</span>{{/if}}
+                  <span class="sidebar-item-date">{{date}}</span>
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if languages.length}}
+          <section class="section">
+            <h2 class="section-title">Languages</h2>
+            <ul class="sidebar-list">
+              {{#each languages}}
+                <li class="sidebar-item">
+                  <span class="sidebar-item-title">{{language}}</span>
+                  {{#if fluency}}<span class="sidebar-item-level"> ({{fluency}})</span>{{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if interests.length}}
+          <section class="section">
+            <h2 class="section-title">Interests</h2>
+            <ul class="sidebar-list">
+              {{#each interests}}
+                <li class="sidebar-item">
+                  <span class="sidebar-item-title">{{name}}</span>
+                  {{#if keywords.length}}
+                    <p class_("sidebar-item-desc")>
+                      {{#each keywords}}
+                        <span>{{this}}{{#unless @last}}, {{/unless}}</span>
+                      {{/each}}
+                    </p>
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+      </aside>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{basics.name}} - Resume</title>
+  <style>
+    {{!-- The stylesheet content will be injected here by your Go app --}}
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <header class="header-main">
+      {{#if basics.image}}
+        <img src="{{basics.image}}" alt="{{basics.name}}" class="profile-image">
+      {{/if}}
+      <h1 class="header-name">{{basics.name}}</h1>
+      {{#if basics.label}}<h2 class="header-label">{{basics.label}}</h2>{{/if}}
+
+      <div class="contact-bar">
+        {{#if basics.email}}
+          <span class="contact-item">
+            <a href="mailto:{{basics.email}}">{{basics.email}}</a>
+          </span>
+        {{/if}}
+        {{#if basics.phone}}
+          <span class="contact-item">{{basics.phone}}</span>
+        {{/if}}
+        {{#if basics.url}}
+          <span class="contact-item">
+            <a href="{{basics.url}}" target="_blank">{{basics.url}}</a>
+          </span>
+        {{/if}}
+        {{#if basics.location}}
+          <span class="contact-item">{{basics.location}}</span>
+        {{/if}}
+      </div>
+
+      {{#if basics.profiles.length}}
+      <div class="contact-bar profiles">
+        {{#each basics.profiles}}
+          <span class="contact-item profile-item">
+            <span class="label">{{network}}:</span>
+            <a href="{{url}}" target="_blank">{{username}}</a>
+          </span>
+        {{/each}}
+      </div>
+      {{/if}}
+    </header>
+
+    <main>
+      {{#if basics.summary}}
+        <section class="section">
+          <h3 class="section-title">Summary</h3>
+          <p class="summary-text">{{basics.summary}}</p>
+        </section>
+      {{/if}}
+
+      {{#if work.length}}
+        <section class="section">
+          <h3 class="section-title">Experience</h3>
+          <div class="timeline">
+            {{#each work}}
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="item-header">
+                    <h4 class="item-title">{{name}}</h4>
+                    <span class="item-date">{{startDate}} - {{endDate}}</span>
+                  </div>
+                  {{#if position}}<h5 class="item-subtitle">{{position}}</h5>{{/if}}
+                  {{#if summary}}<p class="item-summary">{{summary}}</p>{{/if}}
+                  {{#if url}}<a href="{{url}}" class="item-url" target="_blank">{{url}}</a>{{/if}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if education.length}}
+        <section class="section">
+          <h3 class="section-title">Education</h3>
+          <div class="timeline">
+            {{#each education}}
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <div class="item-header">
+                    <h4 class="item-title">{{institution}}</h4>
+                    <span class="item-date">{{startDate}} - {{endDate}}</span>
+                  </div>
+                  <h5 class="item-subtitle">{{studyType}}{{#if area}} in {{area}}{{/if}}</h5>
+                  {{#if score}}<p class="item-summary">GPA: {{score}}</p>{{/if}}
+                  {{#if url}}<a href="{{url}}" class="item-url" target="_blank">{{url}}</a>{{/if}}
+                </div>
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if projects.length}}
+        <section class="section">
+          <h3 class="section-title">Projects</h3>
+          <div class="grid-list">
+            {{#each projects}}
+              <div class="grid-item item-card">
+                <div class="item-header">
+                  <h4 class="item-title">{{name}}</h4>
+                  <span class="item-date">{{startDate}} - {{endDate}}</span>
+                </div>
+                {{#if description}}<p class="item-summary">{{description}}</p>{{/if}}
+                {{#if url}}<a href="{{url}}" class="item-url" target="_blank">{{url}}</a>{{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if skills.length}}
+        <section class="section">
+          <h3 class="section-title">Skills</h3>
+          <div class="skill-list">
+            {{#each skills}}
+              <div class="skill-item">
+                <span class="skill-name">{{name}}</span>
+                {{#if level}}<span class="skill-level">({{level}})</span>{{/if}}
+                {{#if description}}<span class="skill-desc">{{description}}</span>{{/if}}
+              </div>
+            {{/each}}
+          </div>
+        </section>
+      {{/if}}
+
+      <div class="grid-list">
+        {{#if awards.length}}
+          <section class="section">
+            <h3 class="section-title">Awards</h3>
+            <ul class="compact-list">
+              {{#each awards}}
+                <li class="compact-item">
+                  <span class="item-title">{{title}}</span>
+                  {{#if awarder}}<span class="item-subtitle"> - {{awarder}}</span>{{/if}}
+                  <span class="item-date">{{date}}</span>
+                  {{#if summary}}<p class="item-summary">{{summary}}</p>{{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if certificates.length}}
+          <section class="section">
+            <h3 class="section-title">Certificates</h3>
+            <ul class="compact-list">
+              {{#each certificates}}
+                <li class="compact-item">
+                  {{#if url}}
+                    <a href="{{url}}" class="item-title" target="_blank">{{name}}</a>
+                  {{else}}
+                    <span class="item-title">{{name}}</span>
+                  {{/if}}
+                  {{#if issuer}}<span class="item-subtitle"> - {{issuer}}</span>{{/if}}
+                  <span class="item-date">{{date}}</span>
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if interests.length}}
+          <section class="section">
+            <h3 class="section-title">Interests</h3>
+            <ul class="compact-list">
+              {{#each interests}}
+                <li class="compact-item">
+                  <span class="item-title">{{name}}</span>
+                  {{#if keywords.length}}
+                    <p class="item-summary">
+                      {{#each keywords}}
+                        <span>{{this}}{{#unless @last}}, {{/unless}}</span>
+                      {{/each}}
+                    </p>
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+      </div>
+
+    </main>
+  </div>
+
+</body>
+</html>
