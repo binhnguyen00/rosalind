@@ -4,86 +4,88 @@
   <div style="display: flex;">
 
     {{!-- left side --}}
-    <aside style="flex: 0 0 280px; background-color: #f8f8f8; padding: 1rem; border-radius: 8px;">
+    {{#if basics}}
+      <aside style="flex: 0 0 280px; background-color: #f8f8f8; padding: 1rem; border-radius: 8px;">
 
-      <section class="sidebar-section">
-        <h2 class="sidebar-title">Contact</h2>
-        <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-          {{#if basics.email}}
-            <div>
-              <span style="font-weight: 600; color: #333;">Email</span>
-              <div style="word-wrap: break-word;">{{basics.email}}</div>
-            </div>
-          {{/if}}
-          {{#if basics.phone}}
-            <div>
-              <span style="font-weight: 600; color: #333;">Phone</span>
-              <div>{{basics.phone}}</div>
-            </div>
-          {{/if}}
-          {{#if basics.url}}
-            <div>
-              <span style="font-weight: 600; color: #333;">Website</span>
-              <div style="word-wrap: break-word;"><a href="{{basics.url}}">{{basics.url}}</a></div>
-            </div>
-          {{/if}}
-          {{#if basics.location}}
-            <div>
-              <span style="font-weight: 600; color: #333;">Location</span>
-              <div>{{basics.location}}</div>
-            </div>
-          {{/if}}
-        </div>
-      </section>
-
-      {{#if basics.summary}}
-        <section class="section">
-          <h2 class="section-title">Summary</h2>
-          <p style="font-size: 0.875rem; margin-top: 0.5rem;">{{basics.summary}}</p>
-        </section>
-      {{/if}}
-
-      {{#if education.length}}
         <section class="sidebar-section">
-          <h2 class="sidebar-title">Education</h2>
-          {{#each education}}
-            <div class="item">
-              <h3 class="item-title" style="font-size: 0.95rem;">{{institution}}</h3>
-              <div class="item-subtitle" style="margin-bottom: 0;">{{studyType}}{{#if area}} in {{area}}{{/if}}</div>
-              <div class="item-date" style="font-size: 0.875rem;">{{startDate}} - {{endDate}}</div>
-              {{#if score}}<div style="font-size: 0.875rem; color: #666;">GPA: {{score}}</div>{{/if}}
-              {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
-            </div>
-          {{/each}}
+          <h2 class="sidebar-title">Contact</h2>
+          <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+            {{#if basics.email}}
+              <div>
+                <span style="font-weight: 600; color: #333;">Email</span>
+                <div style="word-wrap: break-word;">{{basics.email}}</div>
+              </div>
+            {{/if}}
+            {{#if basics.phone}}
+              <div>
+                <span style="font-weight: 600; color: #333;">Phone</span>
+                <div>{{basics.phone}}</div>
+              </div>
+            {{/if}}
+            {{#if basics.url}}
+              <div>
+                <span style="font-weight: 600; color: #333;">Website</span>
+                <div style="word-wrap: break-word;"><a href="{{basics.url}}">{{basics.url}}</a></div>
+              </div>
+            {{/if}}
+            {{#if basics.location}}
+              <div>
+                <span style="font-weight: 600; color: #333;">Location</span>
+                <div>{{basics.location}}</div>
+              </div>
+            {{/if}}
+          </div>
         </section>
-      {{/if}}
 
-      {{#if skills.length}}
-        <section class="sidebar-section">
-          <h2 class="sidebar-title">Skills</h2>
-          {{#each skills}}
-            <div style="margin-bottom: 0.5rem;">
-              <span style="font-weight: 600; color: #333;">{{name}}</span>
-              {{#if level}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{level}})</span>{{/if}}
-              {{#if description}}<div style="font-size: 0.813rem; color: #444;">{{description}}</div>{{/if}}
-            </div>
-          {{/each}}
-        </section>
-      {{/if}}
+        {{#if basics.summary}}
+          <section class="section">
+            <h2 class="section-title">Summary</h2>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">{{basics.summary}}</p>
+          </section>
+        {{/if}}
 
-      {{#if languages.length}}
-        <section class="sidebar-section">
-          <h2 class="sidebar-title">Languages</h2>
-          {{#each languages}}
-            <div style="margin-bottom: 0.25rem;">
-              <span style="font-weight: 600; color: #333;">{{language}}</span>
-              {{#if fluency}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{fluency}})</span>{{/if}}
-            </div>
-          {{/each}}
-        </section>
-      {{/if}}
+        {{#if education.length}}
+          <section class="sidebar-section">
+            <h2 class="sidebar-title">Education</h2>
+            {{#each education}}
+              <div class="item">
+                <h3 class="item-title" style="font-size: 0.95rem;">{{institution}}</h3>
+                <div class="item-subtitle" style="margin-bottom: 0;">{{studyType}}{{#if area}} in {{area}}{{/if}}</div>
+                <div class="item-date" style="font-size: 0.875rem;">{{startDate}} - {{endDate}}</div>
+                {{#if score}}<div style="font-size: 0.875rem; color: #666;">GPA: {{score}}</div>{{/if}}
+                {{#if url}}<a href="{{url}}" style="font-size: 0.813rem;">{{url}}</a>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
 
-    </aside>
+        {{#if skills.length}}
+          <section class="sidebar-section">
+            <h2 class="sidebar-title">Skills</h2>
+            {{#each skills}}
+              <div style="margin-bottom: 0.5rem;">
+                <span style="font-weight: 600; color: #333;">{{name}}</span>
+                {{#if level}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{level}})</span>{{/if}}
+                {{#if description}}<div style="font-size: 0.813rem; color: #444;">{{description}}</div>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+
+        {{#if languages.length}}
+          <section class="sidebar-section">
+            <h2 class="sidebar-title">Languages</h2>
+            {{#each languages}}
+              <div style="margin-bottom: 0.25rem;">
+                <span style="font-weight: 600; color: #333;">{{language}}</span>
+                {{#if fluency}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{fluency}})</span>{{/if}}
+              </div>
+            {{/each}}
+          </section>
+        {{/if}}
+
+      </aside>
+    {{/if}}
 
     {{!-- main side --}}
     <main style="flex: 1; padding: 1rem;">

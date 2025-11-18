@@ -44,9 +44,9 @@ export default function ArtBoard() {
       console.log(response);
       return response;
     },
-    retryDelay: 3000,
+    retryDelay: 1500,
     retry: (failureCount, error) => {
-      return failureCount < 2;
+      return failureCount < 1;
     },
     refetchOnMount: mode === "update",
   });

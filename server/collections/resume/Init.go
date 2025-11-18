@@ -21,6 +21,9 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
   coll = core.NewBaseCollection(COLL_NAME);
   coll.ViewRule = types.Pointer("@request.auth.id != ''");
   coll.ListRule = types.Pointer("@request.auth.id != ''");
+  coll.CreateRule = types.Pointer("@request.auth.id != ''");
+  coll.UpdateRule = types.Pointer("@request.auth.id != ''");
+  coll.DeleteRule = types.Pointer("@request.auth.id != ''");
 
   userColl, _ := app.FindCollectionByNameOrId("users");
 
