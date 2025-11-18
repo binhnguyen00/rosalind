@@ -3,7 +3,6 @@ package main;
 import (
 "os";
 "log";
-"strings";
 
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
@@ -24,8 +23,14 @@ func main() {
   });
 
   app.OnServe().BindFunc(func(e *core.ServeEvent) error {
-    isGoRun := strings.HasPrefix(os.Args[0], os.TempDir())
-    if (isGoRun) { // only init data on development
+    isDev := false;
+    for _, arg := range os.Args {
+      if (arg == "--dev") {
+        isDev = true;
+      }
+    }
+    log.Println("isDev: ", isDev)
+    if (isDev) {
       users.CreateDefaultUser(app);
 
       resume.CreateResumeCollection(app);
