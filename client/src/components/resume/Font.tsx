@@ -1,7 +1,7 @@
-export default function Font() {
+export default function Fonts() {
   return (
     <div>
-      <p>Font</p>
+      <p>Fonts</p>
     </div>
   )
 }

@@ -2,7 +2,7 @@ import { ScrollShadow, Tabs, Tab } from "@heroui/react";
 
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
-import { Basics, Education, Work, Project, Theme, Font } from "@components/resume";
+import { Basics, Education, Work, Project, Themes, Fonts } from "@components/resume";
 
 export default function ResumeBuilder() {
   return (
@@ -39,20 +39,29 @@ function ResumeInfoPane() {
 
 function ResumePropertiesPane() {
   return (
-    <div className="space-y-2">
-      <p className="text-2xl font-bold sticky"> Properties </p>
-      <Tabs aria-label="Options" destroyInactiveTabPanel={false}>
-        <Tab key="templates" title="Templates">
-          <ScrollShadow orientation="vertical" className="h-full overflow-visible space-y-4" hideScrollBar>
-            <Theme />
-          </ScrollShadow>
-        </Tab>
-        <Tab key="fonts" title="Fonts">
-          <ScrollShadow orientation="vertical" className="h-full overflow-visible space-y-4" hideScrollBar>
-            <Font />
-          </ScrollShadow>
-        </Tab>
-      </Tabs>
-    </div>
+    <Tabs
+      aria-label="Options" destroyInactiveTabPanel={false}
+      classNames={{
+        tabList: "flex-shrink-0",
+        panel: "h-[85vh] overflow-hidden",
+      }}
+    >
+      <Tab key="templates" title="Templates">
+        <ScrollShadow
+          orientation="vertical" hideScrollBar size={10}
+          className="grid grid-cols-1 h-full"
+        >
+          <Themes />
+        </ScrollShadow>
+      </Tab>
+      <Tab key="fonts" title="Fonts">
+        <ScrollShadow
+          orientation="vertical" hideScrollBar size={10}
+          className="grid grid-cols-2 h-full"
+        >
+          <Fonts />
+        </ScrollShadow>
+      </Tab>
+    </Tabs>
   )
 }

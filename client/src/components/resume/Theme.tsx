@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 
 import { useQuery } from "@tanstack/react-query";
-import { Spinner, Card, CardHeader, CardBody, Image, cn } from "@heroui/react";
+import { Spinner, Card, CardHeader, CardBody, cn } from "@heroui/react";
 
 import { useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
@@ -56,21 +56,23 @@ export default function Themes() {
       {data.map((template) => (
         <div
           key={template.id}
+          className="aspect-3/4 h-full w-full pb-4"
           onClick={() => onSelect(template.code)}
         >
           <Card
             className={cn(
+              "h-full w-full flex flex-col",
               "border border-divider",
-              "transition-all duration-300 ease-in-out hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer",
+              "transition-all duration-300 ease-in-out hover:bg-blue-100 active:scale-95 cursor-pointer",
               metadata.template === String(template.code).toLowerCase() ? "bg-blue-100" : ""
             )}
             shadow="none"
           >
-            <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+            <CardHeader className="flex-col items-start shrink-0">
               <p className="text-tiny uppercase font-light"> {template.created} </p>
               <h4 className="font-bold text-large"> {template.label} </h4>
             </CardHeader>
-            <CardBody className="overflow-visible py-2">
+            <CardBody className="p-2">
               <ThemeThumbnail id={template.id} />
             </CardBody>
           </Card>
@@ -103,25 +105,25 @@ const ThemeThumbnail = React.memo(({ id }: { id: string }) => {
   );
 
   if (isError) return (
-    <Image
+    <img
       alt="Card background"
-      className="rounded-xl w-full h-[300px] object-cover"
+      className="w-full h-full object-cover rounded-xl"
       src="https://http.cat/500"
     />
   );
 
   if (!data) return (
-    <Image
+    <img
       alt="Card background"
-      className="rounded-xl w-full h-[300px] object-cover"
+      className="w-full h-full object-cover rounded-xl"
       src="https://http.cat/500"
     />
   )
 
   return (
-    <Image
+    <img
       alt="Card background"
-      className="rounded-xl w-full h-[300px] object-cover"
+      className="w-full h-full object-cover rounded-xl"
       src={data[Math.floor(Math.random() * data.length)].download_url}
     />
   )
