@@ -56,9 +56,8 @@ export default function References() {
               onClick={() => onEdit(idx)}
               className="flex justify-between items-start p-3 hover:bg-content2 hover:cursor-pointer transition-colors"
             >
-              <div className="flex flex-col gap-1 w-full">
+              <div className="flex w-full">
                 <p className="font-semibold">{item.name}</p>
-                <p className="text-sm text-foreground-600">{item.reference}</p>
               </div>
               <Button
                 variant="light" size="sm" isIconOnly

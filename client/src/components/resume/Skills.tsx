@@ -57,12 +57,8 @@ export default function Skills() {
               onClick={() => onEdit(idx)}
               className="flex justify-between items-start p-3 hover:bg-content2 hover:cursor-pointer transition-colors"
             >
-              <div className="flex flex-col gap-1 w-full">
-                <div className="flex items-center justify-between">
-                  <p className="font-semibold">{item.name}</p>
-                  {item.level && <span className="text-sm text-foreground-500">{item.level}</span>}
-                </div>
-                <p className="text-sm text-foreground-600">{item.description}</p>
+              <div className="flex items-center justify-between">
+                <p className="font-semibold">{item.name}</p>
               </div>
               <Button
                 variant="light" size="sm" isIconOnly
