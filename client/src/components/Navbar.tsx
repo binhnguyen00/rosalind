@@ -9,7 +9,11 @@ import {
 } from "@heroui/navbar";
 import { BotMessageSquare, CircleUserRound } from "lucide-react";
 
-export default function Navbar() {
+interface NavbarProps {
+  onOpenProfile?: () => void;
+}
+
+export default function Navbar({ onOpenProfile }: NavbarProps) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -17,10 +21,6 @@ export default function Navbar() {
     {
       label: "Home",
       href: "/",
-    },
-    {
-      label: "Profile",
-      href: "/profile",
     },
   ];
 
@@ -44,10 +44,8 @@ export default function Navbar() {
       </NavbarBrand>
 
       <NavbarContent justify="end">
-        <NavbarItem isActive={location.pathname === "/profile"}>
-          <Link href="/profile" color="foreground">
-            <CircleUserRound className="h-7 w-7" />
-          </Link>
+        <NavbarItem onClick={onOpenProfile} className="cursor-pointer">
+          <CircleUserRound className="h-7 w-7" />
         </NavbarItem>
       </NavbarContent>
 

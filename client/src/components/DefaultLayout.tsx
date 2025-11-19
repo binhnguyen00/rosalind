@@ -4,13 +4,14 @@ import { cn } from "@heroui/react";
 interface DefaultLayoutProps {
   children: React.ReactNode;
   className?: string;
+  onOpenProfile?: () => void;
 }
 export default function DefaultLayout(props: DefaultLayoutProps) {
-  const { children, className } = props;
+  const { children, className, onOpenProfile } = props;
 
   return (
     <div className="flex flex-col h-screen">
-      <Navbar />
+      <Navbar onOpenProfile={onOpenProfile} />
       <main
         id="main-content"
         role="main"

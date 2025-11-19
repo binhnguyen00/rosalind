@@ -9,11 +9,13 @@ import Publications from "./Publications";
 import Skills from "./Skills";
 import Interests from "./Interests";
 import References from "./References";
+import Resumes from "./Resumes";
 
 import Themes from "./Theme";
 import Fonts from "./Font";
 
 export {
+  Resumes,
   Basics,
   Work,
   Education,
