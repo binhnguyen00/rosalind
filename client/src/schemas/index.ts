@@ -31,8 +31,5 @@ export type { Interest } from "./InterestSchema";
 export { references } from "./ReferenceSchema";
 export type { Reference } from "./ReferenceSchema";
 
-export { languages } from "./LanguageSchema";
-export type { Language } from "./LanguageSchema";
-
 export { resume, metadata } from "./ResumeSchema";
 export type { Resume, Metadata } from "./ResumeSchema";

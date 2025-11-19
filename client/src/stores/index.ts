@@ -10,4 +10,3 @@ export { usePublicationStore } from "./publication-store";
 export { useSkillStore } from "./skill-store";
 export { useInterestStore } from "./interest-store";
 export { useReferenceStore } from "./reference-store";
-export { useLanguageStore } from "./language-store";

@@ -12,8 +12,8 @@ import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pa
 import { PocketBaseContext } from "@components";
 import {
   useBasicsStore, useEducationStore, useResumeStore, useWorkStore,
-  useProjectsStore,
-  useVolunteerStore
+  useInterestStore, usePublicationStore, useReferenceStore, useSkillStore,
+  useProjectsStore, useVolunteerStore, useAwardStore, useCertificateStore,
 } from "@stores";
 
 export default function ArtBoard() {
@@ -26,6 +26,12 @@ export default function ArtBoard() {
   const workStore = useWorkStore();
   const projectsStore = useProjectsStore();
   const volunteerStore = useVolunteerStore();
+  const awardsStore = useAwardStore();
+  const certificatesStore = useCertificateStore();
+  const interestsStore = useInterestStore();
+  const publicationsStore = usePublicationStore();
+  const referencesStore = useReferenceStore();
+  const skillsStore = useSkillStore();
 
   const { id } = useParams();
   const mode = id ? "update" : "create";
@@ -43,6 +49,12 @@ export default function ArtBoard() {
       projectsStore.replace(content.projects);
       workStore.replace(content.work);
       volunteerStore.replace(content.volunteer);
+      awardsStore.replace(content.awards);
+      certificatesStore.replace(content.certificates);
+      interestsStore.replace(content.interests);
+      publicationsStore.replace(content.publications);
+      referencesStore.replace(content.references);
+      skillsStore.replace(content.skills);
 
       console.log(response);
       return response;

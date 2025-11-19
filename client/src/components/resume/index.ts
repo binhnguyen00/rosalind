@@ -9,7 +9,6 @@ import Publications from "./Publications";
 import Skills from "./Skills";
 import Interests from "./Interests";
 import References from "./References";
-import Languages from "./Languages";
 
 import Themes from "./Theme";
 import Fonts from "./Font";
@@ -26,6 +25,5 @@ export {
   Skills,
   Interests,
   References,
-  Languages,
   Themes, Fonts,
 }
