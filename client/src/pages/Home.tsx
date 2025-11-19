@@ -30,7 +30,7 @@ export default function Home() {
       </ScrollShadow>
 
       <Drawer
-        size="2xl" isDismissable={false} hideCloseButton
+        size="lg" isDismissable={false} hideCloseButton
         isOpen={isOpen} onOpenChange={onOpenChange}
         classNames={{
           header: "border-b border-divider p-2 flex items-center",

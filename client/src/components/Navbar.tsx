@@ -1,13 +1,15 @@
 import React from "react";
 import { useLocation } from "react-router-dom";
+import { BotMessageSquare, CircleUserRound } from "lucide-react";
 
-import { Link } from "@heroui/link";
+import { Link, Avatar } from "@heroui/react";
 import {
   Navbar as HeroUINavbar,
   NavbarBrand, NavbarContent, NavbarItem,
   NavbarMenuToggle, NavbarMenu, NavbarMenuItem
 } from "@heroui/navbar";
-import { BotMessageSquare, CircleUserRound } from "lucide-react";
+
+import { PocketBaseContext } from "@components";
 
 interface NavbarProps {
   onOpenProfile?: () => void;
@@ -16,6 +18,7 @@ interface NavbarProps {
 export default function Navbar({ onOpenProfile }: NavbarProps) {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const { avatar } = React.useContext(PocketBaseContext);
 
   const menuItems: { label: string; href: string }[] = [
     {
@@ -45,7 +48,11 @@ export default function Navbar({ onOpenProfile }: NavbarProps) {
 
       <NavbarContent justify="end">
         <NavbarItem onClick={onOpenProfile} className="cursor-pointer">
-          <CircleUserRound className="h-7 w-7" />
+          {avatar.length > 0 ? (
+            <Avatar src={avatar} />
+          ) : (
+            <CircleUserRound className="h-7 w-7" />
+          )}
         </NavbarItem>
       </NavbarContent>
 

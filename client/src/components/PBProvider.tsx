@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 
 interface PocketBaseCtx {
   client: PocketBase;
+  avatar: string;
   login: ({ userOrEmail, password }: {
     userOrEmail: string;
     password: string;
@@ -81,9 +82,18 @@ export default function PocketBaseProvider({ client, children }: { client: Pocke
     }
   })
 
+  const avatar = React.useMemo(() => {
+    if (client.authStore.record) {
+      if (!client.authStore.record.avatar) return "";
+      return `${client.baseURL}/api/files/_pb_users_auth_/${client.authStore.record.id}/${client.authStore.record.avatar}`;
+    }
+    return "";
+  }, [client.authStore.record])
+
   return (
     <PocketBaseContext.Provider value={{
       client: client,
+      avatar: avatar,
       login: mutate,
       isLoggingIn: isPending,
       logout: logout,
