@@ -11,7 +11,6 @@ import {
   interests,
   references,
   project,
-  languages,
 } from "@schemas";
 
 export const metadata = z.object({
@@ -30,7 +29,6 @@ export const resume = z.object({
   certificates: certificates,
   publications: publications,
   skills: skills,
-  languages: languages,
   interests: interests,
   references: references,
   projects: project,

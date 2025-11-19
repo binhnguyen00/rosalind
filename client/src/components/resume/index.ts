@@ -1,7 +1,7 @@
 import Basics from "./Basics";
 import Work from "./Work";
 import Education from "./Education";
-import Project from "./Project";
+import Projects from "./Project";
 import Volunteer from "./Volunteer";
 import Awards from "./Awards";
 import Certificates from "./Certificates";
@@ -17,7 +17,7 @@ export {
   Basics,
   Work,
   Education,
-  Project,
+  Projects,
   Volunteer,
   Awards,
   Certificates,

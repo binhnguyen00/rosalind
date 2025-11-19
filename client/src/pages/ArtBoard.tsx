@@ -77,7 +77,12 @@ export default function ArtBoard() {
           work: workStore.store,
           projects: projectsStore.store,
           volunteer: volunteerStore.store,
-          // more...
+          awards: awardsStore.store,
+          certificates: certificatesStore.store,
+          interests: interestsStore.store,
+          publications: publicationsStore.store,
+          references: referencesStore.store,
+          skills: skillsStore.store,
         },
         html: html,
       }, {
@@ -121,7 +126,12 @@ export default function ArtBoard() {
           work: workStore.store,
           projects: projectsStore.store,
           volunteer: volunteerStore.store,
-          // more...
+          awards: awardsStore.store,
+          certificates: certificatesStore.store,
+          interests: interestsStore.store,
+          publications: publicationsStore.store,
+          references: referencesStore.store,
+          skills: skillsStore.store,
         },
       }, {
         headers: { "Authorization": pocketBase.authStore.token },
@@ -259,6 +269,12 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const works = useWorkStore(state => state.store);
   const projects = useProjectsStore(state => state.store);
   const volunteers = useVolunteerStore(state => state.store);
+  const awards = useAwardStore(state => state.store);
+  const certificates = useCertificateStore(state => state.store);
+  const interests = useInterestStore(state => state.store);
+  const publications = usePublicationStore(state => state.store);
+  const references = useReferenceStore(state => state.store);
+  const skills = useSkillStore(state => state.store);
 
   const [height, setHeight] = React.useState(0);
   const [pageCount, setPageCount] = React.useState(0);
@@ -302,6 +318,12 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
       education: educations,
       projects: projects,
       volunteer: volunteers,
+      awards: awards,
+      certificates: certificates,
+      interests: interests,
+      publications: publications,
+      references: references,
+      skills: skills,
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
@@ -327,7 +349,10 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     return () => observer.disconnect();
 
-  }, [template, basics, educations, works, projects, volunteers]);
+  }, [
+    template, basics, educations, works, projects, volunteers,
+    awards, certificates, interests, publications, references, skills
+  ]);
 
   React.useEffect(() => {
     refetch();

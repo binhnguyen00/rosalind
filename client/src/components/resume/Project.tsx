@@ -8,7 +8,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 import { useProjectsStore } from "@stores";
 import type { Project } from "@schemas";
 
-export default function Project() {
+export default function Projects() {
   const store = useProjectsStore();
   const list = useProjectsStore(state => state.store);
   const defaultData: Project = {

@@ -6,7 +6,7 @@ import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
 import {
   Themes, Fonts,
-  Basics, Skills, Work, Project, Education, Certificates, Awards, Publications, Volunteer, Interests, References,
+  Basics, Skills, Work, Projects, Education, Certificates, Awards, Publications, Volunteer, Interests, References,
 } from "@components/resume";
 
 export default function ResumeBuilder() {
@@ -52,7 +52,7 @@ function ResumeInfoPane() {
       <Basics />
       <Skills />
       <Work />
-      <Project />
+      <Projects />
       <Education />
       <Certificates />
       <Awards />
