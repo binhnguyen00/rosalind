@@ -5,6 +5,7 @@ import { Spinner } from "@heroui/react";
 const Home = lazy(() => import("@pages/Home"));
 const NotFound = lazy(() => import("@pages/NotFound"));
 const ResumeBuilder = lazy(() => import("@pages/ResumeBuilder"));
+const Login = lazy(() => import("@pages/Login"));
 
 export function App() {
   return (
@@ -14,6 +15,7 @@ export function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/resume/new" element={<ResumeBuilder />} />
         <Route path="/resume/:id" element={<ResumeBuilder />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </Suspense>
   );

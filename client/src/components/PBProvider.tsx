@@ -1,17 +1,47 @@
 import React from "react";
 import PocketBase from "pocketbase";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 
-export const PocketBaseContext = React.createContext({} as PocketBase);
+interface PocketBaseCtx {
+  client: PocketBase;
+  login: ({ userOrEmail, password }: {
+    userOrEmail: string;
+    password: string;
+  }) => void;
+  logout: () => void;
+}
+
+export const PocketBaseContext = React.createContext({} as PocketBaseCtx);
 
 export default function PocketBaseProvider({ client, children }: { client: PocketBase, children: React.ReactNode }) {
-  useQuery({
-    queryKey: ["auth-store"],
-    queryFn: async () => await client.collection("users").authWithPassword("binh.nguyen@gmail.com", "123456789"),
+
+  const { mutate, isError } = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async ({ userOrEmail, password }: {
+      userOrEmail: string;
+      password: string;
+    }) => {
+      // "binh.nguyen@gmail.com", "123456789"
+      await client.collection("users").authWithPassword(userOrEmail, password);
+      return;
+    }
   })
 
+  const logout = () => {
+    if (client.authStore.isValid) {
+      client.authStore.clear();
+    } else {
+      console.log("Already logout");
+    }
+    return;
+  }
+
   return (
-    <PocketBaseContext.Provider value={client}>
+    <PocketBaseContext.Provider value={{
+      client: client,
+      login: mutate,
+      logout: logout,
+    }}>
       {children}
     </PocketBaseContext.Provider>
   )

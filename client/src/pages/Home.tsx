@@ -34,7 +34,7 @@ export default function Home() {
 function Resumes() {
   const navigate = useNavigate();
   const resumeStore = useResumeStore();
-  const pocketBase = React.useContext(PocketBaseContext);
+  const { client: pocketBase } = React.useContext(PocketBaseContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [resumeInfo, setResumeInfo] = React.useState({

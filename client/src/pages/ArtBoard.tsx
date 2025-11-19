@@ -17,7 +17,7 @@ import {
 } from "@stores";
 
 export default function ArtBoard() {
-  const pocketBase = React.useContext(PocketBaseContext);
+  const { client: pocketBase } = React.useContext(PocketBaseContext);
   const templateRef = React.useRef<TemplateRefProps>(null);
 
   const resumeStore = useResumeStore();
@@ -278,7 +278,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
   const [height, setHeight] = React.useState(0);
   const [pageCount, setPageCount] = React.useState(0);
-  const pocketBase = React.useContext(PocketBaseContext);
+  const { client: pocketBase } = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const { data: template, isLoading, isError, error, refetch } = useQuery({

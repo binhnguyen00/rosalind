@@ -11,7 +11,7 @@ import { PocketBaseContext } from "@components";
 export default function Themes() {
   const metadata = useResumeStore((state) => state.metadata);
   const updateTemplate = useResumeStore((state) => state.updateTemplate);
-  const pocketBase = React.useContext(PocketBaseContext);
+  const { client: pocketBase } = React.useContext(PocketBaseContext);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["templates"],
