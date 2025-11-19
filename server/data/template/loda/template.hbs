@@ -184,27 +184,28 @@
           </section>
         {{/if}}
 
-        {{#if languages.length}}
-          <section class="section">
-            <h2 class="section-title">Languages</h2>
-            <ul class="sidebar-list">
-              {{#each languages}}
-                <li class="sidebar-item">
-                  <span class="sidebar-item-title">{{language}}</span>
-                  {{#if fluency}}<span class="sidebar-item-level"> ({{fluency}})</span>{{/if}}
-                </li>
-              {{/each}}
-            </ul>
-          </section>
-        {{/if}}
-
         {{#if interests.length}}
           <section class="section">
             <h2 class="section-title">Interests</h2>
             <ul class="sidebar-list">
               {{#each interests}}
                 <li class="sidebar-item">
-                  <span class="sidebar-item-title">{{this}}</span>
+                  <span class="sidebar-item-title">{{name}}</span>
+                  {{#if description}}<span class="sidebar-item-level"> - {{description}}</span>{{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if references.length}}
+          <section class="section">
+            <h2 class="section-title">References</h2>
+            <ul class="sidebar-list">
+              {{#each references}}
+                <li class="sidebar-item">
+                  <span class="sidebar-item-title">{{name}}</span>
+                  {{#if reference}}<span class="sidebar-item-level"> - {{reference}}</span>{{/if}}
                 </li>
               {{/each}}
             </ul>

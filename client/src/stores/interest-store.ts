@@ -18,7 +18,7 @@ export const useInterestStore = create<InterestStore>((set) => ({
     return {
       store: [
         ...state.store,
-        i
+        { name: i.name, description: i.description } // Corrected: use description instead of keywords
       ]
     }
   }),

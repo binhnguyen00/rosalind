@@ -13,7 +13,7 @@ export default function Interests() {
   const list = useInterestStore(state => state.store);
   const defaultData: Interest = {
     name: "",
-    keywords: [],
+    description: "",
   }
 
   const [mode, setMode] = React.useState<"add" | "edit">("add");
@@ -58,7 +58,7 @@ export default function Interests() {
             >
               <div className="flex flex-col gap-1 w-full">
                 <p className="font-semibold">{item.name}</p>
-                <p className="text-sm text-foreground-600">{item.keywords.join(", ")}</p>
+                <p className="text-sm text-foreground-600">{item.description}</p>
               </div>
               <Button
                 variant="light" size="sm" isIconOnly
@@ -87,10 +87,10 @@ export default function Interests() {
                   onChange={(e) => setData({ ...data, name: e.target.value })}
                 />
                 <Textarea
-                  label="Keywords (one per line)"
-                  value={data.keywords.join("\n")}
+                  label="Description"
+                  value={data.description}
                   variant="bordered"
-                  onChange={(e) => setData({ ...data, keywords: e.target.value.split("\n") })}
+                  onChange={(e) => setData({ ...data, description: e.target.value })}
                 />
               </ModalBody>
               <ModalFooter>

@@ -170,24 +170,15 @@
       </section>
     {{/if}}
 
-    {{#if languages.length}}
-      <section class="section">
-        <h2 style="font-size: 1.125rem; font-weight: 700; color: #0066cc; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 0.25rem; border-bottom: 1px solid #e0e0e0;">Languages</h2>
-        {{#each languages}}
-          <div style="margin-bottom: 0.5rem; margin-top: 0.5rem; display: flex; justify-content: space-between; align-items: baseline;">
-            <h3 style="font-size: 1rem; font-weight: 600; color: #1a1a1a;">{{language}}</h3>
-            {{#if fluency}}<span style="font-size: 0.875rem; color: #444; font-style: italic;">{{fluency}}</span>{{/if}}
-          </div>
-        {{/each}}
-      </section>
-    {{/if}}
-
     {{#if interests.length}}
       <section class="section">
-        <h2 style="font-size: 1.125rem; font-weight: 700; color: #0066cc; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 0.25rem; border-bottom: 1px solid #e0e0e0;">Interests</h2>
+        <h2 style="font-size: 1.125rem; font-weight: 700; color: #0057b8; text-transform: uppercase; letter-spacing: 0.05em; padding-bottom: 0.35rem; border-bottom: 1px solid #d6d6d6;">
+          Interests
+        </h2>
         {{#each interests}}
           <div style="margin-bottom: 1rem; margin-top: 0.75rem;">
-            <h3 style="font-size: 1rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.25rem !important;">{{name}}</h3>
+            <h3 style="font-size: 1rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.3rem !important;">{{name}}</h3>
+            {{#if description}} <div style="font-size: 0.875rem; color: #333; margin-top: 0.5rem; white-space: pre-wrap;">{{description}}</div> {{/if}}
           </div>
         {{/each}}
       </section>

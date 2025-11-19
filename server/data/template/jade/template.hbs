@@ -80,18 +80,6 @@
         </section>
       {{/if}}
 
-      {{#if languages.length}}
-        <section class="sidebar-section">
-          <h2 class="sidebar-title">Languages</h2>
-          {{#each languages}}
-            <div style="margin-bottom: 0.25rem;">
-              <span style="font-weight: 600; color: #333;">{{language}}</span>
-              {{#if fluency}}<span style="font-size: 0.813rem; color: #555; margin-left: 0.5rem;">({{fluency}})</span>{{/if}}
-            </div>
-          {{/each}}
-        </section>
-      {{/if}}
-
     </aside>
 
     <main style="flex: 1; padding: 1rem;">
@@ -212,19 +200,24 @@
           <h2 class="section-title">Interests</h2>
           {{#each interests}}
             <div class="item" style="margin-bottom: 0.5rem;">
-              <h3 class="item-title" style="font-size: 0.95rem;">{{this}}</h3>
+              <div class="item-header">
+                <h3 class="item-title" style="font-size: 0.95rem;">{{name}}</h3>
+              </div>
+              {{#if description}} <div class="item-summary" style="margin-top: 0.25rem;">{{description}}</div> {{/if}}
             </div>
           {{/each}}
         </section>
       {{/if}}
 
       {{#if references.length}}
-        <section class="section">
+        <section class="section" style="margin: 0 0 .5rem; font-size: .95rem;">
           <h2 class="section-title">References</h2>
           {{#each references}}
-            <div class="item" style="margin-bottom: 0.5rem;">
-              <h3 class="item-title" style="font-size: 0.95rem;">{{name}}</h3>
-              {{#if reference}}<div class="item-summary" style="margin-top: 0;">{{reference}}</div>{{/if}}
+            <div class="item">
+              <h3 class="item-title">{{name}}</h3>
+              {{#if reference}}
+                <div class="item-summary">{{reference}}</div>
+              {{/if}}
             </div>
           {{/each}}
         </section>

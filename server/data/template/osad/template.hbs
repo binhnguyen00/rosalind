@@ -177,6 +177,21 @@
               {{#each interests}}
                 <li class="compact-item">
                   <span class="item-title">{{this}}</span>
+                  {{#if description}}<span class="item-subtitle"> - {{description}}</span>{{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </section>
+        {{/if}}
+
+        {{#if references.length}}
+          <section class="section">
+            <h3 class="section-title">References</h3>
+            <ul class="compact-list">
+              {{#each references}}
+                <li class="compact-item">
+                  <span class="item-title">{{this}}</span>
+                  {{#if reference}}<span class="item-subtitle"> - {{reference}}</span>{{/if}}
                 </li>
               {{/each}}
             </ul>
