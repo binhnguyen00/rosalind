@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Basics, basics } from "@schemas";
+import { Basics, basics, Profile } from "@schemas";
 
 interface BasicsStore {
   store: Basics;
@@ -8,6 +8,9 @@ interface BasicsStore {
   addCustomField: (field: { key: string, value: string }) => void;
   updateCustomField: (field: { idx: number, key: string, value: string }) => void;
   removeCustomField: (idx: number) => void;
+  addProfile: () => void;
+  updateProfile: (idx: number, profile: Profile) => void;
+  removeProfile: (idx: number) => void;
 }
 
 export const useBasicsStore = create<BasicsStore>((set) => ({
@@ -36,7 +39,7 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
     return {
       store: {
         ...state.store,
-        customFields: state.store.customFields.map((item, i) => i === field.idx ? field : item)
+        customFields: state.store.customFields.map((item, i) => i === field.idx ? { key: field.key, value: field.value } : item)
       }
     }
   }),
@@ -49,4 +52,25 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
       }
     }
   }),
+  
+  addProfile: () => set(state => ({
+    store: {
+      ...state.store,
+      profiles: [...state.store.profiles, { network: "", username: "", url: "" }]
+    }
+  })),
+
+  updateProfile: (idx: number, profile: Profile) => set(state => ({
+    store: {
+      ...state.store,
+      profiles: state.store.profiles.map((p, i) => i === idx ? profile : p)
+    }
+  })),
+
+  removeProfile: (idx: number) => set(state => ({
+    store: {
+      ...state.store,
+      profiles: state.store.profiles.filter((_, i) => i !== idx)
+    }
+  })),
 }));
