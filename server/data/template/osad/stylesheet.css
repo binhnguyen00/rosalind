@@ -1,3 +1,10 @@
+/* Global Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   margin: 0 auto;
@@ -58,6 +65,7 @@ a:hover {
   border-bottom: 1px solid #eee;
 }
 
+/* Fixed: Container handles size and layout */
 .profile-image {
   width: 120px;
   height: 120px;
@@ -65,12 +73,15 @@ a:hover {
   overflow: hidden;
   margin: 0 auto 1.5rem;
   border: 4px solid #eee;
+  position: relative;
 }
 
+/* Fixed: Image fills container */
 .profile-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .header-name {
@@ -105,6 +116,7 @@ a:hover {
 .profiles {
   font-size: 0.9rem;
   color: #555;
+  margin-top: 0.5rem !important;
 }
 
 .profile-item a {
@@ -142,15 +154,17 @@ a:hover {
   margin-bottom: 0;
 }
 
+/* Fixed: Precise centering calculation */
 .timeline-dot {
   position: absolute;
-  left: -2.1rem;
+  left: calc(-1.5rem - 7px);
   top: 0.4rem;
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background-color: #E27D60;
   border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #EDF2F7;
 }
 
 .timeline-content {}

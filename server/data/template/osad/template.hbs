@@ -4,9 +4,6 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{basics.name}} - Resume</title>
-  <style>
-    {{!-- The stylesheet content will be injected here by your Go app --}}
-  </style>
 </head>
 <body>
 
@@ -14,7 +11,9 @@
 
     <header class="header-main">
       {{#if basics.image}}
-        <img src="{{basics.image}}" alt="{{basics.name}}" class="profile-image">
+        <div class="profile-image">
+          <img src="{{basics.image}}" alt="{{basics.name}}">
+        </div>
       {{/if}}
       <h1 class="header-name">{{basics.name}}</h1>
       {{#if basics.label}}<h2 class="header-label">{{basics.label}}</h2>{{/if}}
@@ -39,14 +38,14 @@
       </div>
 
       {{#if basics.profiles.length}}
-      <div class="contact-bar profiles">
-        {{#each basics.profiles}}
-          <span class="contact-item profile-item">
-            <span class="label">{{network}}:</span>
-            <a href="{{url}}" target="_blank">{{username}}</a>
-          </span>
-        {{/each}}
-      </div>
+        <div class="contact-bar profiles">
+          {{#each basics.profiles}}
+            <span class="contact-item profile-item">
+              <span class="label">{{network}}:</span>
+              <a href="{{url}}" target="_blank">{{username}}</a>
+            </span>
+          {{/each}}
+        </div>
       {{/if}}
     </header>
 
@@ -177,14 +176,7 @@
             <ul class="compact-list">
               {{#each interests}}
                 <li class="compact-item">
-                  <span class="item-title">{{name}}</span>
-                  {{#if keywords.length}}
-                    <p class="item-summary">
-                      {{#each keywords}}
-                        <span>{{this}}{{#unless @last}}, {{/unless}}</span>
-                      {{/each}}
-                    </p>
-                  {{/if}}
+                  <span class="item-title">{{this}}</span>
                 </li>
               {{/each}}
             </ul>

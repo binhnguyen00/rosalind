@@ -33,6 +33,14 @@
                 <div>{{basics.location}}</div>
               </div>
             {{/if}}
+            {{#if basics.profiles.length}}
+              {{#each basics.profiles}}
+                <div>
+                  <span style="font-weight: 600; color: #333;">{{network}}</span>
+                  <div style="word-wrap: break-word;"><a href="{{url}}" style="word-wrap: break-word;">{{url}}</a></div>
+                </div>
+              {{/each}}
+            {{/if}}
           </div>
         </section>
       {{/if}}
@@ -204,14 +212,7 @@
           <h2 class="section-title">Interests</h2>
           {{#each interests}}
             <div class="item" style="margin-bottom: 0.5rem;">
-              <h3 class="item-title" style="font-size: 0.95rem;">{{name}}</h3>
-              {{#if keywords.length}}
-                <div style="font-size: 0.875rem; color: #555;">
-                  {{#each keywords}}
-                    <span>{{this}}{{#unless @last}}, {{/unless}}</span>
-                  {{/each}}
-                </div>
-              {{/if}}
+              <h3 class="item-title" style="font-size: 0.95rem;">{{this}}</h3>
             </div>
           {{/each}}
         </section>

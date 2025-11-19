@@ -12,6 +12,13 @@
         {{#if basics.url}}<span style="padding-left: 0.75rem; border-left: 1px solid #ccc;"><a href="{{basics.url}}" style="color: #0066cc; text-decoration: none;">{{basics.url}}</a></span>{{/if}}
         {{#if basics.location}}<span style="padding-left: 0.75rem; border-left: 1px solid #ccc;">{{basics.location}}</span>{{/if}}
       </div>
+      {{#if basics.profiles.length}}
+        <div style="margin-top: 0.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.875rem; color: #555;">
+        {{#each basics.profiles}}
+          <span style="padding-left: 0.75rem; border-left: 1px solid #ccc;"><a href="{{url}}" style="color: #0066cc; text-decoration: none;">{{network}}</a></span>
+        {{/each}}
+        </div>
+      {{/if}}
       {{#if basics.customFields.length}}
         <div style="margin-top: 0.5rem;">
         {{#each basics.customFields}}
@@ -181,13 +188,6 @@
         {{#each interests}}
           <div style="margin-bottom: 1rem; margin-top: 0.75rem;">
             <h3 style="font-size: 1rem; font-weight: 600; color: #1a1a1a; margin-bottom: 0.25rem !important;">{{name}}</h3>
-            {{#if keywords.length}}
-              <div style="font-size: 0.875rem; color: #333; margin-top: 0.25rem;">
-                {{#each keywords}}
-                  <span style="display: inline-block; margin-right: 0.5rem;">• {{this}}</span>
-                {{/each}}
-              </div>
-            {{/if}}
           </div>
         {{/each}}
       </section>

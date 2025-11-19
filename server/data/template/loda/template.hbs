@@ -7,7 +7,6 @@
 </head>
 <body>
 
-  <!-- HEADER -->
   <header class="corp-header">
     <div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
       <h1 class="corp-name">{{basics.name}}</h1>
@@ -33,10 +32,16 @@
       {{#if basics.location}}
         <span class="contact-item">{{basics.location}}</span>
       {{/if}}
+      {{#if basics.profiles.length}}
+        {{#each basics.profiles}}
+          <span class="contact-item">
+            <a href="{{url}}" target="_blank">{{network}}</a>
+          </span>
+        {{/each}}
+      {{/if}}
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="container" style="padding-top: 2rem;">
     {{#if basics.summary}}
       <section class="section">
@@ -46,7 +51,6 @@
     {{/if}}
 
     <div class="main-layout">
-      <!-- MAIN COLUMN (Left) -->
       <main class="main-col">
         {{#if work.length}}
           <section class="section">
@@ -115,7 +119,6 @@
         {{/if}}
       </main>
 
-      <!-- SIDEBAR (Right) -->
       <aside class="side-col">
         {{#if skills.length}}
           <section class="section">
@@ -125,7 +128,7 @@
                 <li class="sidebar-item">
                   <span class="sidebar-item-title">{{name}}</span>
                   {{#if level}}<span class="sidebar-item-level"> ({{level}})</span>{{/if}}
-                  {{#if description}}<p class__("sidebar-item-desc")>{{description}}</p>{{/if}}
+                  {{#if description}}<p class="sidebar-item-desc">{{description}}</p>{{/if}}
                 </li>
               {{/each}}
             </ul>
@@ -155,7 +158,7 @@
                   <span class="sidebar-item-title">{{title}}</span>
                   {{#if awarder}}<span class="sidebar-item-level"> - {{awarder}}</span>{{/if}}
                   <span class="sidebar-item-date">{{date}}</span>
-                  {{#if summary}}<p class_("sidebar-item-desc")>{{summary}}</p>{{/if}}
+                  {{#if summary}}<p class="sidebar-item-desc">{{summary}}</p>{{/if}}
                 </li>
               {{/each}}
             </ul>
@@ -201,14 +204,7 @@
             <ul class="sidebar-list">
               {{#each interests}}
                 <li class="sidebar-item">
-                  <span class="sidebar-item-title">{{name}}</span>
-                  {{#if keywords.length}}
-                    <p class_("sidebar-item-desc")>
-                      {{#each keywords}}
-                        <span>{{this}}{{#unless @last}}, {{/unless}}</span>
-                      {{/each}}
-                    </p>
-                  {{/if}}
+                  <span class="sidebar-item-title">{{this}}</span>
                 </li>
               {{/each}}
             </ul>
