@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import * as stores from "@stores"
 import {
-  Metadata, resume, metadata,
-  Basics, Education, Work, Project
+  Metadata, metadata,
+  Basics, Education, Work, Project, Volunteer
 } from "@schemas";
 
 interface Resume {
@@ -10,6 +10,7 @@ interface Resume {
   educations: Education[];
   works: Work[];
   projects: Project[];
+  volunteers: Volunteer[];
 }
 
 interface ResumeStore {
@@ -34,6 +35,7 @@ export const useResumeStore = create<ResumeStore>((set) => ({
     stores.useEducationStore.getState().reset();
     stores.useWorkStore.getState().reset();
     stores.useProjectsStore.getState().reset();
+    stores.useVolunteerStore.getState().reset();
   },
 
   updateTemplate: (t: string) => {
@@ -52,7 +54,8 @@ export const useResumeStore = create<ResumeStore>((set) => ({
       basics: stores.useBasicsStore(state => state.store),
       educations: stores.useEducationStore(state => state.store),
       works: stores.useWorkStore(state => state.store),
-      projects: stores.useProjectsStore(state => state.store)
+      projects: stores.useProjectsStore(state => state.store),
+      volunteers: stores.useVolunteerStore(state => state.store)
     } as Resume;
   },
 }));

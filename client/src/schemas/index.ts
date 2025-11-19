@@ -12,3 +12,6 @@ export type { Work } from "./WorkSchema";
 
 export { project } from "./ProjectSchema";
 export type { Project } from "./ProjectSchema";
+
+export { volunteer } from "./VolunteerSchema";
+export type { Volunteer } from "./VolunteerSchema";

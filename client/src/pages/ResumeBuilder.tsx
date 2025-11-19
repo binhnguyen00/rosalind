@@ -4,7 +4,10 @@ import { GripVertical } from "lucide-react";
 
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
-import { Basics, Education, Work, Project, Themes, Fonts } from "@components/resume";
+import {
+  Themes, Fonts,
+  Basics, Education, Work, Project, Volunteer,
+} from "@components/resume";
 
 export default function ResumeBuilder() {
 
@@ -49,6 +52,7 @@ function ResumeInfoPane() {
       <Basics />
       <Work />
       <Education />
+      <Volunteer />
       <Project />
     </ScrollShadow>
   )

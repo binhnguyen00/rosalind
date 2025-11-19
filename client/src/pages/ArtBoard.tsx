@@ -12,7 +12,8 @@ import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pa
 import { PocketBaseContext } from "@components";
 import {
   useBasicsStore, useEducationStore, useResumeStore, useWorkStore,
-  useProjectsStore
+  useProjectsStore,
+  useVolunteerStore
 } from "@stores";
 
 export default function ArtBoard() {
@@ -24,6 +25,7 @@ export default function ArtBoard() {
   const educationsStore = useEducationStore();
   const workStore = useWorkStore();
   const projectsStore = useProjectsStore();
+  const volunteerStore = useVolunteerStore();
 
   const { id } = useParams();
   const mode = id ? "update" : "create";
@@ -40,6 +42,7 @@ export default function ArtBoard() {
       educationsStore.replace(content.education);
       projectsStore.replace(content.projects);
       workStore.replace(content.work);
+      volunteerStore.replace(content.volunteer);
 
       console.log(response);
       return response;
@@ -61,6 +64,7 @@ export default function ArtBoard() {
           education: educationsStore.store,
           work: workStore.store,
           projects: projectsStore.store,
+          volunteer: volunteerStore.store,
           // more...
         },
         html: html,
@@ -104,6 +108,7 @@ export default function ArtBoard() {
           education: educationsStore.store,
           work: workStore.store,
           projects: projectsStore.store,
+          volunteer: volunteerStore.store,
           // more...
         },
       }, {
@@ -241,6 +246,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const educations = useEducationStore(state => state.store);
   const works = useWorkStore(state => state.store);
   const projects = useProjectsStore(state => state.store);
+  const volunteers = useVolunteerStore(state => state.store);
 
   const [height, setHeight] = React.useState(0);
   const [pageCount, setPageCount] = React.useState(0);
@@ -283,6 +289,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
       work: works,
       education: educations,
       projects: projects,
+      volunteer: volunteers,
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
@@ -308,7 +315,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     return () => observer.disconnect();
 
-  }, [template, basics, educations, works, projects]);
+  }, [template, basics, educations, works, projects, volunteers]);
 
   React.useEffect(() => {
     refetch();
