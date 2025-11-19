@@ -6,7 +6,7 @@ import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
 import {
   Themes, Fonts,
-  Basics, Education, Work, Project, Volunteer,
+  Basics, Skills, Work, Project, Education, Certificates, Awards, Publications, Volunteer, Languages, Interests, References,
 } from "@components/resume";
 
 export default function ResumeBuilder() {
@@ -15,7 +15,7 @@ export default function ResumeBuilder() {
     <DefaultLayout className="p-2 h-screen">
       <PanelGroup direction="horizontal" className="h-full">
 
-        <Panel id="left" order={1} defaultSize={25} minSize={20} maxSize={35} collapsible>
+        <Panel id="left" order={1} defaultSize={25} minSize={20} maxSize={40} collapsible>
           <div className="h-full bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-slate-300/50 dark:hover:shadow-slate-900/50">
             <ResumeInfoPane />
           </div>
@@ -50,10 +50,17 @@ function ResumeInfoPane() {
   return (
     <ScrollShadow orientation="vertical" className="p-2 space-y-4 flex-1 pb-4" hideScrollBar>
       <Basics />
+      <Skills />
       <Work />
-      <Education />
-      <Volunteer />
       <Project />
+      <Education />
+      <Certificates />
+      <Awards />
+      <Publications />
+      <Volunteer />
+      <Languages />
+      <Interests />
+      <References />
     </ScrollShadow>
   )
 }
