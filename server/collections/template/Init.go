@@ -60,25 +60,6 @@ func CreateTemplateCollection(app *pocketbase.PocketBase) error {
   return app.Save(coll);
 }
 
-func CreateDefaultTemplate(app *pocketbase.PocketBase) error {
-  coll, _ := app.FindCollectionByNameOrId(COLL_NAME);
-
-  app.TruncateCollection(coll);
-
-  record := core.NewRecord(coll);
-  record.Set("label", "Default Template");
-  record.Set("code", "default");
-  record.Set("active", true);
-
-  htmlFile, _ := os.ReadFile("./data/default_template.hbs");
-  record.Set("structure", string(htmlFile));
-
-  cssFile, _ := os.ReadFile("./data/default_stylesheet.css");
-  record.Set("stylesheet", string(cssFile));
-
-  return app.Save(record);
-}
-
 // CreateTemplateRecords loops through subdirectories in 'data/template'
 // and creates a template record for each one found.
 func CreateTemplateRecords(app *pocketbase.PocketBase) error {

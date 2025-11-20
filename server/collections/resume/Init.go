@@ -62,19 +62,22 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
 }
 
 func CreateDefaultResume(app *pocketbase.PocketBase) error {
-  coll, err := app.FindCollectionByNameOrId("resume");
-  if (err != nil) {
+  coll, err := app.FindCollectionByNameOrId("resume"); if (err != nil) {
     return err;
   }
 
-  user, err := app.FindFirstRecordByFilter("users", "email = 'binh.nguyen@gmail.com'");
+  if err := app.TruncateCollection(coll); err != nil {
+    log.Printf("Warning: failed to truncate collection: %v", err)
+  }
+
+  user, err := app.FindFirstRecordByFilter("users", "email = 'rosalind@gmail.com'");
   if (err != nil) {
     log.Fatal(err);
     return err;
   }
 
   record := core.NewRecord(coll);
-  record.Set("label", "binh.nguyen Resume");
+  record.Set("label", "rosalind Resume");
   record.Set("owner", user.Id);
 
   var resume map[string]interface{};

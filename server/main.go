@@ -31,13 +31,13 @@ func main() {
     }
     log.Println("isDev: ", isDev)
     if (isDev) {
-      users.CreateDefaultUser(app);
-
-      resume.CreateResumeCollection(app);
-      resume.CreateDefaultResume(app);
+      users.CreateDefaultUsers(app);
 
       template.CreateTemplateCollection(app);
       template.CreateTemplateRecords(app);
+
+      resume.CreateResumeCollection(app);
+      resume.CreateDefaultResume(app);
     }
 
     routes.RegisterWelcomeRoutes(app, e);

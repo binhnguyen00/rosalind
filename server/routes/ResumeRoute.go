@@ -1,11 +1,11 @@
 package routes;
 
 import (
-"net/http"
-"github.com/pocketbase/pocketbase"
-"github.com/pocketbase/pocketbase/apis"
-"github.com/pocketbase/pocketbase/core"
-"rosalind/services/resume"
+"net/http";
+"github.com/pocketbase/pocketbase";
+"github.com/pocketbase/pocketbase/apis";
+"github.com/pocketbase/pocketbase/core";
+"rosalind/services/resume";
 )
 
 func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEvent) {
@@ -27,7 +27,7 @@ func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEven
     }
 
     return e.Blob(http.StatusOK, "application/pdf", bytes);
-  }).Bind(apis.RequireAuth());
+  }).Bind(apis.RequireGuestOnly());
 
   group.POST("/export", func(e *core.RequestEvent) error {
     info, _ := e.RequestInfo();

@@ -1,22 +1,44 @@
 package users;
 
 import (
+"log";
 "github.com/pocketbase/pocketbase";
 "github.com/pocketbase/pocketbase/core";
 )
 
-func CreateDefaultUser(app * pocketbase.PocketBase) error {
+func CreateDefaultUsers(app * pocketbase.PocketBase) error {
   coll, _ := app.FindCollectionByNameOrId("users");
 
-  exist, _ := app.FindFirstRecordByFilter(coll.Name, "email = 'binh.nguyen@gmail.com'");
-  if (exist != nil) {
-    app.Delete(exist);
+  users := []map[string]string{
+    {
+      "name": "rosalind",
+      "email": "rosalind@gmail.com",
+    },
+    {
+      "name": "binh.nguyen",
+      "email": "binh.nguyen@gmail.com",
+    },
   }
-  exist = core.NewRecord(coll)
-  exist.Set("name", "binh.nguyen");
-  exist.SetEmail("binh.nguyen@gmail.com");
-  exist.SetPassword("123456789");
-  exist.SetVerified(true);
 
-  return app.Save(exist);
+  for _, user := range users {
+    log.Printf("Creating user: %s", user["email"])
+    exist, _ := app.FindFirstRecordByFilter(coll, "email = '" + user["email"] + "'");
+    if (exist != nil) {
+      log.Printf("User %s already exists", user["email"])
+      continue;
+    }
+
+    record := core.NewRecord(coll)
+    record.Set("name", user["name"]);
+    record.SetEmail(user["email"]);
+    record.SetPassword("123456789");
+    record.SetVerified(true);
+    err := app.Save(record); if (err != nil) {
+      return err;
+    } else {
+      log.Printf("Created user: %s", user["email"])
+    }
+  }
+
+  return nil;
 }
