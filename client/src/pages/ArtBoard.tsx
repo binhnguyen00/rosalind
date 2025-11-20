@@ -1,12 +1,13 @@
 import React from "react";
-import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import axios, { AxiosResponse } from "axios";
 import HandleBars from "handlebars";
 
 import { RecordModel } from "pocketbase";
 import { useParams } from "react-router-dom";
-import { Button, Spinner, Tooltip, addToast, closeAll } from "@heroui/react";
+import { Button, Spinner, Tooltip, addToast, closeAll, cn } from "@heroui/react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save } from "lucide-react";
+import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save, LogIn } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 
 import { PocketBaseContext } from "@components";
@@ -17,6 +18,8 @@ import {
 } from "@stores";
 
 export default function ArtBoard() {
+  const navigate = useNavigate();
+
   const { client: pocketBase } = React.useContext(PocketBaseContext);
   const templateRef = React.useRef<TemplateRefProps>(null);
 
@@ -66,29 +69,36 @@ export default function ArtBoard() {
     refetchOnMount: mode === "update",
   });
 
-  const { mutate: exportPdf, isPending: isExporting } = useMutation({
-    mutationKey: ["export-pdf", id],
+  const exportPdfMutation = useMutation({
+    mutationKey: ["export-pdf", id ? id : "anonymous"],
     mutationFn: async (html: string) => {
-      const post = axios.post(`${pocketBase.baseURL}/resume/export`, {
-        id: id,
-        content: {
-          basics: basicsStore.store,
-          education: educationsStore.store,
-          work: workStore.store,
-          projects: projectsStore.store,
-          volunteer: volunteerStore.store,
-          awards: awardsStore.store,
-          certificates: certificatesStore.store,
-          interests: interestsStore.store,
-          publications: publicationsStore.store,
-          references: referencesStore.store,
-          skills: skillsStore.store,
-        },
-        html: html,
-      }, {
-        headers: { "Authorization": pocketBase.authStore.token },
-        responseType: "blob"
-      });
+      let post: Promise<AxiosResponse<Blob>>;
+      if (pocketBase.authStore.isValid) {
+        post = axios.post(`${pocketBase.baseURL}/resume/export`, {
+          id: id,
+          content: {
+            basics: basicsStore.store,
+            education: educationsStore.store,
+            work: workStore.store,
+            projects: projectsStore.store,
+            volunteer: volunteerStore.store,
+            awards: awardsStore.store,
+            certificates: certificatesStore.store,
+            interests: interestsStore.store,
+            publications: publicationsStore.store,
+            references: referencesStore.store,
+            skills: skillsStore.store,
+          },
+          html: html,
+        }, {
+          headers: { "Authorization": pocketBase.authStore.token },
+          responseType: "blob"
+        });
+      } else {
+        post = axios.post(`${pocketBase.baseURL}/resume/anonymous/export`, {
+          html: html,
+        }, { responseType: "blob" });
+      }
 
       addToast({ title: "Exporting...", color: "primary", promise: post });
       const response = await post;
@@ -115,7 +125,7 @@ export default function ArtBoard() {
     }
   })
 
-  const { mutate: saveResume, isPending: isSaving } = useMutation({
+  const saveResumeMutation = useMutation({
     mutationKey: ["save-resume", id],
     mutationFn: async () => {
       const post = axios.post(`${pocketBase.baseURL}/resume/save`, {
@@ -166,11 +176,44 @@ export default function ArtBoard() {
       </html>
     `;
 
-    exportPdf(html);
+    exportPdfMutation.mutate(html);
   };
 
   const onSave = () => {
-    saveResume();
+    if (!pocketBase.authStore.isValid) {
+      addToast({
+        title: "Please sign in first",
+        hideCloseButton: true,
+        classNames: {
+          base: cn([
+            "border border-l-8 rounded-md",
+            "flex flex-col items-start gap-4",
+            "border-warning-200 dark:border-warning-100 border-l-warning",
+            "text-warning-500",
+          ]),
+          icon: "w-6 h-6 fill-current",
+        },
+        endContent: (
+          <div className="flex gap-2">
+            <Button
+              variant="solid" size="md" color="primary"
+              onPress={() => navigate("/login")}
+            >
+              <LogIn size={20} /> Sign In
+            </Button>
+            <Button
+              variant="solid" size="md" color="primary"
+              onPress={() => closeAll()}
+            >
+              <LogIn size={20} /> Cancel
+            </Button>
+          </div>
+        )
+      })
+      return;
+    }
+
+    saveResumeMutation.mutate();
   }
 
   const Controls = () => {
@@ -204,7 +247,7 @@ export default function ArtBoard() {
         </Tooltip>
         <Tooltip content="Export PDF" placement="left">
           <Button
-            variant="solid" size="md" color="primary" isIconOnly isLoading={isExporting}
+            variant="solid" size="md" color="primary" isIconOnly isLoading={exportPdfMutation.isPending}
             onPress={onExport}
           >
             <FileDown size={20} />
@@ -212,7 +255,7 @@ export default function ArtBoard() {
         </Tooltip>
         <Tooltip content="Save" placement="left">
           <Button
-            variant="solid" size="md" color="primary" isIconOnly isLoading={isSaving}
+            variant="solid" size="md" color="primary" isIconOnly isLoading={saveResumeMutation.isPending}
             onPress={onSave}
           >
             <Save size={20} />
@@ -258,7 +301,6 @@ export default function ArtBoard() {
 }
 
 interface TemplateRefProps {
-  isRefReady: boolean;
   getArtboardHTML: () => string;
 }
 
@@ -292,7 +334,6 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
   // expose containerRef to parent component
   React.useImperativeHandle(ref, () => ({
-    isRefReady: !!containerRef.current,
     getArtboardHTML: () => {
       if (!containerRef.current) {
         console.warn("containerRef is empty");
@@ -305,7 +346,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
       }
       return shadow.innerHTML;
     },
-  }));
+  } as TemplateRefProps));
 
   React.useEffect(() => {
     if (!template) return;

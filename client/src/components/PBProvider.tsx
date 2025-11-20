@@ -8,12 +8,12 @@ import { useMutation } from "@tanstack/react-query";
 interface PocketBaseCtx {
   client: PocketBase;
   avatar: string;
-  login: ({ userOrEmail, password }: {
+  signIn: ({ userOrEmail, password }: {
     userOrEmail: string;
     password: string;
   }) => void;
-  isLoggingIn: boolean;
-  logout: () => void;
+  isSigningIn: boolean;
+  signOut: () => void;
 }
 
 export const PocketBaseContext = React.createContext({} as PocketBaseCtx);
@@ -25,7 +25,6 @@ export default function PocketBaseProvider({ client, children }: { client: Pocke
     userOrEmail: string;
     password: string;
   }) => {
-    console.log(userOrEmail, password);
     await client.collection("users").authWithPassword(userOrEmail, password);
     return;
   }
@@ -48,6 +47,7 @@ export default function PocketBaseProvider({ client, children }: { client: Pocke
         title: "Success",
         description: "Login successfully",
         hideCloseButton: true,
+        timeout: 1500,
         classNames: {
           base: cn([
             "border border-l-8 rounded-md",
@@ -94,9 +94,9 @@ export default function PocketBaseProvider({ client, children }: { client: Pocke
     <PocketBaseContext.Provider value={{
       client: client,
       avatar: avatar,
-      login: mutate,
-      isLoggingIn: isPending,
-      logout: logout,
+      signIn: mutate,
+      isSigningIn: isPending,
+      signOut: logout,
     }}>
       {children}
     </PocketBaseContext.Provider>

@@ -11,7 +11,7 @@ export default function Signin() {
     password: "",
   });
 
-  const { login, isLoggingIn } = React.useContext(PocketBaseContext);
+  const { signIn: login, isSigningIn: isLoggingIn } = React.useContext(PocketBaseContext);
 
   const onLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

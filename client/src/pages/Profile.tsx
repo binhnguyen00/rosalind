@@ -13,33 +13,15 @@ import {
 export default function Profile() {
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure();
-  const { client, avatar, logout } = React.useContext(PocketBaseContext);
+  const { client, avatar, signOut } = React.useContext(PocketBaseContext);
   const profile = client.authStore.record;
+  const [info, setInfo] = React.useState(profile);
 
-  const onSignIn = () => {
-    navigate("/sign-in");
-  }
-
-  const onSignOut = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    logout();
-    navigate("/");
+    onClose();
+    updateProfile.mutate();
   }
-
-  const SignIn = () => {
-    return (
-      <div className="flex flex-col gap-4 items-center justify-start h-full w-full">
-        <p className="text-xl font-medium"> You are not signed in </p>
-        <Button variant="solid" color="primary" className="w-1/2 space-x-2 text-lg" onPress={onSignIn}>
-          <LogIn size={20} />
-          <span> Sign In </span>
-        </Button>
-      </div>
-    )
-  }
-
-  if (!client.authStore.isValid) return <SignIn />;
-  if (!profile) return <SignIn />;
 
   const updateProfile = useMutation({
     mutationKey: ["update-profile"],
@@ -62,13 +44,25 @@ export default function Profile() {
     },
   })
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    onClose();
-    updateProfile.mutate();
+  const onSignIn = () => {
+    navigate("/sign-in");
   }
 
-  const [info, setInfo] = React.useState(profile);
+  const onSignOut = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signOut();
+    navigate("/");
+  }
+
+  if (!client.authStore.isValid || !info) return (
+    <div className="flex flex-col gap-4 items-center justify-start h-full w-full">
+      <p className="text-xl font-medium"> You are not signed in </p>
+      <Button variant="solid" color="primary" className="w-1/2 space-x-2 text-lg" onPress={onSignIn}>
+        <LogIn size={20} />
+        <span> Sign In </span>
+      </Button>
+    </div>
+  );
 
   return (
     <>
