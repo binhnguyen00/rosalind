@@ -57,7 +57,7 @@ export default function Profile() {
   if (!client.authStore.isValid || !info) return (
     <div className="p-4 flex flex-col gap-4 items-center justify-start h-full w-full">
       <p className="text-xl font-medium"> You are not signed in </p>
-      <Button variant="solid" color="primary" className="w-1/3 space-x-2 text-lg text-white" onPress={onSignIn}>
+      <Button variant="solid" color="primary" className="w-1/3 space-x-2 text-lg text-white" onPress={onSignIn} size="lg">
         <LogIn size={20} />
         <span> Sign In </span>
       </Button>
@@ -71,14 +71,16 @@ export default function Profile() {
         className="flex flex-col gap-4 items-center justify-between h-full w-full"
       >
         <div className="flex flex-col gap-4 items-center justify-center">
-          {info.avatar && (
-            <div className="flex gap-4 items-center">
+          <div className="flex gap-4 items-center">
+            {info.avatar ? (
               <Avatar className="w-40 h-40 text-large" src={avatar} />
-            </div>
-          )}
+            ) : (
+              <Avatar className="w-40 h-40 text-large" src="https://avatar.iran.liara.run/public" />
+            )}
+          </div>
           <p className="text-2xl font-bold"> {info.name} </p>
           <Tooltip content="Edit">
-            <Button size="md" variant="light" isIconOnly className="border border-primary text-primary rounded-full" onPress={onOpen}>
+            <Button size="lg" variant="light" isIconOnly className="border border-primary text-primary rounded-full" onPress={onOpen}>
               <Pencil size={20} />
             </Button>
           </Tooltip>

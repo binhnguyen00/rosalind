@@ -112,10 +112,10 @@ function SignInForm() {
     <>
       <Form className="w-full self-start space-y-6" onSubmit={onSignIn}>
         <Input
-          label="User or Email" variant="bordered" size="lg"
+          label="Your Email" variant="bordered" size="lg"
           value={signInInfo.userOrEmail}
           validate={(value: string) => {
-            if (!value.length) return "user or email is required";
+            if (!value.length) return "Email is required";
             return true;
           }}
           onChange={(e) => setSignInInfo({ ...signInInfo, userOrEmail: e.target.value })}
@@ -145,13 +145,13 @@ function SignInForm() {
         />
 
         <div className="flex justify-start gap-2 w-full">
-          <Button color="primary" className="w-full space-x-2" isLoading={pocketbase.isSigningIn} type="submit">
+          <Button color="primary" className="w-full space-x-2" isLoading={pocketbase.isSigningIn} type="submit" size="lg">
             <LogIn size={18} />
             <span>Sign In</span>
           </Button>
 
           <Button
-            variant="faded"
+            variant="faded" size="lg"
             className="font-semibold text-primary hover:text-primary/80 transition-colors w-full"
           >
             Forgot Password?
@@ -270,8 +270,7 @@ function SignUpForm() {
           }
         />
 
-        <Button color="primary" className="w-1/2 self-center" isLoading={pocketbase.isSigningUp} type="submit">
-          <LogIn size={18} />
+        <Button color="primary" className="w-1/2 self-center" isLoading={pocketbase.isSigningUp} type="submit" size="lg">
           <span>Sign Up</span>
         </Button>
       </Form>

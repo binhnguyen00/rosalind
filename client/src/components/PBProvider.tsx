@@ -31,9 +31,10 @@ export const PocketBaseContext = React.createContext({} as PocketBaseCtx);
 export default function PocketBaseProvider({ client, children }: { client: PocketBase, children: React.ReactNode }) {
   const navigate = useNavigate();
 
-  const logout = async () => {
+  const onSignOut = async () => {
     if (client.authStore.isValid) {
       await client.authStore.clear();
+      navigate("/sign-in");
     } else {
       console.log("Already logout");
     }
@@ -152,7 +153,7 @@ export default function PocketBaseProvider({ client, children }: { client: Pocke
       isSigningIn: signIn.isPending,
       signUp: signUp.mutate,
       isSigningUp: signUp.isPending,
-      signOut: logout,
+      signOut: onSignOut,
     }}>
       {children}
     </PocketBaseContext.Provider>
