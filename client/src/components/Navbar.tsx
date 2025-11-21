@@ -77,7 +77,7 @@ export default function Navbar() {
 
       </HeroUINavbar>
       <Drawer
-        size="lg" isDismissable={false} hideCloseButton
+        size="lg" hideCloseButton
         isOpen={isOpen} onOpenChange={onOpenChange}
         classNames={{
           header: "border-b border-divider p-2 flex items-center",

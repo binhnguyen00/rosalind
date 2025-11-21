@@ -55,9 +55,9 @@ export default function Profile() {
   }
 
   if (!client.authStore.isValid || !info) return (
-    <div className="flex flex-col gap-4 items-center justify-start h-full w-full">
+    <div className="p-4 flex flex-col gap-4 items-center justify-start h-full w-full">
       <p className="text-xl font-medium"> You are not signed in </p>
-      <Button variant="solid" color="primary" className="w-1/2 space-x-2 text-lg" onPress={onSignIn}>
+      <Button variant="solid" color="primary" className="w-1/3 space-x-2 text-lg text-white" onPress={onSignIn}>
         <LogIn size={20} />
         <span> Sign In </span>
       </Button>

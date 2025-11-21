@@ -16,7 +16,7 @@ export default function Resumes() {
   const navigate = useNavigate();
   const resumeStore = useResumeStore();
   const { client: pocketBase } = React.useContext(PocketBaseContext);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen: onOpenForm, onClose } = useDisclosure();
 
   const [resumeInfo, setResumeInfo] = React.useState({
     id: "",
@@ -138,18 +138,46 @@ export default function Resumes() {
 
   if (!resumes) return null;
 
-  const onOpenResume = (id: string) => {
+  const onOpen = (id: string) => {
     resumeStore.updateId(id);
     navigate(`/resume/${id}`);
   }
 
-  const onCreateResume = () => {
+  const onCreate = () => {
+    if (!pocketBase.authStore.isValid) {
+      addToast({
+        title: "Important!",
+        description: "Please Sign In to create a resume.",
+        hideCloseButton: true,
+        classNames: {
+          base: cn([
+            "border border-l-8 rounded-md",
+            "flex flex-col items-start gap-4",
+            "border-primary-200 border-l-primary",
+            "text-primary-500",
+          ]),
+          icon: "w-6 h-6 fill-current",
+        },
+        endContent: (
+          <div className="flex self-end gap-2">
+            <Button color="primary" variant="solid" onPress={() => { navigate("/sign-in"); closeAll() }}>
+              Sign In
+            </Button>
+            <Button color="primary" variant="bordered" onPress={closeAll}>
+              Cancel
+            </Button>
+          </div>
+        ),
+        color: "default",
+      });
+      return;
+    }
     setResumeInfo({
       id: "",
-      label: "New Resume",
-      description: "New Resume"
+      label: "Your Resume",
+      description: "Your Resume"
     })
-    onOpen();
+    onOpenForm();
   }
 
   const resumeTailwindClasses = cn(
@@ -160,23 +188,17 @@ export default function Resumes() {
     "hover:bg-gray-100 hover:scale-105 active:scale-95 cursor-pointer"
   )
 
-  const CreateButton = () => {
-    return (
-      <div className={resumeTailwindClasses} onClick={onCreateResume}>
-        <Plus className="w-10 h-10" />
-      </div>
-    )
-  }
-
   return (
     <>
-      <CreateButton />
+      <div className={resumeTailwindClasses} onClick={onCreate}>
+        <Plus className="w-10 h-10" />
+      </div>
       {resumes.map((resume, idx) => {
         return (
           <div
             key={resume.id}
             className={resumeTailwindClasses}
-            onClick={() => onOpenResume(resume.id)}
+            onClick={() => onOpen(resume.id)}
           >
             <p className="line-clamp-4 w-full px-2 text-center wrap-break-word text-lg font-semibold">
               {resume.label}
@@ -189,7 +211,7 @@ export default function Resumes() {
             <div className="flex gap-2">
               <Button
                 variant="bordered" color="primary" isIconOnly onPress={() => {
-                  onOpen();
+                  onOpenForm();
                   setResumeInfo({
                     id: resume.id,
                     label: resume.label,
@@ -208,7 +230,7 @@ export default function Resumes() {
                     base: cn([
                       "border border-l-8 rounded-md",
                       "flex flex-col items-start gap-4",
-                      "border-danger-200 dark:border-danger-100 border-l-danger",
+                      "border-danger-200 border-l-danger",
                       "text-danger-500",
                     ]),
                     icon: "w-6 h-6 fill-current",
