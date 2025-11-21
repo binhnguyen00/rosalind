@@ -50,11 +50,10 @@ export default function Navbar() {
 
         <NavbarContent justify="end">
           <NavbarItem onClick={onOpen} className="cursor-pointer">
-            {avatar.length > 0 ? (
-              <Avatar src={avatar} />
-            ) : (
-              <CircleUserRound className="h-7 w-7" />
-            )}
+            <Avatar
+              src={avatar}
+              className="w-12 h-12 hover:scale-120 transition-all duration-300 ease-in-out"
+            />
           </NavbarItem>
         </NavbarContent>
 
@@ -76,6 +75,7 @@ export default function Navbar() {
         </NavbarMenu>
 
       </HeroUINavbar>
+
       <Drawer
         size="lg" hideCloseButton
         isOpen={isOpen} onOpenChange={onOpenChange}

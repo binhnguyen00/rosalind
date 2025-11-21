@@ -102,7 +102,7 @@ export default function Resumes() {
     }
   });
 
-  const { mutate: deleteResume, isPending: isDeleting } = useMutation({
+  const { mutate: deleteResume } = useMutation({
     mutationKey: ["delete-resume", resumeInfo.id],
     mutationFn: async (id: string) => {
       const post = pocketBase.collection("resume").delete(id);
@@ -234,11 +234,12 @@ export default function Resumes() {
                       "border-danger-200 border-l-danger",
                       "text-danger-500",
                     ]),
+                    title: "font-semibold text-xl",
                     icon: "w-6 h-6 fill-current",
                   },
                   endContent: (
                     <div className="flex self-end gap-2">
-                      <Button color="danger" variant="bordered" onPress={() => deleteResume(resume.id)}>
+                      <Button color="danger" variant="solid" onPress={() => deleteResume(resume.id)}>
                         Delete
                       </Button>
                       <Button color="primary" variant="bordered" onPress={closeAll}>
@@ -262,14 +263,12 @@ export default function Resumes() {
               <ModalHeader> {resumeInfo.id ? "Edit Resume" : "Create Resume"} </ModalHeader>
               <ModalBody>
                 <Input
-                  label="Label"
-                  placeholder="Label"
+                  label="Label" placeholder="Label" variant="bordered" size="lg"
                   value={resumeInfo.label}
                   onChange={(e) => setResumeInfo({ ...resumeInfo, label: e.target.value })}
                 />
                 <Textarea
-                  label="Description"
-                  placeholder="Description"
+                  label="Description" placeholder="Description" variant="bordered" size="lg"
                   value={resumeInfo.description}
                   onChange={(e) => setResumeInfo({ ...resumeInfo, description: e.target.value })}
                 />

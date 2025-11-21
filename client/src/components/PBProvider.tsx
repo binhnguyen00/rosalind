@@ -139,10 +139,10 @@ export default function PocketBaseProvider({ client, children }: { client: Pocke
 
   const avatar = React.useMemo(() => {
     if (client.authStore.record) {
-      if (!client.authStore.record.avatar) return "";
+      if (!client.authStore.record.avatar) return "https://avatar.iran.liara.run/public";
       return `${client.baseURL}/api/files/_pb_users_auth_/${client.authStore.record.id}/${client.authStore.record.avatar}`;
     }
-    return "";
+    return "https://avatar.iran.liara.run/public";
   }, [client.authStore.record])
 
   return (

@@ -72,11 +72,7 @@ export default function Profile() {
       >
         <div className="flex flex-col gap-4 items-center justify-center">
           <div className="flex gap-4 items-center">
-            {info.avatar ? (
-              <Avatar className="w-40 h-40 text-large" src={avatar} />
-            ) : (
-              <Avatar className="w-40 h-40 text-large" src="https://avatar.iran.liara.run/public" />
-            )}
+            <Avatar className="w-40 h-40 text-large" src={avatar} />
           </div>
           <p className="text-2xl font-bold"> {info.name} </p>
           <Tooltip content="Edit">
