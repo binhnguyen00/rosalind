@@ -31,6 +31,7 @@ export default function Resumes() {
         return [];
       }
       const response = await pocketBase.collection("resume").getFullList({
+        filter: `owner = "${pocketBase.authStore.record?.id}"`,
         sort: "-created",
       });
       return response;
