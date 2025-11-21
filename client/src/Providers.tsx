@@ -30,7 +30,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           radius: "full",
           classNames: {
             base: "p-4 relative",
-            title: "font-semibold text-2xl",
+            title: "font-semibold text-xl",
             description: "text-muted-foreground text-lg",
           },
           motionProps: {
