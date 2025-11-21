@@ -1,24 +1,24 @@
-# Rosalind
+# Description
 
 A full-stack application for building and managing resumes.
 
-## Tech Stack
+# Tech Stack
 
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Go
-- PocketBase
+- [React](https://reactjs.org/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vite.dev/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Go](https://go.dev/)
+- [PocketBase](https://pocketbase.io/)
 
-## Prerequisites
-- wkhtmltopdf - [download](https://wkhtmltopdf.org/downloads.html)
+# Prerequisites
+- [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html)
 
-## Run Commands
+# Run Commands
 
 ### 1. Server-side
 
-Navigate to the `server` directory and run PocketBase:
+Navigate to the [`server`](./server) directory and run PocketBase:
 
 ```bash
 cd server
@@ -30,7 +30,7 @@ This will start the PocketBase server, typically on `http://localhost:8090`.
 
 ### 2. Client-side
 
-Navigate to the `client` directory and install dependencies, then start the development server:
+Navigate to the [`client`](./client) directory and install dependencies, then start the development server:
 
 ```bash
 cd client
