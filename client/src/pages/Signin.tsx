@@ -1,28 +1,32 @@
 import React from "react";
 import { Eye, EyeClosed, LogIn } from "lucide-react";
 
-import { Input, Button, Card, CardBody, Form } from "@heroui/react";
+import { Input, Button, Form } from "@heroui/react";
 import { PocketBaseContext } from "@components";
 
 export default function Signin() {
   const [isPassword, setIsPassword] = React.useState(false);
-  const [loginInfo, setLoginInfo] = React.useState({
+  const [signinInfo, setSigninInfo] = React.useState({
     userOrEmail: "",
     password: "",
   });
 
-  const { signIn: login, isSigningIn: isLoggingIn } = React.useContext(PocketBaseContext);
+  const { signIn, isSigningIn: isLoggingIn } = React.useContext(PocketBaseContext);
 
-  const onLogin = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSignIn = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    login(loginInfo);
+    signIn(signinInfo);
+  }
+
+  const onSignup = () => {
+
   }
 
   return (
     <div className="flex min-h-screen">
 
       {/* left */}
-      <div className="hidden lg:flex lg:w-2/3 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-2/3 relative overflow-hidden rounded-r-4xl">
         <img
           alt="Login hero"
           src="https://w.wallhaven.cc/full/rq/wallhaven-rqr1xw.jpg"
@@ -71,26 +75,27 @@ export default function Signin() {
             <p className="text-muted-foreground">Enter your credentials to access your account</p>
           </div>
         </div>
-        <Form className="w-full self-start space-y-6" onSubmit={onLogin}>
+
+        <Form className="w-full self-start space-y-6" onSubmit={onSignIn}>
           <Input
             label="User or Email" variant="bordered"
-            value={loginInfo.userOrEmail}
+            value={signinInfo.userOrEmail}
             validate={(value: string) => {
               if (!value.length) return "user or email is required";
               return true;
             }}
-            onChange={(e) => setLoginInfo({ ...loginInfo, userOrEmail: e.target.value })}
+            onChange={(e) => setSigninInfo({ ...signinInfo, userOrEmail: e.target.value })}
           />
 
           <Input
             label="Password" variant="bordered"
-            value={loginInfo.password}
+            value={signinInfo.password}
             type={isPassword ? "text" : "password"}
             validate={(value: string) => {
               if (!value.length) return "password is required";
               return true;
             }}
-            onChange={(e) => setLoginInfo({ ...loginInfo, password: e.target.value })}
+            onChange={(e) => setSigninInfo({ ...signinInfo, password: e.target.value })}
             endContent={
               <button
                 onClick={() => setIsPassword(!isPassword)} type="button"
@@ -105,18 +110,31 @@ export default function Signin() {
             }
           />
 
-          <Button color="primary" className="w-full space-x-2" isLoading={isLoggingIn} type="submit">
-            <LogIn size={18} />
-            <span>Sign In</span>
-          </Button>
-        </Form>
+          <div className="flex justify-start gap-2 w-full">
+            <Button color="primary" className="w-full space-x-2" isLoading={isLoggingIn} type="submit">
+              <LogIn size={18} />
+              <span>Sign In</span>
+            </Button>
 
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <button className="font-semibold text-primary hover:text-primary/80 transition-colors">
-            Sign up for free
-          </button>
-        </p>
+            <Button
+              variant="faded"
+              className="font-semibold text-primary hover:text-primary/80 transition-colors w-full"
+            >
+              Forgot Password?
+            </Button>
+          </div>
+
+          <div className="flex flex-col justify-center items-center gap-2 w-full">
+            <p>Don't have an account?</p>
+            <button
+              className="font-semibold text-primary hover:text-primary/80 hover:cursor-pointer transition-colors self-center w-full"
+              onClick={onSignup}
+            >
+              Sign up for free
+            </button>
+          </div>
+
+        </Form>
 
       </div>
     </div>
