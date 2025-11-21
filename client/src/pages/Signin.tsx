@@ -1,32 +1,44 @@
 import React from "react";
-import { Eye, EyeClosed, LogIn } from "lucide-react";
+import { create } from "zustand";
+import { ArrowLeft, Eye, EyeClosed, LogIn } from "lucide-react";
 
 import { Input, Button, Form } from "@heroui/react";
 import { PocketBaseContext } from "@components";
 
-export default function Signin() {
-  const [isPassword, setIsPassword] = React.useState(false);
-  const [signinInfo, setSigninInfo] = React.useState({
+interface SignFormStore {
+  mode: "signIn" | "signUp";
+  setMode: (mode: SignFormStore["mode"]) => void;
+  signInInfo: { userOrEmail: string; password: string; }
+  setSignInInfo: (info: SignFormStore["signInInfo"]) => void;
+  signUpInfo: { name: string; email: string; password: string; passwordConfirm: string; }
+  setSignUpInfo: (info: SignFormStore["signUpInfo"]) => void;
+}
+
+const useSigninStore = create<SignFormStore>((set, get) => ({
+  mode: "signIn",
+  setMode: (mode: SignFormStore["mode"]) => set({ mode }),
+  signInInfo: {
     userOrEmail: "",
     password: "",
-  });
+  },
+  setSignInInfo: (info: SignFormStore["signInInfo"]) => set({ signInInfo: info }),
+  signUpInfo: {
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  },
+  setSignUpInfo: (info: SignFormStore["signUpInfo"]) => set({ signUpInfo: info }),
+}));
 
-  const { signIn, isSigningIn: isLoggingIn } = React.useContext(PocketBaseContext);
-
-  const onSignIn = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    signIn(signinInfo);
-  }
-
-  const onSignup = () => {
-
-  }
+export default function Signin() {
+  const { mode } = useSigninStore();
 
   return (
     <div className="flex min-h-screen">
 
       {/* left */}
-      <div className="hidden lg:flex lg:w-2/3 relative overflow-hidden rounded-r-4xl">
+      <div className="hidden lg:flex lg:w-2/3 relative overflow-hidden rounded-r-2xl">
         <img
           alt="Login hero"
           src="https://w.wallhaven.cc/full/rq/wallhaven-rqr1xw.jpg"
@@ -68,75 +80,201 @@ export default function Signin() {
       </div>
 
       {/* right */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 py-12 lg:px-8 bg-background">
-        <div className="w-full self-start animate-fade-in">
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-foreground mb-2">Sign In</h2>
-            <p className="text-muted-foreground">Enter your credentials to access your account</p>
+      <div className="flex flex-col flex-1 items-center justify-center p-12 gap-6 relative">
+        {mode === "signIn" ? (
+          <div className="w-full self-start animate-fade-in space-y-2">
+            <h2 className="text-3xl font-bold text-foreground">Sign In</h2>
+            <p className="text-muted-foreground text-lg">Enter your credentials to access your account</p>
           </div>
-        </div>
-
-        <Form className="w-full self-start space-y-6" onSubmit={onSignIn}>
-          <Input
-            label="User or Email" variant="bordered"
-            value={signinInfo.userOrEmail}
-            validate={(value: string) => {
-              if (!value.length) return "user or email is required";
-              return true;
-            }}
-            onChange={(e) => setSigninInfo({ ...signinInfo, userOrEmail: e.target.value })}
-          />
-
-          <Input
-            label="Password" variant="bordered"
-            value={signinInfo.password}
-            type={isPassword ? "text" : "password"}
-            validate={(value: string) => {
-              if (!value.length) return "password is required";
-              return true;
-            }}
-            onChange={(e) => setSigninInfo({ ...signinInfo, password: e.target.value })}
-            endContent={
-              <button
-                onClick={() => setIsPassword(!isPassword)} type="button"
-                className="focus:outline-none hover:cursor-pointer"
-              >
-                {isPassword ? (
-                  <EyeClosed size={18} />
-                ) : (
-                  <Eye size={18} />
-                )}
-              </button>
-            }
-          />
-
-          <div className="flex justify-start gap-2 w-full">
-            <Button color="primary" className="w-full space-x-2" isLoading={isLoggingIn} type="submit">
-              <LogIn size={18} />
-              <span>Sign In</span>
-            </Button>
-
-            <Button
-              variant="faded"
-              className="font-semibold text-primary hover:text-primary/80 transition-colors w-full"
-            >
-              Forgot Password?
-            </Button>
+        ) : (
+          <div className="w-full self-start animate-fade-in space-y-2">
+            <h2 className="text-3xl font-bold text-foreground">Sign Up</h2>
+            <p className="text-muted-foreground text-lg">Enter your credentials to create an account</p>
           </div>
-
-          <div className="flex flex-col justify-center items-center gap-2 w-full">
-            <p>Don't have an account?</p>
-            <button
-              className="font-semibold text-primary hover:text-primary/80 hover:cursor-pointer transition-colors self-center w-full"
-              onClick={onSignup}
-            >
-              Sign up for free
-            </button>
-          </div>
-
-        </Form>
-
+        )}
+        {mode === "signIn" ? <SignInForm /> : <SignUpForm />}
       </div>
     </div>
   );
+}
+
+function SignInForm() {
+  const { setMode, signInInfo, setSignInInfo } = useSigninStore();
+  const [isPassword, setIsPassword] = React.useState(false);
+  const pocketbase = React.useContext(PocketBaseContext);
+
+  const onSignIn = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    pocketbase.signIn(signInInfo);
+  }
+
+  return (
+    <>
+      <Form className="w-full self-start space-y-6" onSubmit={onSignIn}>
+        <Input
+          label="User or Email" variant="bordered" size="lg"
+          value={signInInfo.userOrEmail}
+          validate={(value: string) => {
+            if (!value.length) return "user or email is required";
+            return true;
+          }}
+          onChange={(e) => setSignInInfo({ ...signInInfo, userOrEmail: e.target.value })}
+        />
+
+        <Input
+          label="Password" variant="bordered" size="lg"
+          value={signInInfo.password}
+          type={isPassword ? "text" : "password"}
+          validate={(value: string) => {
+            if (!value.length) return "password is required";
+            return true;
+          }}
+          onChange={(e) => setSignInInfo({ ...signInInfo, password: e.target.value })}
+          endContent={
+            <button
+              onClick={() => setIsPassword(!isPassword)} type="button"
+              className="focus:outline-none hover:cursor-pointer"
+            >
+              {isPassword ? (
+                <EyeClosed size={24} />
+              ) : (
+                <Eye size={24} />
+              )}
+            </button>
+          }
+        />
+
+        <div className="flex justify-start gap-2 w-full">
+          <Button color="primary" className="w-full space-x-2" isLoading={pocketbase.isSigningIn} type="submit">
+            <LogIn size={18} />
+            <span>Sign In</span>
+          </Button>
+
+          <Button
+            variant="faded"
+            className="font-semibold text-primary hover:text-primary/80 transition-colors w-full"
+          >
+            Forgot Password?
+          </Button>
+        </div>
+      </Form>
+
+      <div className="flex flex-col justify-center items-center gap-2 w-full">
+        <p>Don't have an account?</p>
+        <button
+          className="font-semibold text-primary hover:text-primary/80 hover:cursor-pointer transition-colors self-center w-full"
+          onClick={() => setMode("signUp")}
+        >
+          Sign up for free
+        </button>
+      </div>
+    </>
+  )
+}
+
+function SignUpForm() {
+  const { setMode, signUpInfo, setSignUpInfo } = useSigninStore();
+  const [isPassword1, setIsPassword1] = React.useState(false);
+  const [isPassword2, setIsPassword2] = React.useState(false);
+  const pocketbase = React.useContext(PocketBaseContext);
+
+  const onSignup = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    pocketbase.signUp({
+      name: signUpInfo.name,
+      email: signUpInfo.email,
+      userOrEmail: signUpInfo.email,
+      password: signUpInfo.password,
+      passwordConfirm: signUpInfo.passwordConfirm,
+    });
+    setMode("signIn");
+  }
+
+  const onBack = () => {
+    setMode("signIn");
+  }
+
+  return (
+    <>
+      <div className="absolute top-3 left-3">
+        <Button variant="faded" isIconOnly size="lg" onPress={onBack}>
+          <ArrowLeft size={24} />
+        </Button>
+      </div>
+
+      <Form className="w-full self-start space-y-6" onSubmit={onSignup}>
+        <Input
+          label="Your Name" variant="bordered" size="lg"
+          value={signUpInfo.name}
+          validate={(value: string) => {
+            if (!value.length) return "Name is required";
+            return true;
+          }}
+          onChange={(e) => setSignUpInfo({ ...signUpInfo, name: e.target.value })}
+        />
+
+        <Input
+          label="Your Email" variant="bordered" size="lg"
+          value={signUpInfo.email}
+          validate={(value: string) => {
+            if (!value.length) return "Email is required";
+            return true;
+          }}
+          onChange={(e) => setSignUpInfo({ ...signUpInfo, email: e.target.value })}
+        />
+
+        <Input
+          label="Password" variant="bordered" size="lg"
+          value={signUpInfo.password}
+          type={isPassword1 ? "text" : "password"}
+          validate={(value: string) => {
+            if (!value.length) return "password is required";
+            return true;
+          }}
+          onChange={(e) => setSignUpInfo({ ...signUpInfo, password: e.target.value })}
+          endContent={
+            <button
+              onClick={() => setIsPassword1(!isPassword1)} type="button"
+              className="focus:outline-none hover:cursor-pointer"
+            >
+              {isPassword1 ? (
+                <EyeClosed size={24} />
+              ) : (
+                <Eye size={24} />
+              )}
+            </button>
+          }
+        />
+
+        <Input
+          label="Confirm Password" variant="bordered" size="lg"
+          value={signUpInfo.passwordConfirm}
+          type={isPassword2 ? "text" : "password"}
+          validate={(value: string) => {
+            if (!value.length) return "password is required";
+            if (value !== signUpInfo.password) return "passwords do not match";
+            return true;
+          }}
+          onChange={(e) => setSignUpInfo({ ...signUpInfo, passwordConfirm: e.target.value })}
+          endContent={
+            <button
+              onClick={() => setIsPassword2(!isPassword2)} type="button"
+              className="focus:outline-none hover:cursor-pointer"
+            >
+              {isPassword2 ? (
+                <EyeClosed size={24} />
+              ) : (
+                <Eye size={24} />
+              )}
+            </button>
+          }
+        />
+
+        <Button color="primary" className="w-1/2 self-center" isLoading={pocketbase.isSigningUp} type="submit">
+          <LogIn size={18} />
+          <span>Sign Up</span>
+        </Button>
+      </Form>
+    </>
+  )
 }

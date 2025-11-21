@@ -80,7 +80,6 @@ function ResumePropertiesPane() {
           className="grid grid-cols-1 lg:grid-cols-2 gap-x-2"
         >
           <Themes />
-          <Themes />
         </ScrollShadow>
       </Tab>
       <Tab key="fonts" title="Fonts">
