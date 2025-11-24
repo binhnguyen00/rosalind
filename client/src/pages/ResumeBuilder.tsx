@@ -16,7 +16,7 @@ export default function ResumeBuilder() {
       <PanelGroup direction="horizontal" className="h-full">
 
         <Panel id="left" order={1} defaultSize={25} minSize={20} maxSize={40} collapsible>
-          <div className="h-full bg-white border border-slate-200/60 rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300">
+          <div className="h-full border border-divider rounded-2xl overflow-hidden flex flex-col transition-all duration-300">
             <ResumeInfoPane />
           </div>
         </Panel>
@@ -26,7 +26,7 @@ export default function ResumeBuilder() {
         </PanelResizeHandle>
 
         <Panel id="center" order={2} defaultSize={50} minSize={30}>
-          <div className="h-full bg-white border border-slate-200/60 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
+          <div className="h-full border border-divider rounded-2xl overflow-hidden transition-all duration-300">
             <ArtBoard />
           </div>
         </Panel>
@@ -36,7 +36,7 @@ export default function ResumeBuilder() {
         </PanelResizeHandle>
 
         <Panel id="right" order={3} defaultSize={25} minSize={20} maxSize={25} collapsible>
-          <div className="h-full bg-white border border-slate-200/60 rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300">
+          <div className="h-full border border-divider rounded-2xl overflow-hidden flex flex-col transition-all duration-300">
             <ResumePropertiesPane />
           </div>
         </Panel>
@@ -85,7 +85,7 @@ function ResumePropertiesPane() {
       <Tab key="fonts" title="Fonts">
         <ScrollShadow
           orientation="vertical" hideScrollBar size={20}
-          className="grid grid-cols-1 lg:grid-cols-2 gap-x-2"
+          className="grid grid-cols-1 gap-x-2"
         >
           <Fonts />
         </ScrollShadow>

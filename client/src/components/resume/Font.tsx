@@ -104,14 +104,20 @@ export default function Fonts() {
   const updateFont = useResumeStore((state) => state.updateFont);
 
   return (
-    <div className="flex flex-col gap-2 w-full">
+    <div className={cn(
+      "flex flex-col gap-2 w-full",
+      "aspect-auto pb-4",
+    )}>
       {GOOGLE_FONTS.map((font) => (
         <div
           key={font}
           className={cn(
-            "p-3 rounded-xl border cursor-pointer transition-all",
-            "hover:border-primary hover:bg-primary-50",
-            metadata.font === font ? "border-primary bg-primary-100 ring-2 ring-primary-200" : "border-default-200"
+            "p-3 rounded-xl",
+            "transition-all duration-300 ease-in-out cursor-pointer",
+            "active:scale-95",
+            "border", "border-divider",
+            "hover:border-blue-400", "hover:border-3",
+            metadata.font === font ? " bg-blue-100" : ""
           )}
           onClick={() => updateFont(font)}
         >

@@ -59,7 +59,6 @@ export default function Templates() {
           key={template.id}
           className={cn(
             "aspect-3/4 pb-4", "w-full h-full",
-            // data.length <= 1 ? "h-full" : "h-1/2"
           )}
           onClick={() => onSelect(template.code)}
         >
