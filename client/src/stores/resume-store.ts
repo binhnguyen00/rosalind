@@ -2,7 +2,7 @@ import { create } from "zustand";
 import * as stores from "@stores"
 import {
   Metadata, metadata,
-  Basics, Education, Work, Project, Volunteer, Award, Certificate, Publication, Skill, Interest, Reference, Language
+  Basics, Education, Work, Project, Volunteer, Award, Certificate, Publication, Skill, Interest, Reference
 } from "@schemas";
 
 interface Resume {
@@ -17,7 +17,6 @@ interface Resume {
   skills: Skill[];
   interests: Interest[];
   references: Reference[];
-  languages: Language[];
 }
 
 interface ResumeStore {
@@ -25,6 +24,7 @@ interface ResumeStore {
   metadata: Metadata;
   reset: () => void;
   updateTemplate: (t: string) => void;
+  updateFont: (f: string) => void;
   updateId: (id: string) => void;
   getInstance: () => Resume;
 }
@@ -49,7 +49,6 @@ export const useResumeStore = create<ResumeStore>((set) => ({
     stores.useSkillStore.getState().reset();
     stores.useInterestStore.getState().reset();
     stores.useReferenceStore.getState().reset();
-    stores.useLanguageStore.getState().reset();
   },
 
   updateTemplate: (t: string) => {
@@ -57,6 +56,15 @@ export const useResumeStore = create<ResumeStore>((set) => ({
       metadata: {
         ...state.metadata,
         template: t
+      }
+    }))
+  },
+
+  updateFont: (f: string) => {
+    return set((state) => ({
+      metadata: {
+        ...state.metadata,
+        font: f
       }
     }))
   },
@@ -76,7 +84,6 @@ export const useResumeStore = create<ResumeStore>((set) => ({
       skills: stores.useSkillStore.getState().store,
       interests: stores.useInterestStore.getState().store,
       references: stores.useReferenceStore.getState().store,
-      languages: stores.useLanguageStore.getState().store
     } as Resume;
   },
 }));

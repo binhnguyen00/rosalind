@@ -16,7 +16,7 @@ export default function ResumeBuilder() {
       <PanelGroup direction="horizontal" className="h-full">
 
         <Panel id="left" order={1} defaultSize={25} minSize={20} maxSize={40} collapsible>
-          <div className="h-full bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-slate-300/50 dark:hover:shadow-slate-900/50">
+          <div className="h-full bg-white border border-slate-200/60 rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300">
             <ResumeInfoPane />
           </div>
         </Panel>
@@ -26,7 +26,7 @@ export default function ResumeBuilder() {
         </PanelResizeHandle>
 
         <Panel id="center" order={2} defaultSize={50} minSize={30}>
-          <div className="h-full bg-white dark:bg-slate-800/30 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-2xl shadow-slate-300/50 dark:shadow-slate-950/50 overflow-hidden transition-all duration-300 hover:shadow-3xl">
+          <div className="h-full bg-white border border-slate-200/60 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300">
             <ArtBoard />
           </div>
         </Panel>
@@ -36,7 +36,7 @@ export default function ResumeBuilder() {
         </PanelResizeHandle>
 
         <Panel id="right" order={3} defaultSize={25} minSize={20} maxSize={25} collapsible>
-          <div className="h-full bg-white dark:bg-slate-800/50 backdrop-blur-xl border border-slate-200/60 dark:border-slate-700/60 rounded-2xl shadow-lg shadow-slate-200/50 dark:shadow-slate-950/50 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:shadow-slate-300/50 dark:hover:shadow-slate-900/50">
+          <div className="h-full bg-white border border-slate-200/60 rounded-2xl shadow-lg overflow-hidden flex flex-col transition-all duration-300">
             <ResumePropertiesPane />
           </div>
         </Panel>

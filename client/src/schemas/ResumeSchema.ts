@@ -15,6 +15,7 @@ import {
 
 export const metadata = z.object({
   template: z.string().default("default"),
+  font: z.string().default("Inter"),
 })
 
 export const resume = z.object({

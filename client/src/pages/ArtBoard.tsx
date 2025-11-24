@@ -47,6 +47,8 @@ export default function ArtBoard() {
       const content = response.content;
 
       resumeStore.updateId(response.id);
+      resumeStore.updateTemplate(content.metadata.template);
+      resumeStore.updateFont(content.metadata.font);
       basicsStore.update(content.basics);
       educationsStore.replace(content.education);
       projectsStore.replace(content.projects);
@@ -131,6 +133,7 @@ export default function ArtBoard() {
       const post = axios.post(`${pocketBase.baseURL}/resume/save`, {
         id: id,
         content: {
+          metadata: resumeStore.metadata,
           basics: basicsStore.store,
           education: educationsStore.store,
           work: workStore.store,
@@ -318,6 +321,8 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
   const references = useReferenceStore(state => state.store);
   const skills = useSkillStore(state => state.store);
 
+  const font = metadata.font;
+
   const [height, setHeight] = React.useState(0);
   const [pageCount, setPageCount] = React.useState(0);
   const { client: pocketBase } = React.useContext(PocketBaseContext);
@@ -379,7 +384,15 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     shadow.innerHTML = "";
     shadow.appendChild(style);
+
+    // inject font
+    const fontLink = document.createElement("link");
+    fontLink.rel = "stylesheet";
+    fontLink.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}&display=swap`;
+    shadow.appendChild(fontLink);
+
     const body = shadow.appendChild(wrapper);
+    body.style.fontFamily = font;
 
     // Observe the wrapper for height changes
     const observer = new ResizeObserver(() => {
@@ -392,7 +405,8 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
   }, [
     template, basics, educations, works, projects, volunteers,
-    awards, certificates, interests, publications, references, skills
+    awards, certificates, interests, publications, references, skills,
+    font
   ]);
 
   React.useEffect(() => {
