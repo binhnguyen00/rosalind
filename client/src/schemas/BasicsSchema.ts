@@ -3,16 +3,16 @@ import z from "zod";
 const profile = z.object({
   network: z.string().default(""),
   username: z.string().default(""),
-  url: z.url().default(""),
+  url: z.url().optional().or(z.literal("")),
 });
 
 export const basics = z.object({
   name: z.string().default(""),
   label: z.string().default(""),
   image: z.string().default(""),
-  email: z.email().default(""),
+  email: z.email().optional().default(""),
   phone: z.string().default(""),
-  url: z.url().default(""),
+  url: z.url().optional().or(z.literal("")),
   summary: z.string().default(""),
   location: z.string().default(""),
   profiles: z.array(profile).default([]),

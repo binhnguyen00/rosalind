@@ -22,6 +22,9 @@ export type { Certificate } from "./CertificateSchema";
 export { publications } from "./PublicationSchema";
 export type { Publication } from "./PublicationSchema";
 
+export { profiles } from "./ProfileSchema";
+export type { Profile } from "./ProfileSchema";
+
 export { skills } from "./SkillSchema";
 export type { Skill } from "./SkillSchema";
 

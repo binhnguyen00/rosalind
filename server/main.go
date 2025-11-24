@@ -35,10 +35,10 @@ func main() {
       users.CreateDefaultUsers(app);
       template.CreateTemplateCollection(app);
       template.CreateTemplateRecords(app);
-      font.CreateFontCollection(app);
-      font.CreateDefaultFonts(app);
       resume.CreateResumeCollection(app);
       resume.CreateDefaultResume(app);
+      font.CreateFontCollection(app);
+      font.CreateDefaultFonts(app);
     }
 
     routes.RegisterWelcomeRoutes(app, e);

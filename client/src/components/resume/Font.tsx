@@ -25,6 +25,11 @@ export default function Fonts() {
     refetchOnWindowFocus: false,
   });
 
+  const fonts: string = React.useMemo(() => {
+    if (!query.data) return "";
+    return query.data.map(f => f.label.replace(/ /g, "+")).join("&family=");
+  }, [query.data]);
+
   if (query.isLoading) {
     return (
       <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
@@ -48,10 +53,6 @@ export default function Fonts() {
       </div>
     )
   }
-
-  const fonts: string = React.useMemo(() => {
-    return query.data.map(f => f.label.replace(/ /g, "+")).join("&family=");
-  }, [query.data]);
 
   return (
     <div className={cn(

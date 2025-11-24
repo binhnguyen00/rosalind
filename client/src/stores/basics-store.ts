@@ -5,6 +5,7 @@ interface BasicsStore {
   store: Basics;
   reset: () => void;
   update: (data: Basics) => void;
+  replace: (data: Basics) => void;
   addCustomField: (field: { key: string, value: string }) => void;
   updateCustomField: (field: { idx: number, key: string, value: string }) => void;
   removeCustomField: (idx: number) => void;
@@ -23,6 +24,12 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
         ...state.store,
         ...data
       }
+    }
+  }),
+
+  replace: (data: Basics) => set(state => {
+    return {
+      store: data
     }
   }),
 
@@ -52,7 +59,7 @@ export const useBasicsStore = create<BasicsStore>((set) => ({
       }
     }
   }),
-  
+
   addProfile: () => set(state => ({
     store: {
       ...state.store,
