@@ -5,8 +5,8 @@ import HandleBars from "handlebars";
 
 import { RecordModel } from "pocketbase";
 import { useParams } from "react-router-dom";
-import { Button, Spinner, Tooltip, addToast, closeAll, cn } from "@heroui/react";
 import { useQuery, useMutation } from "@tanstack/react-query";
+import { Button, Spinner, Tooltip, addToast, closeAll, cn } from "@heroui/react";
 import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save, LogIn } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 
@@ -39,17 +39,14 @@ export default function ArtBoard() {
   const { id } = useParams();
   const mode = id ? "update" : "create";
 
-  const { isLoading, isError } = useQuery({
+  const { isLoading } = useQuery({
     queryKey: ["get-resume", id],
     queryFn: async () => {
-      if (!id) return;
-      const response = await pocketBase.collection<RecordModel>("resume").getOne(id);
+      const response = await pocketBase.collection<RecordModel>("resume").getOne(id!);
       const content = response.content;
 
       resumeStore.updateId(response.id);
-      resumeStore.updateTemplate(content.metadata.template);
-      resumeStore.updateFont(content.metadata.font);
-      basicsStore.update(content.basics);
+      basicsStore.replace(content.basics);
       educationsStore.replace(content.education);
       projectsStore.replace(content.projects);
       workStore.replace(content.work);
@@ -61,7 +58,6 @@ export default function ArtBoard() {
       referencesStore.replace(content.references);
       skillsStore.replace(content.skills);
 
-      console.log(response);
       return response;
     },
     retryDelay: 1500,
