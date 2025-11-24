@@ -11,7 +11,7 @@ import Interests from "./Interests";
 import References from "./References";
 import Resumes from "./Resumes";
 
-import Themes from "./Theme";
+import Templates from "./Template";
 import Fonts from "./Font";
 
 export {
@@ -27,5 +27,6 @@ export {
   Skills,
   Interests,
   References,
-  Themes, Fonts,
+  Templates,
+  Fonts,
 }

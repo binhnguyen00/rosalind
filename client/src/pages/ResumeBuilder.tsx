@@ -5,7 +5,7 @@ import { GripVertical } from "lucide-react";
 import { ArtBoard } from "@pages";
 import { DefaultLayout } from "@components";
 import {
-  Themes, Fonts,
+  Templates, Fonts,
   Basics, Skills, Work, Projects, Education, Certificates, Awards, Publications, Volunteer, Interests, References,
 } from "@components/resume";
 
@@ -79,7 +79,7 @@ function ResumePropertiesPane() {
           orientation="vertical" hideScrollBar size={20}
           className="grid grid-cols-1 lg:grid-cols-2 gap-x-2"
         >
-          <Themes />
+          <Templates />
         </ScrollShadow>
       </Tab>
       <Tab key="fonts" title="Fonts">

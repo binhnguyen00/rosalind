@@ -8,7 +8,7 @@ import { Spinner, Card, CardHeader, CardBody, cn } from "@heroui/react";
 import { useResumeStore } from "@stores";
 import { PocketBaseContext } from "@components";
 
-export default function Themes() {
+export default function Templates() {
   const metadata = useResumeStore((state) => state.metadata);
   const updateTemplate = useResumeStore((state) => state.updateTemplate);
   const { client: pocketBase } = React.useContext(PocketBaseContext);
