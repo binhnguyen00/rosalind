@@ -12,6 +12,7 @@ import (
 "rosalind/collections/users";
 "rosalind/collections/resume";
 "rosalind/collections/template";
+"rosalind/collections/font";
 );
 
 func main() {
@@ -32,10 +33,10 @@ func main() {
     log.Println("isDev: ", isDev)
     if (isDev) {
       users.CreateDefaultUsers(app);
-
       template.CreateTemplateCollection(app);
       template.CreateTemplateRecords(app);
-
+      font.CreateFontCollection(app);
+      font.CreateDefaultFonts(app);
       resume.CreateResumeCollection(app);
       resume.CreateDefaultResume(app);
     }

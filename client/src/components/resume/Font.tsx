@@ -1,135 +1,84 @@
-import { useResumeStore } from "@stores";
-import { cn, ScrollShadow } from "@heroui/react";
+import React from "react";
+import { RecordModel } from "pocketbase";
+import { cn, Spinner } from "@heroui/react";
+import { useQuery } from "@tanstack/react-query";
 
-const GOOGLE_FONTS = [
-  "Inter",
-  "Roboto",
-  "Open Sans",
-  "Lato",
-  "Montserrat",
-  "Oswald",
-  "Raleway",
-  "Merriweather",
-  "Nunito",
-  "Poppins",
-  "Playfair Display",
-  "Rubik",
-  "Ubuntu",
-  "Kanit",
-  "Fira Sans",
-  "Quicksand",
-  "Work Sans",
-  "Barlow",
-  "Mulish",
-  "Titillium Web",
-  "PT Sans",
-  "PT Serif",
-  "Inconsolata",
-  "Mukta",
-  "Heebo",
-  "IBM Plex Sans",
-  "Karla",
-  "Libre Franklin",
-  "Arvo",
-  "Josefin Sans",
-  "Libre Baskerville",
-  "Anton",
-  "Cabin",
-  "Manrope",
-  "Bitter",
-  "Hind",
-  "Lora",
-  "Oxygen",
-  "Fjalla One",
-  "Dosis",
-  "Tekko",
-  "Exo 2",
-  "Pacifico",
-  "Dancing Script",
-  "Shadows Into Light",
-  "Indie Flower",
-  "Amatic SC",
-  "Caveat",
-  "Satisfy",
-  "Great Vibes",
-  "Lobster",
-  "Sacramento",
-  "Parisienne",
-  "Cookie",
-  "Yellowtail",
-  "Monoton",
-  "Bangers",
-  "Press Start 2P",
-  "Creepster",
-  "Special Elite",
-  "Fredericka the Great",
-  "Love Ya Like A Sister",
-  "Coming Soon",
-  "Luckiest Guy",
-  "Chewy",
-  "Black Ops One",
-  "Rock Salt",
-  "Pinyon Script",
-  "Homemade Apple",
-  "Covered By Your Grace",
-  "Kaushan Script",
-  "Gloria Hallelujah",
-  "Permanent Marker",
-  "Patrick Hand",
-  "Walter Turncoat",
-  "Architects Daughter",
-  "Kalam",
-  "Courgette",
-  "Allura",
-  "Tangerine",
-  "Nothing You Could Do",
-  "Reenie Beanie",
-  "Waiting for the Sunrise",
-  "Just Me Again Down Here",
-  "La Belle Aurore",
-  "Zed Mono",
-  "Share Tech Mono",
-  "VT323",
-  "Cutive Mono",
-  "Anonymous Pro",
-  "Space Mono",
-  "Major Mono Display",
-  "Nova Mono",
-  "Xanh Mono",
-  "Syne Mono",
-];
+import { useResumeStore } from "@stores";
+import { PocketBaseContext } from "@components";
 
 export default function Fonts() {
+  const { client: pocketBase } = React.useContext(PocketBaseContext);
   const metadata = useResumeStore((state) => state.metadata);
   const updateFont = useResumeStore((state) => state.updateFont);
+
+  const query = useQuery({
+    queryKey: ["fonts"],
+    queryFn: async () => {
+      const response = await pocketBase.collection<RecordModel>("font").getFullList();
+      return response;
+    },
+    retryDelay: 1500,
+    retry: (failureCount, error) => {
+      return failureCount < 1;
+    },
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+  });
+
+  if (query.isLoading) {
+    return (
+      <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
+        <Spinner className="self-center" />
+      </div>
+    )
+  }
+
+  if (query.isError) {
+    return (
+      <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
+        <p className="text-red-500 self-center text-center"> {query.error.message} </p>
+      </div>
+    )
+  }
+
+  if (!query.data?.length) {
+    return (
+      <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
+        <p className="text-red-500 self-center text-center">No fonts found</p>
+      </div>
+    )
+  }
+
+  const fonts: string = React.useMemo(() => {
+    return query.data.map(f => f.label.replace(/ /g, "+")).join("&family=");
+  }, [query.data]);
 
   return (
     <div className={cn(
       "flex flex-col gap-2 w-full",
       "aspect-auto pb-4",
     )}>
-      {GOOGLE_FONTS.map((font) => (
+      {/* preview font */}
+      <link
+        rel="stylesheet"
+        href={`https://fonts.googleapis.com/css2?family=${fonts}&display=swap`}
+      />
+      {query.data.map((font) => (
         <div
-          key={font}
+          key={font.id}
           className={cn(
             "p-3 rounded-xl",
             "transition-all duration-300 ease-in-out cursor-pointer",
             "active:scale-95",
             "border", "border-divider",
             "hover:border-blue-400", "hover:border-3",
-            metadata.font === font ? " bg-blue-100" : ""
+            metadata.font === font.label ? " bg-blue-100" : ""
           )}
-          onClick={() => updateFont(font)}
+          onClick={() => updateFont(font.label)}
         >
-          <p className="text-lg" style={{ fontFamily: font }}>{font}</p>
+          <p className="text-lg" style={{ fontFamily: font.label }}>{font.label}</p>
         </div>
       ))}
-
-      {/* preview font */}
-      <link
-        rel="stylesheet"
-        href={`https://fonts.googleapis.com/css2?family=${GOOGLE_FONTS.map(f => f.replace(/ /g, "+")).join("&family=")}&display=swap`}
-      />
     </div>
   )
 }

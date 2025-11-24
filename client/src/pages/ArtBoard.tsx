@@ -385,14 +385,8 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
     shadow.innerHTML = "";
     shadow.appendChild(style);
 
-    // inject font
-    const fontLink = document.createElement("link");
-    fontLink.rel = "stylesheet";
-    fontLink.href = `https://fonts.googleapis.com/css2?family=${font.replace(/ /g, "+")}&display=swap`;
-    shadow.appendChild(fontLink);
-
     const body = shadow.appendChild(wrapper);
-    body.style.fontFamily = font;
+    body.style.fontFamily = font; // inject font
 
     // Observe the wrapper for height changes
     const observer = new ResizeObserver(() => {
