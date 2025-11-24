@@ -166,14 +166,9 @@ export default function ArtBoard() {
 
   const onExport = () => {
     if (!templateRef.current) return;
-    const htmlStr: string = templateRef.current.getArtboardHTML();
+    const html: string = templateRef.current.getArtboardHTML();
 
-    const html = `
-      <!DOCTYPE html>
-      <html>
-        ${htmlStr}
-      </html>
-    `;
+    console.log(html);
 
     exportPdfMutation.mutate(html);
   };
@@ -345,7 +340,24 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
         console.warn("shadowRoot is empty");
         return "";
       }
-      return shadow.innerHTML;
+
+      const style = shadow.querySelector("style")?.outerHTML || "";
+      const link = shadow.querySelector("link")?.outerHTML || "";
+      const wrapper = shadow.querySelector("div")?.outerHTML || "";
+
+      return `
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta charset="utf-8">
+            ${link}
+            ${style}
+          </head>
+          <body>
+            ${wrapper}
+          </body>
+        </html>
+      `;
     },
   } as TemplateRefProps));
 
@@ -369,25 +381,30 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
     });
 
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
+    shadow.innerHTML = "";
 
     // inject stylesheet to template
     const style = document.createElement("style");
     style.textContent = template["stylesheet"];
+    shadow.appendChild(style);
+
+    // inject google fonts link
+    const fontFamily = font.replace(/ /g, "+");
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap`;
+    shadow.appendChild(link);
 
     // wrap <style/> and <body/> content
     const wrapper = document.createElement("div");
     wrapper.innerHTML = html;
-
-    shadow.innerHTML = "";
-    shadow.appendChild(style);
-
-    const body = shadow.appendChild(wrapper);
-    body.style.fontFamily = font; // inject font
+    wrapper.style.fontFamily = font;
+    shadow.appendChild(wrapper);
 
     // Observe the wrapper for height changes
     const observer = new ResizeObserver(() => {
-      setHeight(body.offsetHeight);
-      setPageCount(Math.ceil(body.offsetHeight / 1122.66));
+      setHeight(wrapper.offsetHeight);
+      setPageCount(Math.ceil(wrapper.offsetHeight / 1122.66));
     });
     observer.observe(wrapper);
 

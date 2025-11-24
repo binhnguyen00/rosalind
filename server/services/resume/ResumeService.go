@@ -7,16 +7,21 @@ import (
 )
 
 func ExportPdf(html string) ([]byte, error) {
-  tool, err := wkhtmltopdf.NewPDFGenerator();
-  if (err != nil) {
-    return nil, err;
+  tool, err := wkhtmltopdf.NewPDFGenerator()
+  if err != nil {
+    return nil, err
   }
-  reader := wkhtmltopdf.NewPageReader(strings.NewReader(html));
 
-  tool.AddPage(reader);
-  tool.Create();
+  tool.Dpi.Set(96)
 
-  return tool.Bytes(), nil;
+  reader := wkhtmltopdf.NewPageReader(strings.NewReader(html))
+  reader.JavascriptDelay.Set(2000)
+  reader.EnableLocalFileAccess.Set(true)
+
+  tool.AddPage(reader)
+  tool.Create()
+
+  return tool.Bytes(), nil
 }
 
 func SaveContent(app *pocketbase.PocketBase, id string, content map[string]interface{}) error {
