@@ -24,12 +24,16 @@ func ExportPdf(html string) ([]byte, error) {
   return tool.Bytes(), nil
 }
 
-func SaveContent(app *pocketbase.PocketBase, id string, content map[string]interface{}) error {
-  record, err := app.FindRecordById("resume", id);
-  if (err != nil) {
+func Update(app *pocketbase.PocketBase, data map[string]any) error {
+  id := data["id"].(string);
+  content := data["content"].(map[string]any);
+  metadata := data["metadata"].(map[string]any);
+
+  record, err := app.FindRecordById("resume", id); if (err != nil) {
     return err;
   }
 
+  record.Set("metadata", metadata);
   record.Set("content", content);
   return app.Save(record);
 }

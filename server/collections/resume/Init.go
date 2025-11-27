@@ -12,9 +12,7 @@ import (
 var COLL_NAME string = "resume";
 
 func CreateResumeCollection(app *pocketbase.PocketBase) error {
-  coll, _ := app.FindCollectionByNameOrId(COLL_NAME);
-
-  if (coll != nil) {
+  coll, _ := app.FindCollectionByNameOrId(COLL_NAME); if (coll != nil) {
     app.Delete(coll);
   }
 
@@ -39,6 +37,10 @@ func CreateResumeCollection(app *pocketbase.PocketBase) error {
     },
     &core.JSONField{
       Name      : "content",
+      Required  : false,
+    },
+    &core.JSONField{
+      Name      : "metadata",
       Required  : false,
     },
     &core.RelationField{
@@ -84,6 +86,11 @@ func CreateDefaultResume(app *pocketbase.PocketBase) error {
   jsonFile, _ := os.ReadFile("./data/resume.json");
   json.Unmarshal(jsonFile, &resume);
   record.Set("content", resume);
+
+  record.Set("metadata", map[string]any{
+    "font": "Inter",
+    "template": "default",
+  });
 
   return app.Save(record);
 }

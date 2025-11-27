@@ -32,15 +32,19 @@ func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEven
   group.POST("/export", func(e *core.RequestEvent) error {
     info, _ := e.RequestInfo();
     resumeId := info.Body["id"].(string);
-    content := info.Body["content"].(map[string]interface{});
+    content := info.Body["content"].(map[string]any);
     html := info.Body["html"].(string);
+
+    if (resumeId == "" || content == nil) {
+      return e.BadRequestError("Invalid request body", nil);
+    }
 
     // export then save
     bytes, err := resume.ExportPdf(html);
     if (err != nil) {
       return e.InternalServerError("Failed to export pdf", err);
     }
-    resume.SaveContent(app, resumeId, content);
+    resume.Update(app, info.Clone().Body);
 
     return e.Blob(http.StatusOK, "application/pdf", bytes);
   }).Bind(apis.RequireAuth());
@@ -48,13 +52,13 @@ func RegisterResumeRoutes(app *pocketbase.PocketBase, serveEvent *core.ServeEven
   group.POST("/save", func(e *core.RequestEvent) error {
     info, _ := e.RequestInfo();
     resumeId := info.Body["id"].(string);
-    content := info.Body["content"].(map[string]interface{});
+    content := info.Body["content"].(map[string]any);
 
     if (resumeId == "" || content == nil) {
       return e.BadRequestError("Invalid request body", nil);
     }
 
-    err := resume.SaveContent(app, resumeId, content);
+    err := resume.Update(app, info.Clone().Body);
     if (err != nil) {
       return e.InternalServerError("Failed to save resume", err);
     }

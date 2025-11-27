@@ -1,12 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Edit, Plus, Trash } from "lucide-react";
+import { View, Edit, Plus, Trash } from "lucide-react";
 import { format, parseISO } from "date-fns";
 
 import { useMutation, useQuery } from "@tanstack/react-query";
 import {
   Modal, ModalContent, ModalHeader, ModalBody, ModalFooter,
   Button, cn, Spinner, addToast, closeAll, Input, Textarea, useDisclosure,
+  Tooltip,
 } from "@heroui/react";
 
 import { useResumeStore } from "@stores";
@@ -210,48 +211,61 @@ export default function Resumes() {
               </p>
             )}
             <div className="flex gap-2">
-              <Button
-                variant="bordered" color="primary" isIconOnly onPress={() => {
-                  onOpenForm();
-                  setResumeInfo({
-                    id: resume.id,
-                    label: resume.label,
-                    description: resume.description,
+              <Tooltip content="View">
+                <Button
+                  variant="bordered" color="primary" isIconOnly onPress={() => {
+                    navigate(`/resume/showcase/${resume.id}`)
+                  }}
+                >
+                  <View size={18} />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Edit">
+                <Button
+                  variant="bordered" color="primary" isIconOnly onPress={() => {
+                    onOpenForm();
+                    setResumeInfo({
+                      id: resume.id,
+                      label: resume.label,
+                      description: resume.description,
+                    });
+                  }}
+                >
+                  <Edit size={18} />
+                </Button>
+              </Tooltip>
+              <Tooltip content="Delete">
+                <Button variant="bordered" color="danger" isIconOnly onPress={() => {
+                  addToast({
+                    title: "Warning!",
+                    description: "Are you sure you want to delete this resume? This action cannot be undone.",
+                    hideCloseButton: true,
+                    classNames: {
+                      base: cn([
+                        "border border-l-8 rounded-md",
+                        "flex flex-col items-start gap-4",
+                        "border-danger-200 border-l-danger",
+                        "text-danger-500",
+                      ]),
+                      title: "font-semibold text-xl",
+                      icon: "w-6 h-6 fill-current",
+                    },
+                    endContent: (
+                      <div className="flex self-end gap-2">
+                        <Button color="danger" variant="solid" onPress={() => deleteResume(resume.id)}>
+                          Delete
+                        </Button>
+                        <Button color="primary" variant="bordered" onPress={closeAll}>
+                          Cancel
+                        </Button>
+                      </div>
+                    ),
+                    color: "default",
                   });
-                }}
-              >
-                <Edit size={18} />
-              </Button>
-              <Button variant="bordered" color="danger" isIconOnly onPress={() => {
-                addToast({
-                  title: "Warning!",
-                  description: "Are you sure you want to delete this resume? This action cannot be undone.",
-                  hideCloseButton: true,
-                  classNames: {
-                    base: cn([
-                      "border border-l-8 rounded-md",
-                      "flex flex-col items-start gap-4",
-                      "border-danger-200 border-l-danger",
-                      "text-danger-500",
-                    ]),
-                    title: "font-semibold text-xl",
-                    icon: "w-6 h-6 fill-current",
-                  },
-                  endContent: (
-                    <div className="flex self-end gap-2">
-                      <Button color="danger" variant="solid" onPress={() => deleteResume(resume.id)}>
-                        Delete
-                      </Button>
-                      <Button color="primary" variant="bordered" onPress={closeAll}>
-                        Cancel
-                      </Button>
-                    </div>
-                  ),
-                  color: "default",
-                });
-              }}>
-                <Trash size={18} />
-              </Button>
+                }}>
+                  <Trash size={18} />
+                </Button>
+              </Tooltip>
             </div>
           </div>
         );

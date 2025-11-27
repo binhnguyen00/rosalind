@@ -44,8 +44,12 @@ export default function ArtBoard() {
     queryFn: async () => {
       const response = await pocketBase.collection<RecordModel>("resume").getOne(id!);
       const content = response.content;
+      const metadata = response.metadata;
 
       resumeStore.updateId(response.id);
+      resumeStore.updateFont(metadata.font);
+      resumeStore.updateTemplate(metadata.template);
+
       basicsStore.replace(content.basics);
       educationsStore.replace(content.education);
       projectsStore.replace(content.projects);
@@ -87,6 +91,7 @@ export default function ArtBoard() {
             references: referencesStore.store,
             skills: skillsStore.store,
           },
+          metadata: resumeStore.metadata,
           html: html,
         }, {
           headers: { "Authorization": pocketBase.authStore.token },
@@ -142,6 +147,7 @@ export default function ArtBoard() {
           references: referencesStore.store,
           skills: skillsStore.store,
         },
+        metadata: resumeStore.metadata,
       }, {
         headers: { "Authorization": pocketBase.authStore.token },
         responseType: "json"
@@ -167,9 +173,6 @@ export default function ArtBoard() {
   const onExport = () => {
     if (!templateRef.current) return;
     const html: string = templateRef.current.getArtboardHTML();
-
-    console.log(html);
-
     exportPdfMutation.mutate(html);
   };
 
