@@ -1,6 +1,6 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import { BotMessageSquare, CircleUserRound, ChevronsRight } from "lucide-react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { BotMessageSquare, ChevronsRight } from "lucide-react";
 
 import {
   Navbar as HeroUINavbar,
@@ -16,6 +16,7 @@ import { PocketBaseContext } from "@components";
 
 export default function Navbar() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
@@ -42,10 +43,13 @@ export default function Navbar() {
         </NavbarContent>
 
         <NavbarBrand>
-          <Link href="/" className="flex gap-2">
+          <button
+            onClick={() => navigate("/")}
+            className="flex gap-2 text-primary hover:cursor-pointer active:scale-95 transition-all duration-300 ease-in-out"
+          >
             <BotMessageSquare className="h-8 w-8" />
-            <p className="font-bold text-inherit text-2xl"> Resume </p>
-          </Link>
+            <p className="font-bold text-inherit text-2xl"> Rosalind </p>
+          </button>
         </NavbarBrand>
 
         <NavbarContent justify="end">
