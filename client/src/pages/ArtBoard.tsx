@@ -385,11 +385,7 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     // inject stylesheet to template
     const style = document.createElement("style");
-    const fontFamily = font.replace(/ /g, "+");
-    style.textContent = `
-      @import url('https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap');
-      ${template["stylesheet"]}
-    `
+    style.textContent = template["stylesheet"];
     shadow.appendChild(style);
 
     // wrap <style/> and <body/> content

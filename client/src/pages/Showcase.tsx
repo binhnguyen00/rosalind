@@ -91,13 +91,9 @@ export default function Showcase() {
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
     shadow.innerHTML = "";
 
-    // inject stylesheet with google fonts import
-    const fontFamily = resumeStore.metadata.font.replace(/ /g, "+");
+    // inject stylesheet
     const style = document.createElement("style");
-    style.textContent = `
-      @import url('https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap');
-      ${template.data["stylesheet"]}
-    `;
+    style.textContent = template.data["stylesheet"];
     shadow.appendChild(style);
 
     // wrap <style/> and <body/> content
