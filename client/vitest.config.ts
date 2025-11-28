@@ -13,7 +13,7 @@ export default function vitestConfig() {
     ],
     base: "./",
     test: {
-      environment: "jsdom",
+      environment: "happy-dom",
     }
   })
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import PocketBase from "pocketbase";
+import { BrowserRouter } from "react-router-dom";
 import { render, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { useQuery, QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -20,20 +21,22 @@ describe("PocketBase Provider", () => {
     const Auth = (): React.ReactNode => {
       useQuery({
         queryKey: ["auth-store"],
-        queryFn: async () => await pbClient.collection("users").authWithPassword("binh.nguyen@gmail.com", "123456789"),
+        queryFn: async () => await pbClient.collection("users").authWithPassword("rosalind@gmail.com", "123456789"),
+        retry: false,
       })
-
       return (
         <div> {pbClient.authStore.isValid} </div>
       )
     }
 
     render(
-      <QueryClientProvider client={queryClient}>
-        <PBProvider client={pbClient}>
-          <Auth />
-        </PBProvider>
-      </QueryClientProvider>
+      <BrowserRouter>
+        <QueryClientProvider client={queryClient}>
+          <PBProvider client={pbClient}>
+            <Auth />
+          </PBProvider>
+        </QueryClientProvider>
+      </BrowserRouter>
     );
 
     await waitFor(() => {

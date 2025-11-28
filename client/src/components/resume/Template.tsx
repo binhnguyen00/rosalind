@@ -84,8 +84,7 @@ export default function Templates() {
 
   const onSelect = (theme: string) => {
     if (!theme) return;
-    const lower = String(theme).toLowerCase();
-    updateTemplate(lower);
+    updateTemplate(String(theme).toLowerCase());
   }
 
   return (
