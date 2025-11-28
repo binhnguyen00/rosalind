@@ -1,7 +1,7 @@
 import React from "react";
 import HandleBars from "handlebars";
 import { useParams } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Spinner } from "@heroui/react";
 
 import { NotFound } from "@pages";
@@ -65,7 +65,7 @@ export default function Showcase() {
         `code="${resumeStore.metadata.template.toLowerCase()}"`
       );
     },
-    enabled: !!resumeStore.metadata.template,
+    enabled: resumeStore.metadata.template ? true : false,
   });
 
   React.useEffect(() => {

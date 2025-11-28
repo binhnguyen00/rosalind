@@ -10,7 +10,7 @@ import { Button, Spinner, Tooltip, addToast, closeAll, cn } from "@heroui/react"
 import { FileDown, ZoomIn, ZoomOut, FlipHorizontal, Save, LogIn } from "lucide-react";
 import { TransformWrapper, TransformComponent, useControls } from "react-zoom-pan-pinch";
 
-import { PocketBaseContext } from "@components";
+import { PocketBaseContext, GlobalFontsContext } from "@components";
 import {
   useBasicsStore, useEducationStore, useResumeStore, useWorkStore,
   useInterestStore, usePublicationStore, useReferenceStore, useSkillStore,
@@ -20,7 +20,7 @@ import {
 export default function ArtBoard() {
   const navigate = useNavigate();
 
-  const { client: pocketBase } = React.useContext(PocketBaseContext);
+  const pocketbase = React.useContext(PocketBaseContext);
   const templateRef = React.useRef<TemplateRefProps>(null);
 
   const resumeStore = useResumeStore();
@@ -42,7 +42,7 @@ export default function ArtBoard() {
   const { isLoading } = useQuery({
     queryKey: ["get-resume", id],
     queryFn: async () => {
-      const response = await pocketBase.collection<RecordModel>("resume").getOne(id!);
+      const response = await pocketbase.client.collection<RecordModel>("resume").getOne(id!);
       const content = response.content;
       const metadata = response.metadata;
 
@@ -75,8 +75,8 @@ export default function ArtBoard() {
     mutationKey: ["export-pdf", id ? id : "anonymous"],
     mutationFn: async (html: string) => {
       let post: Promise<AxiosResponse<Blob>>;
-      if (pocketBase.authStore.isValid) {
-        post = axios.post(`${pocketBase.baseURL}/resume/export`, {
+      if (pocketbase.client.authStore.isValid) {
+        post = axios.post(`${pocketbase.client.baseURL}/resume/export`, {
           id: id,
           content: {
             basics: basicsStore.store,
@@ -94,11 +94,11 @@ export default function ArtBoard() {
           metadata: resumeStore.metadata,
           html: html,
         }, {
-          headers: { "Authorization": pocketBase.authStore.token },
+          headers: { "Authorization": pocketbase.client.authStore.token },
           responseType: "blob"
         });
       } else {
-        post = axios.post(`${pocketBase.baseURL}/resume/anonymous/export`, {
+        post = axios.post(`${pocketbase.client.baseURL}/resume/anonymous/export`, {
           html: html,
         }, { responseType: "blob" });
       }
@@ -131,7 +131,7 @@ export default function ArtBoard() {
   const saveResumeMutation = useMutation({
     mutationKey: ["save-resume", id],
     mutationFn: async () => {
-      const post = axios.post(`${pocketBase.baseURL}/resume/save`, {
+      const post = axios.post(`${pocketbase.client.baseURL}/resume/save`, {
         id: id,
         content: {
           basics: basicsStore.store,
@@ -148,7 +148,7 @@ export default function ArtBoard() {
         },
         metadata: resumeStore.metadata,
       }, {
-        headers: { "Authorization": pocketBase.authStore.token },
+        headers: { "Authorization": pocketbase.client.authStore.token },
         responseType: "json"
       });
 
@@ -176,7 +176,7 @@ export default function ArtBoard() {
   };
 
   const onSave = () => {
-    if (!pocketBase.authStore.isValid) {
+    if (!pocketbase.client.authStore.isValid) {
       addToast({
         title: "Please sign in first",
         hideCloseButton: true,
@@ -301,6 +301,8 @@ interface TemplateRefProps {
 }
 
 const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
+  const fontsCtx = React.useContext(GlobalFontsContext);
+
   const metadata = useResumeStore(state => state.metadata);
   const basics = useBasicsStore(state => state.store);
   const educations = useEducationStore(state => state.store);
@@ -318,13 +320,13 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
   const [height, setHeight] = React.useState(0);
   const [pageCount, setPageCount] = React.useState(0);
-  const { client: pocketBase } = React.useContext(PocketBaseContext);
+  const pocketbase = React.useContext(PocketBaseContext);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const { data: template, isLoading, isError, error, refetch } = useQuery({
     queryKey: ["template"],
     queryFn: async () => {
-      return await pocketBase.collection("template").getFirstListItem(
+      return await pocketbase.client.collection("template").getFirstListItem(
         `code="${metadata.template}"`
       );
     },
@@ -385,7 +387,10 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     // inject stylesheet to template
     const style = document.createElement("style");
-    style.textContent = template["stylesheet"];
+    style.textContent = `
+      @import url('https://fonts.googleapis.com/css2?family=${fontsCtx.getFontQuery(font)}&display=swap');
+      ${template["stylesheet"]}
+    `;
     shadow.appendChild(style);
 
     // wrap <style/> and <body/> content

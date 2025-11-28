@@ -9,6 +9,8 @@ export const GlobalFontsContext = React.createContext({} as {
   isError: boolean;
   error: Error;
   fonts: RecordModel[];
+  getAllFontsQuery: () => string;
+  getFontQuery: (font: string) => string;
 });
 
 export default function GlobalFontsProvider({ children }: { children: React.ReactNode }) {
@@ -30,14 +32,24 @@ export default function GlobalFontsProvider({ children }: { children: React.Reac
     refetchOnWindowFocus: false,
   });
 
+  const getAllFontQuery = React.useCallback(() => {
+    if (!query.data) return "";
+    return query.data.map(font => font.label.replace(/ /g, "+")).join("&family=");
+  }, [query.data]);
+
   const fonts: RecordModel[] = React.useMemo(() => {
     if (query.isError) return [];
     if (!query.data) return [];
 
-    const results: string = query.data.map(font => font.label.replace(/ /g, "+")).join("&family=");
+    const results: string = getAllFontQuery();
     setFontsAsString(results);
 
     return query.data;
+  }, [query.data]);
+
+  const getFontQuery = React.useCallback((font: string) => {
+    if (!query.data) return "";
+    return query.data.find((font) => font.code === font)?.query || "";
   }, [query.data]);
 
   const preload = React.useMemo(() => {
@@ -55,7 +67,9 @@ export default function GlobalFontsProvider({ children }: { children: React.Reac
       isLoading: query.isLoading,
       isError: query.isError,
       error: query.error as Error,
-      fonts: fonts
+      fonts: fonts,
+      getFontQuery: getFontQuery,
+      getAllFontsQuery: getAllFontQuery,
     }}>
       {preload}
       {children}
