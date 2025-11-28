@@ -13,7 +13,7 @@ export default function Templates() {
   const updateTemplate = useResumeStore((state) => state.updateTemplate);
   const { client: pocketBase } = React.useContext(PocketBaseContext);
 
-  const { data, isLoading, isError, error } = useQuery({
+  const templates = useQuery({
     queryKey: ["templates"],
     queryFn: async () => {
       const response = await pocketBase.collection("template").getFullList();
@@ -23,24 +23,60 @@ export default function Templates() {
     retry: (failureCount, error) => {
       return failureCount < 2;
     },
-    staleTime: Infinity,
     refetchOnMount: false,
     refetchOnWindowFocus: false,
   })
 
-  if (isLoading) return (
+  const thumbnails = useQuery({
+    queryKey: ["template-thumbnails"],
+    queryFn: async () => {
+      const response = await axios.get("https://picsum.photos/v2/list");
+      return response.data;
+    },
+    staleTime: Infinity,
+  });
+
+  const renderThumbnail = React.useCallback(() => {
+    if (thumbnails.isLoading) return (
+      <div>
+        <Spinner />
+      </div>
+    );
+
+    if (thumbnails.isError) return (
+      <div>
+        <p>{thumbnails.error.message}</p>
+      </div>
+    );
+
+    if (!thumbnails.data) return (
+      <div className="flex flex-col">
+        <p className="self-center">No thumbnails found</p>
+      </div>
+    );
+
+    return (
+      <img
+        alt="Card background"
+        className="w-full h-full object-cover"
+        src={thumbnails.data[Math.floor(Math.random() * thumbnails.data.length)].download_url}
+      />
+    )
+  }, [thumbnails.data]);
+
+  if (templates.isLoading) return (
     <div>
       <Spinner />
     </div>
   );
 
-  if (isError) return (
+  if (templates.isError) return (
     <div>
-      <p>{error.message}</p>
+      <p>{templates.error.message}</p>
     </div>
   );
 
-  if (!data) return (
+  if (!templates.data) return (
     <div className="flex flex-col">
       <p className="self-center">No templates found</p>
     </div>
@@ -54,7 +90,7 @@ export default function Templates() {
 
   return (
     <>
-      {data.map((template) => (
+      {templates.data.map((template) => (
         <div
           key={template.id}
           className={cn(
@@ -83,7 +119,7 @@ export default function Templates() {
               <h4 className="font-bold text-large"> {template.label} </h4>
             </CardHeader>
             <CardBody className="p-2">
-              <ThemeThumbnail id={template.id} />
+              {renderThumbnail()}
             </CardBody>
           </Card>
         </div>
@@ -91,50 +127,3 @@ export default function Templates() {
     </>
   )
 }
-
-const ThemeThumbnail = React.memo(({ id }: { id: string }) => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["template-thumbnails", id],
-    queryFn: async () => {
-      const response = await axios.get("https://picsum.photos/v2/list");
-      return response.data;
-    },
-    retryDelay: 1000,
-    retry: (failureCount, error) => {
-      return failureCount < 1;
-    },
-    staleTime: Infinity,
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
-  if (isLoading) return (
-    <div>
-      <Spinner size="sm" />
-    </div>
-  );
-
-  if (isError) return (
-    <img
-      alt="Card background"
-      className="w-full h-full object-cover"
-      src="https://http.cat/500"
-    />
-  );
-
-  if (!data) return (
-    <img
-      alt="Card background"
-      className="w-full h-full object-cover"
-      src="https://http.cat/500"
-    />
-  )
-
-  return (
-    <img
-      alt="Card background"
-      className="w-full h-full object-cover"
-      src={data[Math.floor(Math.random() * data.length)].download_url}
-    />
-  )
-});
