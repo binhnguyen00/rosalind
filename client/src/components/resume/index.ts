@@ -12,7 +12,7 @@ import References from "./References";
 import Resumes from "./Resumes";
 
 import Templates from "./Template";
-import Fonts from "./Font";
+import Fonts from "./FontList";
 
 export {
   Resumes,

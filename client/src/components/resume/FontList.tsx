@@ -1,36 +1,15 @@
 import React from "react";
-import { RecordModel } from "pocketbase";
 import { cn, Spinner } from "@heroui/react";
-import { useQuery } from "@tanstack/react-query";
 
 import { useResumeStore } from "@stores";
-import { PocketBaseContext } from "@components";
+import { GlobalFontsContext } from "@components";
 
 export default function Fonts() {
-  const { client: pocketBase } = React.useContext(PocketBaseContext);
+  const fontsCtx = React.useContext(GlobalFontsContext);
   const metadata = useResumeStore((state) => state.metadata);
   const updateFont = useResumeStore((state) => state.updateFont);
 
-  const query = useQuery({
-    queryKey: ["fonts"],
-    queryFn: async () => {
-      const response = await pocketBase.collection<RecordModel>("font").getFullList();
-      return response;
-    },
-    retryDelay: 1500,
-    retry: (failureCount, error) => {
-      return failureCount < 1;
-    },
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-  });
-
-  const fonts: string = React.useMemo(() => {
-    if (!query.data) return "";
-    return query.data.map(f => f.label.replace(/ /g, "+")).join("&family=");
-  }, [query.data]);
-
-  if (query.isLoading) {
+  if (fontsCtx.isLoading) {
     return (
       <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
         <Spinner className="self-center" />
@@ -38,15 +17,15 @@ export default function Fonts() {
     )
   }
 
-  if (query.isError) {
+  if (fontsCtx.isError) {
     return (
       <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
-        <p className="text-red-500 self-center text-center"> {query.error.message} </p>
+        <p className="text-red-500 self-center text-center"> {fontsCtx.error.message} </p>
       </div>
     )
   }
 
-  if (!query.data?.length) {
+  if (!fontsCtx.fonts) {
     return (
       <div className="flex flex-col gap-2 w-full aspect-auto pb-4">
         <p className="text-red-500 self-center text-center">No fonts found</p>
@@ -59,12 +38,7 @@ export default function Fonts() {
       "flex flex-col gap-2 w-full",
       "aspect-auto pb-4",
     )}>
-      {/* preview font */}
-      <link
-        rel="stylesheet"
-        href={`https://fonts.googleapis.com/css2?family=${fonts}&display=swap`}
-      />
-      {query.data.map((font) => (
+      {fontsCtx.fonts.map((font) => (
         <div
           key={font.id}
           className={cn(
