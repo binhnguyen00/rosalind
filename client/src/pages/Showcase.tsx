@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Spinner } from "@heroui/react";
 
+import { NotFound } from "@pages";
 import { PocketBaseContext } from "@components";
 import {
   useBasicsStore, useEducationStore, useResumeStore, useWorkStore,
@@ -29,15 +30,6 @@ export default function Showcase() {
   const referencesStore = useReferenceStore();
   const skillsStore = useSkillStore();
 
-  const template = useMutation({
-    mutationKey: ["get-template"],
-    mutationFn: async (templateCode: string) => {
-      return await pocketbase.client.collection("template").getFirstListItem(
-        `code="${templateCode.toLowerCase()}"`
-      );
-    }
-  });
-
   const query = useQuery({
     queryKey: ["resume-showcase", id],
     queryFn: async () => {
@@ -48,7 +40,6 @@ export default function Showcase() {
       resumeStore.updateFont(response.metadata.font);
       resumeStore.updateTemplate(response.metadata.template);
 
-      basicsStore.replace(content.basics);
       basicsStore.replace(content.basics);
       educationsStore.replace(content.education);
       projectsStore.replace(content.projects);
@@ -61,11 +52,20 @@ export default function Showcase() {
       referencesStore.replace(content.references);
       skillsStore.replace(content.skills);
 
-      template.mutate(resumeStore.metadata.template);
-
       return response;
     },
     retry: false,
+  });
+
+  const template = useQuery({
+    queryKey: ["get-template", resumeStore.metadata.template],
+    queryFn: async () => {
+      if (!resumeStore.metadata.template) return null;
+      return await pocketbase.client.collection("template").getFirstListItem(
+        `code="${resumeStore.metadata.template.toLowerCase()}"`
+      );
+    },
+    enabled: !!resumeStore.metadata.template,
   });
 
   React.useEffect(() => {
@@ -91,17 +91,14 @@ export default function Showcase() {
     const shadow = containerRef.current.shadowRoot || containerRef.current.attachShadow({ mode: "open" });
     shadow.innerHTML = "";
 
-    // inject stylesheet to template
-    const style = document.createElement("style");
-    style.textContent = template.data["stylesheet"];
-    shadow.appendChild(style);
-
-    // inject google fonts link
+    // inject stylesheet with google fonts import
     const fontFamily = resumeStore.metadata.font.replace(/ /g, "+");
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap`;
-    shadow.appendChild(link);
+    const style = document.createElement("style");
+    style.textContent = `
+      @import url('https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap');
+      ${template.data["stylesheet"]}
+    `;
+    shadow.appendChild(style);
 
     // wrap <style/> and <body/> content
     const wrapper = document.createElement("div");
@@ -109,7 +106,7 @@ export default function Showcase() {
     wrapper.style.fontFamily = resumeStore.metadata.font;
     shadow.appendChild(wrapper);
 
-  }, [resumeStore.metadata, template]);
+  }, [template.data, resumeStore.metadata.template, resumeStore.metadata.font]);
 
   if (query.isLoading) {
     return (
@@ -122,9 +119,7 @@ export default function Showcase() {
   if (query.isError) {
     console.error(query.error.message);
     return (
-      <div className="w-full h-full flex items-center justify-center">
-        <p className="text-2xl font-bold">404 - Page Not Found</p>
-      </div>
+      <NotFound />
     )
   }
 

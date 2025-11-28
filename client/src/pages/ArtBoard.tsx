@@ -134,7 +134,6 @@ export default function ArtBoard() {
       const post = axios.post(`${pocketBase.baseURL}/resume/save`, {
         id: id,
         content: {
-          metadata: resumeStore.metadata,
           basics: basicsStore.store,
           education: educationsStore.store,
           work: workStore.store,
@@ -345,7 +344,6 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
       }
 
       const style = shadow.querySelector("style")?.outerHTML || "";
-      const link = shadow.querySelector("link")?.outerHTML || "";
       const wrapper = shadow.querySelector("div")?.outerHTML || "";
 
       return `
@@ -353,7 +351,6 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
         <html>
           <head>
             <meta charset="utf-8">
-            ${link}
             ${style}
           </head>
           <body>
@@ -388,15 +385,12 @@ const Template = React.forwardRef<TemplateRefProps>((props, ref) => {
 
     // inject stylesheet to template
     const style = document.createElement("style");
-    style.textContent = template["stylesheet"];
-    shadow.appendChild(style);
-
-    // inject google fonts link
     const fontFamily = font.replace(/ /g, "+");
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = `https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap`;
-    shadow.appendChild(link);
+    style.textContent = `
+      @import url('https://fonts.googleapis.com/css2?family=${fontFamily}&display=swap');
+      ${template["stylesheet"]}
+    `
+    shadow.appendChild(style);
 
     // wrap <style/> and <body/> content
     const wrapper = document.createElement("div");
